@@ -1,0 +1,2203 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Rubrik AWS CNP POC Playbook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+
+:root{
+  --ink:#0d1117; --ink-2:#1f2937; --ink-3:#374151;
+  --muted:#6b7280; --muted-2:#9ca3af;
+  --paper:#fafaf7; --paper-2:#f3f3ee;
+  --rule:#e7e5df; --rule-2:#d6d3cb;
+
+  --aws:#e87b35; --aws-soft:#fdf0e3; --aws-dark:#a84e10;
+  --az:#2272d6;  --az-soft:#e6f0fb;  --az-dark:#0a4a9c;
+  --cc:#00b388;  --cc-soft:#dff5ee;  --cc-dark:#00533f;
+
+  --link:#0a6cff;
+  --shadow: 0 1px 0 rgba(13,17,23,.04), 0 6px 18px rgba(13,17,23,.04);
+
+  --display: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --mono:    "Geist Mono", ui-monospace, SFMono-Regular, "JetBrains Mono", Menlo, Consolas, monospace;
+}
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family: var(--display); color: var(--ink); background: var(--paper);
+  font-feature-settings: "ss01","cv11";
+  -webkit-font-smoothing: antialiased; font-size: 14.5px; line-height: 1.6;
+}
+a{color: var(--link); text-decoration: none}
+a:hover{text-decoration: underline; text-underline-offset: 2px}
+
+code{
+  font-family: var(--mono); font-size: .9em;
+  background: var(--paper-2); border: 1px solid var(--rule);
+  padding: 1px 6px; border-radius: 4px; word-break: break-word;
+}
+pre{
+  background: #0d1117; color: #c9d1d9;
+  padding: 14px 16px; border-radius: 8px;
+  overflow-x: auto; font-size: 12.5px;
+  font-family: var(--mono); margin: 12px 0;
+}
+pre code{background: transparent; border: 0; padding: 0; color: inherit; font-size: 12.5px}
+
+.shell{display:grid; grid-template-columns: 280px minmax(0,1fr); min-height:100vh}
+@media (max-width: 980px){
+  .shell{grid-template-columns: 1fr}
+  aside.sidebar{position:relative !important; height:auto !important; border-right:0; border-bottom: 1px solid var(--rule)}
+}
+
+aside.sidebar{
+  position: sticky; top:0; height:100vh; overflow-y:auto;
+  border-right: 1px solid var(--rule);
+  background: linear-gradient(180deg, #fafaf7 0%, #f3f3ee 100%);
+  padding: 18px 14px 40px;
+}
+.brand{
+  display:flex; align-items:center; gap:10px;
+  padding: 6px; border-radius: 8px;
+  color: inherit; text-decoration: none;
+  margin-bottom: 16px;
+}
+.brand:hover{background: rgba(0,0,0,.03); text-decoration:none}
+.brand .logo{
+  width:30px; height:30px; border-radius:7px;
+  background: var(--ink); color:#00b388;
+  display:grid; place-items:center;
+  font-family: var(--mono); font-weight:700; font-size:12px;
+}
+.brand .name{font-weight:600; letter-spacing:-.01em; line-height:1.1}
+.brand .name small{display:block; font-weight:400; color:var(--muted); font-size:11px; margin-top:2px}
+
+.nav-group{margin-top:10px}
+.nav-group-title{
+  display:flex; align-items:center; gap:8px;
+  padding: 8px 10px 6px;
+  font-family: var(--mono); font-size: 10.5px;
+  letter-spacing: .14em; text-transform: uppercase; color: var(--muted);
+}
+.nav-group-title .dot{width:8px; height:8px; border-radius:50%}
+.nav-list{list-style:none; padding:0; margin:0}
+.nav-list a{
+  display:block; padding: 6px 12px; border-radius:6px;
+  color:var(--ink-2); font-size: 13.3px; text-decoration:none;
+  border-left: 2px solid transparent;
+}
+.nav-list a:hover{background: rgba(0,0,0,.03); color:var(--ink); text-decoration:none}
+.nav-list a.active{background:#fff; box-shadow: var(--shadow); color:var(--ink); font-weight:500}
+.nav-group[data-group="foundation"] .nav-list a.active{border-left-color: var(--aws)}
+.nav-group[data-group="onboard"]    .nav-list a.active{border-left-color: var(--az)}
+.nav-group[data-group="workloads"]  .nav-list a.active{border-left-color: var(--cc)}
+.nav-group[data-group="reference"]  .nav-list a.active{border-left-color: var(--ink-3)}
+
+main{min-width:0}
+.main-inner{max-width: 920px; margin:0 auto; padding: 28px 40px 80px}
+@media (max-width: 720px){.main-inner{padding: 16px 16px 60px}}
+
+.page{display:none}
+.page.active{display:block; animation: fade .15s ease-out}
+@keyframes fade {from{opacity:0; transform: translateY(4px)} to{opacity:1; transform:none}}
+
+.breadcrumb{
+  font-family: var(--mono); font-size: 11.5px; color: var(--muted);
+  margin-bottom: 12px; display:flex; gap:8px; align-items:center;
+}
+.breadcrumb a{color: var(--muted)}
+.breadcrumb a:hover{color: var(--ink)}
+.breadcrumb .sep{color: var(--muted-2)}
+
+.page-head{
+  padding: 18px 22px; border-radius: 12px;
+  background: #fff; border:1px solid var(--rule);
+  box-shadow: var(--shadow); margin-bottom: 22px;
+  border-left: 6px solid var(--ink);
+}
+.page-head h1{margin:0; font-size: 24px; letter-spacing:-.015em; font-weight:600}
+.page[data-group="foundation"] .page-head{border-left-color: var(--aws)}
+.page[data-group="onboard"]    .page-head{border-left-color: var(--az)}
+.page[data-group="workloads"]  .page-head{border-left-color: var(--cc)}
+.page[data-group="reference"]  .page-head{border-left-color: var(--ink-3)}
+
+.lede{
+  font-size: 15.5px; color: var(--ink-3); line-height: 1.65;
+  border-left: 3px solid var(--rule-2); padding: 6px 16px;
+  background: #fcfcfa; border-radius: 0 8px 8px 0;
+  margin: 4px 0 22px;
+}
+
+h2.section-title{
+  margin: 30px 0 12px;
+  font-size: 18px; font-weight: 600; letter-spacing: -.01em;
+  display:flex; align-items:center; gap:10px;
+}
+h2.section-title::before{
+  content:""; width: 4px; height: 18px; background: var(--ink); border-radius: 2px;
+}
+
+.tile-grid{
+  display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px; margin: 8px 0 24px;
+}
+.tile{
+  display:block; padding: 16px;
+  background: #fff; border: 1px solid var(--rule); border-radius: 12px;
+  box-shadow: var(--shadow); color: inherit; text-decoration: none;
+  border-top: 3px solid var(--ink);
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.tile:hover{transform: translateY(-2px); box-shadow: 0 10px 28px rgba(0,0,0,.08); text-decoration:none}
+.tile-aws{border-top-color: var(--aws)}
+.tile-az{border-top-color: var(--az)}
+.tile-cc{border-top-color: var(--cc)}
+.tile-ref{border-top-color: var(--ink-3)}
+.tile-num{
+  display:inline-block; font-family: var(--mono); font-size: 10.5px; font-weight: 600;
+  color: var(--muted); letter-spacing: .08em;
+}
+.tile h3{margin: 6px 0 4px; font-size: 14.5px; font-weight: 600; color: var(--ink)}
+.tile p{margin: 0; font-size: 12.5px; color: var(--ink-3); line-height: 1.5}
+
+.hero{
+  border: 1px solid var(--rule); border-radius: 14px;
+  background:
+    radial-gradient(900px 200px at -50px -100px, rgba(0,179,136,.10), transparent 60%),
+    radial-gradient(700px 150px at 110% 0%, rgba(34,114,214,.06), transparent 60%),
+    #fff;
+  padding: 32px 32px 24px; box-shadow: var(--shadow); margin-bottom: 22px;
+}
+.hero .eyebrow{font-family: var(--mono); font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--muted)}
+.hero h1{font-size: clamp(26px, 3.2vw, 36px); letter-spacing: -.02em; line-height: 1.08; margin: 8px 0; font-weight: 600}
+.hero h1 em{
+  font-style: normal;
+  background: linear-gradient(120deg, var(--cc) 0%, var(--cc-dark) 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.hero p{color: var(--ink-3); margin: 0; max-width: 64ch}
+
+details{
+  background: #fff; border: 1px solid var(--rule); border-radius: 8px;
+  margin: 8px 0; box-shadow: var(--shadow);
+}
+details > summary{
+  padding: 12px 16px; cursor: pointer; user-select: none;
+  font-size: 14px; color: var(--ink); list-style: none;
+  display:flex; align-items:center; justify-content:space-between; gap: 12px;
+}
+details > summary::-webkit-details-marker{display:none}
+details > summary::after{
+  content: "▼"; font-size: 10px; color: var(--muted); transition: transform .2s;
+}
+details[open] > summary::after{transform: rotate(180deg)}
+details > summary strong{font-weight: 600}
+details > *:not(summary){padding: 0 16px 14px}
+details > p:first-of-type{margin-top: 0}
+
+.numbered-steps{padding-left: 22px}
+.numbered-steps li{margin: 6px 0}
+
+.note{
+  margin: 14px 0; padding: 14px 18px;
+  border: 1px solid var(--rule); border-radius: 8px;
+  border-left: 4px solid var(--rule-2); background: #fcfcfa;
+  font-size: 13.5px; line-height: 1.6;
+}
+.note.warn{border-left-color: #b08400; background: #fff8e1; color: #5a4500}
+.note.danger{border-left-color: #b22222; background: #ffe9e3; color: #6a0a0a}
+
+.ref-table{
+  width: 100%; border-collapse: separate; border-spacing: 0;
+  font-size: 13px;
+  border: 1px solid var(--rule); border-radius: 8px; overflow: hidden;
+  background: #fff; margin: 10px 0;
+}
+.ref-table thead th{
+  text-align:left; font-weight:600;
+  font-size: 11px; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--muted); background: var(--paper-2);
+  padding: 9px 12px; border-bottom: 1px solid var(--rule);
+}
+.ref-table tbody td{
+  padding: 9px 12px; border-bottom: 1px solid var(--rule);
+  vertical-align: top; color: var(--ink-2);
+}
+.ref-table tbody tr:last-child td{border-bottom: 0}
+.ref-table tbody tr:nth-child(even) td{background: #fcfcfa}
+.ref-table code{font-size: 11.5px}
+
+.diagram-frame{
+  margin: 14px 0 18px; padding: 8px;
+  background: #fff; border: 1px solid var(--rule); border-radius: 12px;
+  box-shadow: var(--shadow);
+}
+
+.nav-buttons{
+  display:flex; justify-content: space-between; gap: 12px;
+  margin: 30px 0 0; padding-top: 18px; border-top: 1px solid var(--rule);
+}
+.btn-prev, .btn-next{
+  display:inline-flex; align-items:center;
+  padding: 10px 16px; border-radius: 8px;
+  background: #fff; border: 1px solid var(--rule);
+  color: var(--ink-2); text-decoration: none;
+  box-shadow: var(--shadow); font-weight: 500; font-size: 13.5px;
+}
+.btn-prev:hover, .btn-next:hover{border-color: var(--ink-3); text-decoration:none}
+.btn-next{margin-left: auto}
+
+</style>
+</head>
+<body>
+<div class="shell">
+<aside class="sidebar">
+
+  <a class="brand" href="#/">
+    <div class="logo">R</div>
+    <div class="name">Rubrik AWS CNP<small>POC Playbook</small></div>
+  </a>
+
+<div class="nav-group" data-group="home">
+  <div class="nav-group-title"><span class="dot" style="background:var(--ink)"></span>Start</div>
+  <ul class="nav-list">
+    <li><a href="#/" data-route="/">Welcome</a></li>
+  </ul>
+</div>
+<div class="nav-group" data-group="foundation">
+  <div class="nav-group-title"><span class="dot" style="background:var(--aws)"></span>1 · Foundation</div>
+  <ul class="nav-list">
+    <li><a href="#/foundation/decisions" data-route="/foundation/decisions">Decisions</a></li>
+    <li><a href="#/foundation/identity" data-route="/foundation/identity">Identity</a></li>
+    <li><a href="#/foundation/network" data-route="/foundation/network">Network</a></li>
+    <li><a href="#/foundation/endpoints" data-route="/foundation/endpoints">VPC Endpoints</a></li>
+    <li><a href="#/foundation/security" data-route="/foundation/security">SCPs + KMS</a></li>
+  </ul>
+</div>
+<div class="nav-group" data-group="onboard">
+  <div class="nav-group-title"><span class="dot" style="background:var(--az)"></span>2 · Onboard</div>
+  <ul class="nav-list">
+    <li><a href="#/onboard/account" data-route="/onboard/account">Add accounts</a></li>
+    <li><a href="#/onboard/exocompute" data-route="/onboard/exocompute">Exocompute</a></li>
+    <li><a href="#/onboard/archival" data-route="/onboard/archival">Archival location</a></li>
+    <li><a href="#/onboard/mapping" data-route="/onboard/mapping">Map accounts</a></li>
+  </ul>
+</div>
+<div class="nav-group" data-group="workloads">
+  <div class="nav-group-title"><span class="dot" style="background:var(--cc)"></span>3 · Workloads</div>
+  <ul class="nav-list">
+    <li><a href="#/workloads/ec2" data-route="/workloads/ec2">EC2 + EBS</a></li>
+    <li><a href="#/workloads/rds" data-route="/workloads/rds">RDS / Aurora</a></li>
+    <li><a href="#/workloads/dynamo" data-route="/workloads/dynamo">DynamoDB</a></li>
+    <li><a href="#/workloads/s3" data-route="/workloads/s3">S3</a></li>
+  </ul>
+</div>
+<div class="nav-group" data-group="reference">
+  <div class="nav-group-title"><span class="dot" style="background:var(--ink-3)"></span>4 · Reference</div>
+  <ul class="nav-list">
+    <li><a href="#/reference/firewall" data-route="/reference/firewall">Firewall ports + FQDNs</a></li>
+    <li><a href="#/reference/costs" data-route="/reference/costs">Cost optimisation</a></li>
+    <li><a href="#/reference/troubleshooting" data-route="/reference/troubleshooting">Troubleshooting</a></li>
+  </ul>
+</div>
+</aside>
+<main><div class="main-inner">
+<article class="page" data-route="/" data-group="home">
+<div class="hero">
+  <div class="eyebrow">Rubrik AWS CNP · POC Playbook</div>
+  <h1>Onboard AWS Cloud Native Protection — <em>end to end</em></h1>
+  <p>The opinionated path. Decisions, foundation, onboarding, workloads, and the operational reference you actually need. Click any tile below or use the sidebar.</p>
+</div>
+
+<h2 class="section-title">Phase 1 — Foundation</h2>
+<div class="tile-grid">
+  <a class="tile tile-aws" href="#/foundation/decisions"><div class="tile-num">1.1</div><h3>Decisions</h3><p>Nine choices you make once. Re-doing these mid-build = re-doing IAM.</p></a>
+  <a class="tile tile-aws" href="#/foundation/identity"><div class="tile-num">1.2</div><h3>Identity</h3><p>How Rubrik authenticates into AWS. Cross-account roles + STS chaining.</p></a>
+  <a class="tile tile-aws" href="#/foundation/network"><div class="tile-num">1.3</div><h3>Network</h3><p>VPC, subnets, egress, DNS. Per region with Exocompute.</p></a>
+  <a class="tile tile-aws" href="#/foundation/endpoints"><div class="tile-num">1.4</div><h3>VPC Endpoints</h3><p>The cost layer. Build BEFORE Exocompute.</p></a>
+  <a class="tile tile-aws" href="#/foundation/security"><div class="tile-num">1.5</div><h3>SCPs + KMS</h3><p>Silent killers if missed. Especially CMK key policies.</p></a>
+</div>
+
+<h2 class="section-title">Phase 2 — Onboard</h2>
+<div class="tile-grid">
+  <a class="tile tile-az" href="#/onboard/account"><div class="tile-num">2.1</div><h3>Add accounts</h3><p>CloudFormation-driven onboarding in RSC.</p></a>
+  <a class="tile tile-az" href="#/onboard/exocompute"><div class="tile-num">2.2</div><h3>Exocompute</h3><p>EKS cluster config + worker SGs.</p></a>
+  <a class="tile tile-az" href="#/onboard/archival"><div class="tile-num">2.3</div><h3>Archival location</h3><p>S3 bucket for long-term tier.</p></a>
+  <a class="tile tile-az" href="#/onboard/mapping"><div class="tile-num">2.4</div><h3>Map accounts</h3><p>Workload → Exocompute mapping (the critical wire).</p></a>
+</div>
+
+<h2 class="section-title">Phase 3 — Workloads</h2>
+<div class="tile-grid">
+  <a class="tile tile-cc" href="#/workloads/ec2"><div class="tile-num">3.1</div><h3>EC2 + EBS</h3><p>Snapshot-based. Indexing via Exocompute.</p></a>
+  <a class="tile tile-cc" href="#/workloads/rds"><div class="tile-num">3.2</div><h3>RDS / Aurora</h3><p>Native AWS snapshots, cross-region copy.</p></a>
+  <a class="tile tile-cc" href="#/workloads/dynamo"><div class="tile-num">3.3</div><h3>DynamoDB</h3><p>PITR + Export-to-S3 (different from EBS).</p></a>
+  <a class="tile tile-cc" href="#/workloads/s3"><div class="tile-num">3.4</div><h3>S3</h3><p>Version-based protection, archive tier.</p></a>
+</div>
+
+<h2 class="section-title">Phase 4 — Reference</h2>
+<div class="tile-grid">
+  <a class="tile tile-ref" href="#/reference/firewall"><div class="tile-num">4.1</div><h3>Firewall ports + FQDNs</h3><p>The complete allowlist incl. cloudslab.</p></a>
+  <a class="tile tile-ref" href="#/reference/costs"><div class="tile-num">4.2</div><h3>Cost optimisation</h3><p>NAT vs endpoints, archive tiers.</p></a>
+  <a class="tile tile-ref" href="#/reference/troubleshooting"><div class="tile-num">4.3</div><h3>Troubleshooting</h3><p>The top 10 things that go wrong.</p></a>
+</div>
+
+<h2 class="section-title">Architecture at a glance</h2>
+<div class="diagram-frame">
+  
+<svg viewBox="0 0 900 460" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:900px;height:auto;background:url(#bgGrad);border-radius:12px;">
+  
+<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+  </marker>
+  <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+    <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.12"/>
+  </filter>
+  <linearGradient id="bgGrad" x1="0" x2="0" y1="0" y2="1">
+    <stop offset="0%"  stop-color="#fafaf7"/>
+    <stop offset="100%" stop-color="#f3f3ee"/>
+  </linearGradient>
+</defs>
+
+  <rect width="900" height="460" fill="url(#bgGrad)" rx="12"/>
+
+  <!-- RSC cloud -->
+  <g>
+    <ellipse cx="450" cy="50" rx="80" ry="28" fill="#00b388" opacity="0.15"/>
+    <ellipse cx="450" cy="50" rx="60" ry="20" fill="#00b388" opacity="0.25"/>
+    <text x="450" y="46" text-anchor="middle" font-family="Geist, sans-serif" font-size="14" font-weight="600" fill="#00533f">Rubrik Security Cloud</text>
+    <text x="450" y="61" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#00533f">prod-XXX.prod.my.rubrik.com</text>
+  </g>
+
+  <!-- Workload account zone -->
+  
+    <g>
+      <rect x="40" y="130" width="380" height="290" rx="12" fill="#fdf0e3" stroke="#e87b35" stroke-width="1.5" stroke-dasharray="6 3" opacity="0.6"/>
+      <text x="54" y="148" font-family="Geist Mono, monospace" font-size="11" font-weight="600" fill="#e87b35" letter-spacing="1">AWS ACCOUNT A — WORKLOADS</text>
+    </g>
+    
+  
+    <g>
+      <rect x="70" y="170" width="140" height="56" rx="8" fill="#fff" stroke="#e87b35" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="140.0" y="194.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">EC2 + EBS</text>
+      <text x="140.0" y="212.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">snapshots</text>
+    </g>
+    
+  
+    <g>
+      <rect x="230" y="170" width="160" height="56" rx="8" fill="#fff" stroke="#e87b35" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="310.0" y="194.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">RDS / Aurora</text>
+      <text x="310.0" y="212.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">DB snapshots</text>
+    </g>
+    
+  
+    <g>
+      <rect x="70" y="250" width="140" height="56" rx="8" fill="#fff" stroke="#e87b35" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="140.0" y="274.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">DynamoDB</text>
+      <text x="140.0" y="292.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">PITR + Export-to-S3</text>
+    </g>
+    
+  
+    <g>
+      <rect x="230" y="250" width="160" height="56" rx="8" fill="#fff" stroke="#e87b35" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="310.0" y="274.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">S3 buckets</text>
+      <text x="310.0" y="292.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">versioning-based</text>
+    </g>
+    
+  
+    <g>
+      <rect x="70" y="340" width="320" height="50" rx="8" fill="#fdf0e3" stroke="#a84e10" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="230.0" y="361.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Rubrik cross-account IAM role</text>
+      <text x="230.0" y="379.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">Account B assumes this</text>
+    </g>
+    
+
+  <!-- Exocompute account zone -->
+  
+    <g>
+      <rect x="480" y="130" width="380" height="290" rx="12" fill="#fdf0e3" stroke="#e87b35" stroke-width="1.5" stroke-dasharray="6 3" opacity="0.6"/>
+      <text x="494" y="148" font-family="Geist Mono, monospace" font-size="11" font-weight="600" fill="#e87b35" letter-spacing="1">AWS ACCOUNT B — EXOCOMPUTE + STORAGE</text>
+    </g>
+    
+  
+    <g>
+      <rect x="510" y="170" width="180" height="56" rx="8" fill="#fff" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="600.0" y="194.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">EKS — Exocompute</text>
+      <text x="600.0" y="212.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">Polaris-Exocompute-*</text>
+    </g>
+    
+  
+    <g>
+      <rect x="710" y="170" width="130" height="56" rx="8" fill="#fff" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="775.0" y="194.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">S3 archive</text>
+      <text x="775.0" y="212.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">long-term tier</text>
+    </g>
+    
+  
+    <g>
+      <rect x="510" y="250" width="320" height="56" rx="8" fill="#e6f0fb" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="670.0" y="274.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">VPC Endpoints</text>
+      <text x="670.0" y="292.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">S3 GW + EC2/EBS/STS/ECR/EKS/KMS IFs</text>
+    </g>
+    
+  
+    <g>
+      <rect x="510" y="340" width="320" height="50" rx="8" fill="#e6f0fb" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="670.0" y="361.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Cross-account IAM role + KMS key shares</text>
+      <text x="670.0" y="379.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">Account B → Account A</text>
+    </g>
+    
+
+  <!-- Connections -->
+  <path id="rsc-a" d="M 450 78 C 250 100, 250 130, 250 130" stroke="#9ca3af" stroke-width="1.5" fill="none" marker-end="url(#arrow)" stroke-dasharray="4 3"/>
+  <path id="rsc-b" d="M 450 78 C 670 100, 670 130, 670 130" stroke="#9ca3af" stroke-width="1.5" fill="none" marker-end="url(#arrow)" stroke-dasharray="4 3"/>
+  <path id="b-to-a" d="M 420 280 C 460 280, 470 280, 510 280" stroke="#00b388" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+
+  <!-- Animated packets -->
+  
+    <circle r="6" fill="#00b388" filter="url(#shadow)">
+      <animateMotion dur="3s" begin="0s" repeatCount="indefinite">
+        <mpath href="#rsc-a"/>
+      </animateMotion>
+    </circle>
+    
+  
+    <circle r="6" fill="#00b388" filter="url(#shadow)">
+      <animateMotion dur="3s" begin="1s" repeatCount="indefinite">
+        <mpath href="#rsc-b"/>
+      </animateMotion>
+    </circle>
+    
+  
+    <circle r="6" fill="#e87b35" filter="url(#shadow)">
+      <animateMotion dur="2.5s" begin="0s" repeatCount="indefinite">
+        <mpath href="#b-to-a"/>
+      </animateMotion>
+    </circle>
+    
+  
+    <circle r="6" fill="#e87b35" filter="url(#shadow)">
+      <animateMotion dur="2.5s" begin="1.2s" repeatCount="indefinite">
+        <mpath href="#b-to-a"/>
+      </animateMotion>
+    </circle>
+    
+
+  <!-- Caption -->
+  <text x="450" y="430" text-anchor="middle" font-family="Geist Mono, monospace" font-size="11" font-weight="500" fill="#374151">Rubrik orchestrates from RSC · Exocompute in Account B does the work in Account A via STS:AssumeRole</text>
+</svg>
+
+</div>
+</article>
+<article class="page" data-route="/foundation/decisions" data-group="foundation">
+  <div class="breadcrumb"><a href="#/">Home</a><span class="sep">/</span><span>1 · Foundation</span><span class="sep">/</span><span>Decisions</span></div>
+  <header class="page-head"><h1>Decisions</h1></header>
+
+<p class="lede">Answer these nine before touching any console. Document the answers. Coming back to change them = re-doing IAM, VPC, and SCP work.</p>
+
+<details open><summary><strong>1. Single-account or multi-account model?</strong></summary>
+<p><strong>Recommendation:</strong> Two-account model. One for workloads, one for Exocompute + archive storage. Cleaner blast radius, easier IAM auditing, the standard pattern.</p>
+<p><strong>When single-account is OK:</strong> Tiny POC with one AWS account end-to-end. You'll likely outgrow it.</p>
+<p><strong>When AWS Organizations integration:</strong> 10+ accounts only. It's a one-way door — once enabled, no going back to per-account CFT.</p>
+</details>
+
+<details><summary><strong>2. Which AWS regions are in scope?</strong></summary>
+<p>Start with <strong>one region</strong> for POC. Each region with Exocompute needs its own VPC, subnets, security groups, and VPC endpoints. Adding regions multiplies work, not capability.</p>
+<p>Cross-region replication is a separate config layer at the SLA level — doesn't require multi-region Exocompute.</p>
+</details>
+
+<details><summary><strong>3. Which workloads to protect?</strong></summary>
+<p>Each workload type ticks a different "use case" box in the RSC wizard, which attaches different IAM permissions. Order of magnitude:</p>
+<ul>
+  <li><strong>EC2 + EBS + File-level restore</strong> — the typical POC starting point.</li>
+  <li><strong>RDS</strong> — adds RDS API permissions.</li>
+  <li><strong>DynamoDB</strong> — adds DDB Export-to-S3 permissions.</li>
+  <li><strong>S3 inventory</strong> — adds S3 bucket discovery permissions.</li>
+</ul>
+<p>Don't tick what you won't test. Every extra permission is a line your security team will ask about.</p>
+</details>
+
+<details><summary><strong>4. Onboarding method (CFT, manual, Terraform)?</strong></summary>
+<p><strong>POC:</strong> CloudFormation via RSC wizard. Fastest. Done in minutes.</p>
+<p><strong>Production with GitOps:</strong> Terraform module <code>terraform-aws-polaris-cloud-native</code>. Pin a version.</p>
+<p><strong>SCP-heavy enterprises:</strong> Manual IAM. You pre-create roles, supply ARNs to RSC. Most control, slowest.</p>
+</details>
+
+<details><summary><strong>5. AWS Organizations integration?</strong></summary>
+<p><strong>POC:</strong> No. Per-account CFT is reversible.</p>
+<p><strong>10+ accounts in production:</strong> Worth it. But test the rollback story before flipping the switch.</p>
+</details>
+
+<details><summary><strong>6. Where will Exocompute run?</strong></summary>
+<p><strong>Centralised (recommended):</strong> One host account, mapped to many workload accounts. One EKS cluster per region. Cheaper, simpler, fewer SGs to manage.</p>
+<p><strong>Per-account:</strong> Only if regulatory boundaries forbid cross-account access. Multiplies EKS clusters and Exocompute costs.</p>
+</details>
+
+<details><summary><strong>7. Where will archive S3 buckets live?</strong></summary>
+<p><strong>Same account as Exocompute.</strong> Same region. Bucket per archive location (RSC creates them).</p>
+<p>Use bucket prefixes if you want logical separation per protected account. Avoid cross-account archive buckets unless mandated — adds trust boundary work.</p>
+</details>
+
+<details><summary><strong>8. Are protected workloads CMK-encrypted?</strong></summary>
+<p>If EBS/RDS use Customer-Managed KMS keys (not <code>aws/ebs</code>, <code>aws/rds</code>): you <strong>must</strong> grant the Rubrik role explicit permission on each CMK. This is the #1 silent failure during the first restore.</p>
+<p><strong>Action now:</strong> inventory CMK ARNs. Plan key-policy edits (Foundation → SCPs + KMS).</p>
+</details>
+
+<details><summary><strong>9. Egress design for Exocompute subnet?</strong></summary>
+<p><strong>POC:</strong> NAT Gateway in the same account. Simplest.</p>
+<p><strong>Production:</strong> Transit Gateway to centralised egress, or AWS Network Firewall with FQDN allowlist.</p>
+<p>Whatever you choose, combine with VPC Endpoints (Foundation → VPC Endpoints) so most traffic doesn't touch egress at all.</p>
+</details>
+
+<div class="nav-buttons">
+  <a class="btn-next" href="#/foundation/identity">Next: Identity →</a>
+</div>
+
+</article>
+<article class="page" data-route="/foundation/identity" data-group="foundation">
+  <div class="breadcrumb"><a href="#/">Home</a><span class="sep">/</span><span>1 · Foundation</span><span class="sep">/</span><span>Identity</span></div>
+  <header class="page-head"><h1>Identity</h1></header>
+
+<p class="lede">How Rubrik authenticates into AWS. Cross-account roles + STS chaining. No long-lived keys are stored.</p>
+
+<h3>The role-chaining model</h3>
+<p>Rubrik never holds your AWS credentials. When a job needs to run:</p>
+<ol class="numbered-steps">
+  <li>Rubrik's <strong>master AWS account</strong> assumes a role in the <strong>Rubrik bastion account</strong>.</li>
+  <li>The bastion account assumes the <strong>cross-account role you create in your account</strong> (via the onboarding CFT).</li>
+  <li>That role does the actual work — snapshots, archive writes, indexing.</li>
+</ol>
+<p>Show this diagram to your security team. It's the bit they care about most.</p>
+
+<h3>Prerequisites</h3>
+<details open><summary><strong>AWS account IDs documented</strong></summary>
+<p>Each in-scope account ID, alias, and role (workload vs Exocompute host). RSC creates one IAM role per account.</p>
+</details>
+
+<details><summary><strong>Onboarding admin with elevated rights</strong></summary>
+<p>The user who launches the CFT needs:</p>
+<ul>
+  <li><code>cloudformation:*</code></li>
+  <li><code>iam:CreateRole, AttachRolePolicy, CreatePolicy</code></li>
+  <li><code>sns:CreateTopic, Subscribe</code></li>
+  <li>Anything else the CFT touches</li>
+</ul>
+<p><strong>PowerUserAccess + iam:*</strong> is enough for the POC. Revoke after onboarding completes.</p>
+</details>
+
+<details><summary><strong>RSC tenant URL + static IPs</strong></summary>
+<p>Format: <code>&lt;subdomain&gt;.my.rubrik.com</code> — resolves to a static IP per region. Get from <em>RSC → profile menu → About Rubrik Security Cloud → hover the region.</em></p>
+<p>You'll need this for the firewall outbound allowlist (Reference → Firewall ports).</p>
+</details>
+
+<details><summary><strong>SCP / Permission Boundary audit</strong></summary>
+<p>Pull your effective SCPs. If any of these are denied at OU level, scope an exception for the Rubrik role ARN:</p>
+<ul>
+  <li><code>iam:AssumeRole</code></li>
+  <li><code>ec2:RunInstances</code> (Exocompute worker launch)</li>
+  <li><code>s3:CreateBucket</code> (archive provisioning)</li>
+  <li><code>kms:Decrypt</code> (encrypted snapshot reads)</li>
+</ul>
+<p>Do this <strong>before</strong> launching the CFT. SCPs denying these are silent — onboarding succeeds, then the first job dies.</p>
+</details>
+
+<div class="nav-buttons">
+  <a class="btn-prev" href="#/foundation/decisions">← Decisions</a>
+  <a class="btn-next" href="#/foundation/network">Next: Network →</a>
+</div>
+
+</article>
+<article class="page" data-route="/foundation/network" data-group="foundation">
+  <div class="breadcrumb"><a href="#/">Home</a><span class="sep">/</span><span>1 · Foundation</span><span class="sep">/</span><span>Network</span></div>
+  <header class="page-head"><h1>Network</h1></header>
+
+<p class="lede">Per region per account that hosts an Exocompute instance. Workload-only regions skip this.</p>
+
+<h3>The non-negotiables</h3>
+
+<details open><summary><strong>VPC with DNS hostnames AND DNS support enabled</strong></summary>
+<p>EKS hard requirement. Worker nodes register with the EKS control plane via DNS. Off = pods never come up. Symptom: 'NodeNotReady' forever.</p>
+<p><strong>Action:</strong> VPC console → Edit DNS attributes → tick BOTH 'Enable DNS resolution' AND 'Enable DNS hostnames'. Free, instant.</p>
+</details>
+
+<details><summary><strong>Two subnets in different Availability Zones</strong></summary>
+<p>EKS requires this for control-plane redundancy. Single-AZ = cluster creation fails.</p>
+<p><strong>Sizing:</strong></p>
+<ul>
+  <li><strong>POC:</strong> /24 each (~250 IPs)</li>
+  <li><strong>Production:</strong> /22 each if expecting >100 parallel index jobs</li>
+  <li><strong>Critical:</strong> No CIDR overlap with on-prem or peered VPCs</li>
+</ul>
+</details>
+
+<details><summary><strong>Outbound internet egress</strong></summary>
+<p>Worker nodes pull container images, post index metadata, call AWS regional APIs. No egress = nothing works.</p>
+<p><strong>Options (pick one):</strong></p>
+<ul>
+  <li><strong>NAT Gateway</strong> — simplest. Combined with VPC Endpoints (next phase), most traffic avoids NAT anyway.</li>
+  <li><strong>AWS Network Firewall</strong> — FQDN-based allowlist. More setup, finer control.</li>
+  <li><strong>Transit Gateway → central egress</strong> — for enterprise hub-and-spoke designs.</li>
+</ul>
+</details>
+
+<details><summary><strong>Route table with default 0.0.0.0/0</strong></summary>
+<p>Without it, packets die at the subnet boundary.</p>
+<p>Verify each Exocompute subnet's route table has <code>0.0.0.0/0 → NAT-GW</code> (or TGW, or NFW endpoint). Test from a debug EC2: <code>curl https://ec2.&lt;region&gt;.amazonaws.com</code>.</p>
+</details>
+
+<details><summary><strong>DNS resolution path</strong></summary>
+<p>Worker nodes must resolve:</p>
+<ul>
+  <li><code>*.sk1.&lt;region&gt;.eks.amazonaws.com</code> (EKS master)</li>
+  <li><code>*.dkr.ecr.&lt;region&gt;.amazonaws.com</code> (ECR images)</li>
+  <li><code>api.ecr.&lt;region&gt;.amazonaws.com</code></li>
+  <li><code>ec2.&lt;region&gt;.amazonaws.com</code></li>
+  <li><code>ebs.&lt;region&gt;.amazonaws.com</code></li>
+  <li><code>s3.&lt;region&gt;.amazonaws.com</code></li>
+  <li><code>prod-*.prod.my.rubrik.com</code> (RSC tenant)</li>
+  <li><code>googleapis.com</code>, <code>oauth2.googleapis.com</code> (index upload)</li>
+</ul>
+<p><strong>Custom DNS users:</strong> ensure your resolver forwards <code>*.amazonaws.com</code> to Route53 Resolver (169.254.169.253) or a Resolver Outbound endpoint.</p>
+</details>
+
+<details><summary><strong>Security groups RSC creates automatically</strong></summary>
+<p>During Exocompute config, RSC creates these in your VPC — you don't pre-create them:</p>
+<ul>
+  <li><code>Polaris-Exocompute-eks-worker-node</code></li>
+  <li><code>Polaris-Exocompute-eks-control-plane</code></li>
+</ul>
+<p><strong>Inbound rules on worker-node SG:</strong></p>
+<table class="ref-table">
+<tr><th>Protocol</th><th>Port</th><th>Source</th></tr>
+<tr><td>All</td><td>All</td><td>Worker Node SG (self)</td></tr>
+<tr><td>TCP</td><td>1025-65535</td><td>Control Plane SG</td></tr>
+<tr><td>TCP</td><td>443</td><td>Control Plane SG</td></tr>
+</table>
+<p>RSC handles all this. Just make sure your auto-tagging policies don't reject SGs without specific tags.</p>
+</details>
+
+<div class="nav-buttons">
+  <a class="btn-prev" href="#/foundation/identity">← Identity</a>
+  <a class="btn-next" href="#/foundation/endpoints">Next: VPC Endpoints →</a>
+</div>
+
+</article>
+<article class="page" data-route="/foundation/endpoints" data-group="foundation">
+  <div class="breadcrumb"><a href="#/">Home</a><span class="sep">/</span><span>1 · Foundation</span><span class="sep">/</span><span>VPC Endpoints</span></div>
+  <header class="page-head"><h1>VPC Endpoints</h1></header>
+
+<div class="note danger">
+<strong>WARNING — Read this before going to Phase 2.</strong> Without VPC Endpoints, every snapshot read, ECR image pull, EKS API call, and STS request from Exocompute goes via your NAT Gateway at <strong>$0.045/GB processed</strong> + hourly + cross-AZ data transfer. A 10 TB monthly POC easily clears $400–600 in NAT charges that would be near-zero with endpoints in place.
+</div>
+
+<p class="lede">Build these <strong>before</strong> Exocompute spins up its first pod. Order matters — start with the free wins.</p>
+
+<h3>The build order</h3>
+
+<details open><summary><strong>① S3 Gateway Endpoint — FREE — start here</strong></summary>
+<p><strong>Why:</strong> S3 is by far the largest data flow for CNP. Snapshot data reads, archive bucket writes, indexing artefacts — all of it traverses S3.</p>
+<p><strong>Action:</strong> VPC console → Endpoints → Create → Service Name: <code>com.amazonaws.&lt;region&gt;.s3</code> (Type: Gateway). Associate with the Exocompute subnet's route table. No security group needed.</p>
+<p><strong>Endpoint policy — required for ECR image pulls:</strong></p>
+<pre><code>{
+  "Statement": [{
+    "Sid": "AllowECRImageLayerS3Access",
+    "Effect": "Allow",
+    "Principal": "*",
+    "Action": ["s3:GetObject"],
+    "Resource": ["arn:aws:s3:::prod-region-starport-layer-bucket/*"]
+  }]
+}</code></pre>
+<p>ECR stores image layers in S3-managed buckets — your endpoint must allow access to those, or container pulls fail.</p>
+</details>
+
+<details><summary><strong>② DynamoDB Gateway Endpoint — FREE — if DDB in scope</strong></summary>
+<p>Only required if DynamoDB protection is enabled. Same logic as S3 — Gateway type, free.</p>
+<p>Skip if EC2/EBS-only POC.</p>
+</details>
+
+<details><summary><strong>③ EBS Interface Endpoint — biggest paid saving</strong></summary>
+<p><strong>Why:</strong> EBS direct API serves snapshot block data — the high-volume read path during indexing and FLR. Skipping this is the biggest single cost mistake after S3.</p>
+<p><strong>Action:</strong> Create <code>com.amazonaws.&lt;region&gt;.ebs</code> (Interface). Enable Private DNS. Add the Polaris-Exocompute-eks-worker-node SG to the endpoint's SG list.</p>
+</details>
+
+<details><summary><strong>④ EC2 Interface Endpoint</strong></summary>
+<p>EC2 API called constantly for snapshot describe/copy, worker node launch, volume attach/detach.</p>
+<p><strong>Action:</strong> Create <code>com.amazonaws.&lt;region&gt;.ec2</code> (Interface). Enable Private DNS. Add worker-node SG.</p>
+</details>
+
+<details><summary><strong>⑤ ECR API + DKR Interface Endpoints</strong></summary>
+<p>Worker nodes pull container images on every cold-start. Without endpoints, every scale-up hits NAT.</p>
+<p><strong>Action:</strong> Create BOTH:</p>
+<ul>
+  <li><code>com.amazonaws.&lt;region&gt;.ecr.api</code></li>
+  <li><code>com.amazonaws.&lt;region&gt;.ecr.dkr</code></li>
+</ul>
+<p>Plus the S3 Gateway endpoint (image layers live in S3 — see #1).</p>
+</details>
+
+<details><summary><strong>⑥ EKS Interface Endpoint</strong></summary>
+<p>Worker-to-control-plane API traffic. Required if you ever go fully private; recommended even on public-endpoint clusters.</p>
+<p><strong>Action:</strong> <code>com.amazonaws.&lt;region&gt;.eks</code> (Interface). Private DNS on. Worker-node SG.</p>
+</details>
+
+<details><summary><strong>⑦ STS Interface Endpoint</strong></summary>
+<p>Every Exocompute job starts with STS:AssumeRole. Small volume but constant.</p>
+<p><strong>Action:</strong> <code>com.amazonaws.&lt;region&gt;.sts</code> (Interface). Private DNS on. Worker-node SG.</p>
+</details>
+
+<details><summary><strong>⑧ KMS Interface Endpoint</strong></summary>
+<p>Every encrypted-snapshot read/write hits KMS:Decrypt or GenerateDataKey. Small payloads but called per snapshot block.</p>
+<p><strong>Action:</strong> <code>com.amazonaws.&lt;region&gt;.kms</code> (Interface). Private DNS on. Worker-node SG.</p>
+</details>
+
+<details><summary><strong>⑨ Auto Scaling Interface Endpoint</strong></summary>
+<p>Exocompute worker nodes are in an ASG. The ASG control loop calls Auto Scaling APIs continuously.</p>
+<p><strong>Action:</strong> <code>com.amazonaws.&lt;region&gt;.autoscaling</code> (Interface). Private DNS on. Worker-node SG.</p>
+</details>
+
+<div class="note warn">
+<strong>The wiring step that gets missed.</strong> After Exocompute is created in Phase 2, each Interface Endpoint's security group must allow inbound 443/TCP from the <code>Polaris-Exocompute-eks-worker-node</code> SG. Without this, traffic falls back to public AWS endpoints via NAT — the endpoints are invisible. Check CloudWatch NAT GW <code>BytesOutToDestination</code> after the first job: should be tiny.
+</div>
+
+<div class="nav-buttons">
+  <a class="btn-prev" href="#/foundation/network">← Network</a>
+  <a class="btn-next" href="#/foundation/security">Next: SCPs + KMS →</a>
+</div>
+
+</article>
+<article class="page" data-route="/foundation/security" data-group="foundation">
+  <div class="breadcrumb"><a href="#/">Home</a><span class="sep">/</span><span>1 · Foundation</span><span class="sep">/</span><span>SCPs + KMS</span></div>
+  <header class="page-head"><h1>SCPs + KMS</h1></header>
+
+<p class="lede">The silent killers. Items that don't show in any UI but break things at job time if missed.</p>
+
+<h3>Service Control Policies (SCPs)</h3>
+<p>If your AWS Org uses SCPs, audit them for these denies. Scope exceptions to the Rubrik role ARN, or onboarding succeeds and the first job dies.</p>
+
+<details open><summary><strong>Common SCP denies that break Rubrik</strong></summary>
+<table class="ref-table">
+<thead><tr><th>SCP factor</th><th>What it breaks</th><th>Mitigation</th></tr></thead>
+<tbody>
+<tr><td>Deny <code>iam:AssumeRole</code></td><td>Breaks role chaining entirely</td><td>Allow with Condition <code>ArnEquals aws:PrincipalArn</code> on Rubrik role</td></tr>
+<tr><td>Deny <code>ec2:RunInstances</code></td><td>Exocompute workers can't launch</td><td>Allow with condition on Rubrik role</td></tr>
+<tr><td>Deny <code>s3:CreateBucket</code></td><td>Archive provisioning fails</td><td>Allow with condition on Rubrik role</td></tr>
+<tr><td>Deny <code>kms:Decrypt</code></td><td>Restore-in-place fails on encrypted EBS/RDS</td><td>Allow with condition on Rubrik role</td></tr>
+<tr><td>AMI allowlist (Org-only AMIs)</td><td>EKS workers can't use marketplace AMIs</td><td>Allowlist the EKS-optimised AMI IDs Rubrik provides per region</td></tr>
+<tr><td>Region restriction</td><td>POC regions blocked</td><td>Add POC regions to allowed list</td></tr>
+</tbody>
+</table>
+</details>
+
+<details><summary><strong>Example SCP exception snippet</strong></summary>
+<pre><code>{
+  "Effect": "Allow",
+  "Action": "*",
+  "Resource": "*",
+  "Condition": {
+    "ArnEquals": {
+      "aws:PrincipalArn": [
+        "arn:aws:iam::&lt;AccountID&gt;:role/&lt;RubrikRole&gt;"
+      ]
+    }
+  }
+}</code></pre>
+<p>Tighter scopes are better — use specific actions instead of <code>*</code> in production. The above is a starting template.</p>
+</details>
+
+<h3>KMS — the #1 silent failure source</h3>
+
+<div class="note danger">
+<strong>If protected EBS/RDS/S3 use Customer-Managed Keys (CMKs), you must edit each CMK's key policy to grant the Rubrik role.</strong> Without this, IAM looks correct but the first restore fails with cryptic KMS Decrypt errors.
+</div>
+
+<details open><summary><strong>When KMS edits are required</strong></summary>
+<table class="ref-table">
+<thead><tr><th>Scenario</th><th>Action required</th></tr></thead>
+<tbody>
+<tr><td>EBS encrypted with default <code>aws/ebs</code></td><td>None — works automatically same region</td></tr>
+<tr><td>EBS encrypted with CMK</td><td>Grant Rubrik role on the CMK (see below)</td></tr>
+<tr><td>Cross-region replication of default-key EBS</td><td>Pre-create CMK alias <code>rk_cnp_encryption_key</code> in source region</td></tr>
+<tr><td>Cross-region replication of CMK EBS</td><td>Share source CMK with target account</td></tr>
+<tr><td>Cross-account replication</td><td>Pre-create gateway CMK in target region with alias <code>rk_cnp_encryption_key</code></td></tr>
+</tbody>
+</table>
+</details>
+
+<details><summary><strong>CMK key policy snippet to add</strong></summary>
+<pre><code>{
+  "Sid": "AllowRubrikCNP",
+  "Effect": "Allow",
+  "Principal": {
+    "AWS": "arn:aws:iam::&lt;RubrikAccount&gt;:role/&lt;RubrikRole&gt;"
+  },
+  "Action": [
+    "kms:Decrypt",
+    "kms:Encrypt",
+    "kms:GenerateDataKey*",
+    "kms:DescribeKey",
+    "kms:ReEncrypt*"
+  ],
+  "Resource": "*"
+}</code></pre>
+<p>Add this to every in-scope CMK's key policy. <strong>This is not optional</strong> for CMK-encrypted workloads.</p>
+</details>
+
+<details><summary><strong>The cross-region replication "gateway key" pattern</strong></summary>
+<p>For replicating encrypted EBS cross-region, Rubrik uses a CMK with alias <code>rk_cnp_encryption_key</code> in the target region as a "gateway" — it re-encrypts at the destination. Pre-create this CMK before configuring replication SLAs, or replication jobs fail silently.</p>
+</details>
+
+<div class="nav-buttons">
+  <a class="btn-prev" href="#/foundation/endpoints">← VPC Endpoints</a>
+  <a class="btn-next" href="#/onboard/account">Next: Add accounts →</a>
+</div>
+
+</article>
+<article class="page" data-route="/onboard/account" data-group="onboard">
+  <div class="breadcrumb"><a href="#/">Home</a><span class="sep">/</span><span>2 · Onboard</span><span class="sep">/</span><span>Add accounts</span></div>
+  <header class="page-head"><h1>Add accounts</h1></header>
+
+<p class="lede">CloudFormation-driven onboarding. Each account takes ~5 minutes if Foundation is done.</p>
+
+<h3>Order matters: host account first</h3>
+<p>If you're using the centralised Exocompute model (recommended), <strong>onboard the host account first</strong>. When you go to configure Exocompute later, the host account needs to exist in the dropdown.</p>
+
+<h3>Steps</h3>
+<details open><summary><strong>1. Onboard the host account (Exocompute + storage)</strong></summary>
+<ol class="numbered-steps">
+  <li>RSC → <strong>Add Cloud Accounts</strong> → AWS → Account</li>
+  <li>Tick under <strong>Protection</strong>: EC2/EBS+apps, Support for file-level restore and archiving (Exocompute)</li>
+  <li>Tick under <strong>Storage</strong>: Cloud-native Location</li>
+  <li>Click <strong>Next</strong>. RSC generates a CloudFormation template.</li>
+  <li>Click <strong>Launch CloudFormation Stack</strong>. AWS console opens — verify you're in the right account before deploying.</li>
+  <li>Launch the stack with default parameters. Wait for <code>CREATE_COMPLETE</code> (~2 minutes).</li>
+  <li>RSC auto-detects the SNS callback. Account flips to <strong>Connected</strong>.</li>
+</ol>
+</details>
+
+<details><summary><strong>2. Onboard each workload account</strong></summary>
+<ol class="numbered-steps">
+  <li>Same flow: Add Cloud Accounts → AWS → Account</li>
+  <li>Tick only the use cases that apply to <strong>this account's workloads</strong>: EC2/EBS, RDS, DynamoDB, S3.</li>
+  <li>Also tick "Support for file-level restore and archiving (Exocompute)" so this account gets the perms needed for cross-account snapshot share with the host's Exocompute.</li>
+  <li>Launch CFT. Wait for <code>CREATE_COMPLETE</code>.</li>
+  <li>Repeat per workload account.</li>
+</ol>
+</details>
+
+<details><summary><strong>What the CFT creates in your account</strong></summary>
+<ul>
+  <li>One IAM Role: <code>rubrik-*-cnp-protection-role</code> with trust policy allowing Rubrik bastion account</li>
+  <li>One or more IAM Policies attached to that role, scoped per use case</li>
+  <li>One SNS topic used to send the role ARN back to RSC (delete after onboarding if you want, RSC doesn't need it after)</li>
+  <li>No persistent resources beyond IAM</li>
+</ul>
+</details>
+
+<details><summary><strong>If onboarding hangs at "Connecting"</strong></summary>
+<p>The SNS callback didn't reach Rubrik. Common causes:</p>
+<ul>
+  <li>SCP denying <code>sns:Publish</code> for the topic</li>
+  <li>VPC endpoint policies blocking SNS</li>
+  <li>Account-level SNS deletion before SNS event fired</li>
+</ul>
+<p>Fix: re-run the wizard, or contact Rubrik Support with the stack ARN.</p>
+</details>
+
+<div class="nav-buttons">
+  <a class="btn-prev" href="#/foundation/security">← SCPs + KMS</a>
+  <a class="btn-next" href="#/onboard/exocompute">Next: Exocompute →</a>
+</div>
+
+</article>
+<article class="page" data-route="/onboard/exocompute" data-group="onboard">
+  <div class="breadcrumb"><a href="#/">Home</a><span class="sep">/</span><span>2 · Onboard</span><span class="sep">/</span><span>Exocompute</span></div>
+  <header class="page-head"><h1>Exocompute</h1></header>
+
+<p class="lede">Configure once per region per host account. RSC does NOT provision EKS now — it does that lazily on the first job. So the first indexing run takes 10–15 min while EKS comes up.</p>
+
+<h3>Configuration steps</h3>
+<ol class="numbered-steps">
+  <li>RSC → <strong>Settings</strong> (gear) → <strong>Cloud Native Settings</strong> → <strong>Exocompute Configurations</strong></li>
+  <li>Click <strong>Add Configuration</strong></li>
+  <li><strong>Cloud Account:</strong> the host account onboarded in 2.1</li>
+  <li><strong>Region:</strong> where your protected workloads live. Exocompute must be in the same region as the snapshots it processes.</li>
+  <li><strong>VPC:</strong> the VPC from Foundation → Network</li>
+  <li><strong>Subnets:</strong> the two AZ subnets from Foundation → Network</li>
+  <li><strong>Configuration type:</strong> leave as <strong>Rubrik-managed</strong> (BYO EKS is an edge case)</li>
+  <li>Save</li>
+</ol>
+
+<details open><summary><strong>What happens when you save</strong></summary>
+<ul>
+  <li>RSC creates the two security groups: <code>Polaris-Exocompute-eks-worker-node</code>, <code>Polaris-Exocompute-eks-control-plane</code></li>
+  <li>RSC does NOT yet create the EKS cluster — that happens on first use</li>
+  <li>RSC stores the config and shows it in the Exocompute Configurations list</li>
+</ul>
+</details>
+
+<details><summary><strong>The wiring step you must do AFTER this</strong></summary>
+<p>The Polaris-Exocompute-eks-worker-node SG that just got created — you need to add it to the inbound SG list of every VPC Interface Endpoint you built in Foundation → VPC Endpoints. Otherwise traffic falls back to NAT.</p>
+<ul>
+  <li>EBS Interface Endpoint → inbound from worker-node SG</li>
+  <li>EC2 Interface Endpoint → inbound from worker-node SG</li>
+  <li>ECR API + DKR → inbound from worker-node SG</li>
+  <li>EKS → inbound from worker-node SG</li>
+  <li>STS → inbound from worker-node SG</li>
+  <li>KMS → inbound from worker-node SG</li>
+  <li>Auto Scaling → inbound from worker-node SG</li>
+</ul>
+<p><strong>Confirm later:</strong> After the first job, CloudWatch → NAT Gateway → BytesOutToDestination. Should be near-zero. If it's GB-scale, this step was missed.</p>
+</details>
+
+<details><summary><strong>Multi-region scope</strong></summary>
+<p>Each region with workloads to protect needs its own Exocompute configuration. Repeat the steps above per region.</p>
+<p>The host account dropdown is the same; the VPC/subnets/SGs are region-specific.</p>
+</details>
+
+<div class="nav-buttons">
+  <a class="btn-prev" href="#/onboard/account">← Add accounts</a>
+  <a class="btn-next" href="#/onboard/archival">Next: Archival →</a>
+</div>
+
+</article>
+<article class="page" data-route="/onboard/archival" data-group="onboard">
+  <div class="breadcrumb"><a href="#/">Home</a><span class="sep">/</span><span>2 · Onboard</span><span class="sep">/</span><span>Archival location</span></div>
+  <header class="page-head"><h1>Archival location</h1></header>
+
+<p class="lede">Where SLA archive tier writes data. RSC can create the S3 bucket or use an existing one.</p>
+
+<h3>Steps</h3>
+<ol class="numbered-steps">
+  <li>RSC → <strong>Settings</strong> → <strong>Archival Locations</strong> → <strong>Add</strong></li>
+  <li><strong>Type:</strong> AWS</li>
+  <li><strong>Cloud account:</strong> the host account</li>
+  <li><strong>Region:</strong> same as Exocompute (or another for DR designs — costs cross-region transfer)</li>
+  <li><strong>Bucket:</strong> let RSC create one (recommended) or supply an existing bucket name</li>
+  <li><strong>Encryption:</strong> SSE-S3 default (free) or SSE-KMS with a CMK (adds <code>kms:Decrypt</code>/<code>Encrypt</code>/<code>GenerateDataKey*</code>/<code>DescribeKey</code>/<code>ReEncrypt*</code> requirement on Rubrik role)</li>
+  <li><strong>Storage class transition:</strong> Standard → Standard-IA at N days; → Glacier at M days, per retention policy</li>
+  <li>Save</li>
+</ol>
+
+<details open><summary><strong>Object Lock for immutability</strong></summary>
+<p>If the customer wants ransomware-proof archive (recommended for production):</p>
+<ul>
+  <li>Object Lock must be enabled <strong>at bucket creation</strong> — cannot retro-enable</li>
+  <li>RSC works with both Governance and Compliance modes</li>
+  <li>Choose retention carefully — Compliance mode is irreversible</li>
+</ul>
+<p>If using an existing bucket, verify Object Lock state matches your SLA requirements.</p>
+</details>
+
+<details><summary><strong>RCV (Rubrik Cloud Vault) — alternative to self-managed</strong></summary>
+<p>RCV is a Rubrik-managed archive target. Permissions and the bucket itself are in a Rubrik-owned AWS account, fully isolated from your AWS environment ("credential gap").</p>
+<p>For EC2/EBS, RCV supports the Backup tier only. For S3 workloads, both Backup AND Archive tiers. For RDS, Backup only. Not supported for DynamoDB or Aurora.</p>
+</details>
+
+<div class="nav-buttons">
+  <a class="btn-prev" href="#/onboard/exocompute">← Exocompute</a>
+  <a class="btn-next" href="#/onboard/mapping">Next: Map accounts →</a>
+</div>
+
+</article>
+<article class="page" data-route="/onboard/mapping" data-group="onboard">
+  <div class="breadcrumb"><a href="#/">Home</a><span class="sep">/</span><span>2 · Onboard</span><span class="sep">/</span><span>Map accounts</span></div>
+  <header class="page-head"><h1>Map accounts</h1></header>
+
+<p class="lede">The critical wire. Workload accounts won't use the host's Exocompute until you explicitly map them. Miss this and jobs succeed at snapshot but fail at indexing/FLR/storage tiering.</p>
+
+<h3>Steps</h3>
+<ol class="numbered-steps">
+  <li>RSC → <strong>Settings</strong> → <strong>Cloud Native Settings</strong> → <strong>Exocompute Configurations</strong></li>
+  <li>Click the Exocompute config you created (the host account's)</li>
+  <li>Find <strong>Map application accounts</strong> (sometimes shown as "Mapped accounts")</li>
+  <li>Tick each workload account that should use this Exocompute</li>
+  <li>Save</li>
+</ol>
+
+<details open><summary><strong>What the mapping actually does</strong></summary>
+<p>It tells RSC: "When a job on workload account X needs Exocompute, spin it up in host account Y."</p>
+<p>Mechanism: when the job runs, Exocompute pods in account B do <code>STS:AssumeRole</code> into the workload account's Rubrik role, perform the work, then results land in account B's archive bucket.</p>
+<p>No VPC peering, no Transit Gateway, no network-layer wiring. The whole cross-account model is IAM, not networking.</p>
+</details>
+
+<details><summary><strong>When to skip mapping</strong></summary>
+<p>Per-account Exocompute deployments — each protected account has its own Exocompute config, no cross-account assume-role chain. Centralised is better for cost and operational simplicity; per-account is only for strict regulatory boundaries.</p>
+</details>
+
+<details><summary><strong>Validating the mapping</strong></summary>
+<p>After saving, run an on-demand snapshot of an EC2 in a workload account with file indexing enabled. Watch RSC → Activity:</p>
+<ol>
+  <li><code>Snapshot taken</code> — proves IAM in workload account</li>
+  <li><code>Indexing started</code> — proves the mapping + Exocompute</li>
+  <li><code>Indexing complete</code> — proves the full pipeline including endpoints, SGs, IAM cross-account</li>
+</ol>
+<p>If step 2 hangs forever: re-check Exocompute SGs → Endpoint SG wiring. If step 1 fails: re-check workload account IAM.</p>
+</details>
+
+<div class="nav-buttons">
+  <a class="btn-prev" href="#/onboard/archival">← Archival</a>
+  <a class="btn-next" href="#/workloads/ec2">Next: EC2 + EBS →</a>
+</div>
+
+</article>
+<article class="page" data-route="/workloads/ec2" data-group="workloads">
+  <div class="breadcrumb"><a href="#/">Home</a><span class="sep">/</span><span>3 · Workloads</span><span class="sep">/</span><span>EC2 + EBS</span></div>
+  <header class="page-head"><h1>EC2 + EBS</h1></header>
+
+<p class="lede">Snapshot-based protection using AWS-native EBS snapshots. Exocompute is used for indexing, file-level recovery, app-consistent snapshots, and storage tiering — not for the snapshot itself.</p>
+
+<h3>Backup data flow</h3>
+<div class="diagram-frame">
+  
+<svg viewBox="0 0 900 460" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:900px;height:auto;background:url(#bgGrad);border-radius:12px;">
+  
+<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+  </marker>
+  <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+    <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.12"/>
+  </filter>
+  <linearGradient id="bgGrad" x1="0" x2="0" y1="0" y2="1">
+    <stop offset="0%"  stop-color="#fafaf7"/>
+    <stop offset="100%" stop-color="#f3f3ee"/>
+  </linearGradient>
+</defs>
+
+  <rect width="900" height="460" fill="url(#bgGrad)" rx="12"/>
+
+  <!-- RSC -->
+  
+    <g>
+      <rect x="380" y="30" width="140" height="50" rx="8" fill="#dff5ee" stroke="#00533f" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="450.0" y="51.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">RSC</text>
+      <text x="450.0" y="69.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">Orchestrator</text>
+    </g>
+    
+
+  <!-- Workload account -->
+  
+    <g>
+      <rect x="40" y="110" width="380" height="320" rx="12" fill="#fdf0e3" stroke="#e87b35" stroke-width="1.5" stroke-dasharray="6 3" opacity="0.6"/>
+      <text x="54" y="128" font-family="Geist Mono, monospace" font-size="11" font-weight="600" fill="#e87b35" letter-spacing="1">AWS ACCOUNT A — WORKLOADS</text>
+    </g>
+    
+  
+    <g>
+      <rect x="70" y="150" width="110" height="50" rx="8" fill="#fff" stroke="#e87b35" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="125.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">EC2 Instance</text>
+      <text x="125.0" y="189.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">running</text>
+    </g>
+    
+  
+    <g>
+      <rect x="210" y="150" width="110" height="50" rx="8" fill="#fff" stroke="#e87b35" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="265.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">EBS Volume(s)</text>
+      <text x="265.0" y="189.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">attached</text>
+    </g>
+    
+  
+    <g>
+      <rect x="70" y="240" width="250" height="50" rx="8" fill="#fdf0e3" stroke="#a84e10" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="195.0" y="261.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">EBS Snapshot</text>
+      <text x="195.0" y="279.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">AWS-managed, encrypted</text>
+    </g>
+    
+  
+    <g id="tempvol">
+      <rect x="70" y="330" width="250" height="50" rx="8" fill="#fff" stroke="#e87b35" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="195.0" y="351.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Temp Volume</text>
+      <text x="195.0" y="369.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">for indexing (FUSE-mount)</text>
+    </g>
+    
+
+  <!-- Exocompute account -->
+  
+    <g>
+      <rect x="480" y="110" width="380" height="320" rx="12" fill="#fdf0e3" stroke="#e87b35" stroke-width="1.5" stroke-dasharray="6 3" opacity="0.6"/>
+      <text x="494" y="128" font-family="Geist Mono, monospace" font-size="11" font-weight="600" fill="#e87b35" letter-spacing="1">AWS ACCOUNT B — EXOCOMPUTE</text>
+    </g>
+    
+  
+    <g>
+      <rect x="510" y="150" width="200" height="50" rx="8" fill="#fff" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="610.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">EC2 API endpoint</text>
+      <text x="610.0" y="189.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">ec2.region.amazonaws.com</text>
+    </g>
+    
+  
+    <g>
+      <rect x="730" y="150" width="130" height="50" rx="8" fill="#fff" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="795.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">EBS API</text>
+      <text x="795.0" y="189.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">ebs.region....</text>
+    </g>
+    
+  
+    <g>
+      <rect x="510" y="240" width="350" height="50" rx="8" fill="#e6f0fb" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="685.0" y="261.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Exocompute (EKS pod)</text>
+      <text x="685.0" y="279.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">indexes filesystem metadata</text>
+    </g>
+    
+  
+    <g>
+      <rect x="510" y="330" width="200" height="50" rx="8" fill="#fff" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="610.0" y="351.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Index file</text>
+      <text x="610.0" y="369.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">.tar.gz to GCS</text>
+    </g>
+    
+  
+    <g>
+      <rect x="730" y="330" width="130" height="50" rx="8" fill="#fff" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="795.0" y="351.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">S3 archive</text>
+      <text x="795.0" y="369.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">long-term tier</text>
+    </g>
+    
+
+  <!-- Flow arrows -->
+  <!-- 1: RSC → EC2 API to snapshot -->
+  <path id="ec1" d="M 440 80 C 440 130, 580 130, 580 150" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <!-- 2: EC2 API → snapshot in account A -->
+  <path id="ec2" d="M 580 200 C 580 220, 195 220, 195 240" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <!-- 3: Snapshot → Temp Volume -->
+  <path id="ec3" d="M 195 290 L 195 330" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <!-- 4: Temp volume → Exocompute (cross-account read) -->
+  <path id="ec4" d="M 320 355 C 400 355, 400 265, 510 265" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <!-- 5: Exocompute → GCS index -->
+  <path id="ec5" d="M 685 290 L 610 330" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <!-- 6: Snapshot → S3 archive (storage tiering) -->
+  <path id="ec6" d="M 320 265 C 400 265, 730 290, 790 330" stroke="#e87b35" stroke-width="1.5" fill="none" marker-end="url(#arrow)" stroke-dasharray="4 3"/>
+
+  <!-- Animated packets -->
+  
+    <circle r="6" fill="#00b388" filter="url(#shadow)">
+      <animateMotion dur="3s" begin="0s" repeatCount="indefinite">
+        <mpath href="#ec1"/>
+      </animateMotion>
+    </circle>
+    
+  
+    <circle r="6" fill="#00b388" filter="url(#shadow)">
+      <animateMotion dur="3s" begin="1s" repeatCount="indefinite">
+        <mpath href="#ec2"/>
+      </animateMotion>
+    </circle>
+    
+  
+    <circle r="6" fill="#00b388" filter="url(#shadow)">
+      <animateMotion dur="2s" begin="2s" repeatCount="indefinite">
+        <mpath href="#ec3"/>
+      </animateMotion>
+    </circle>
+    
+  
+    <circle r="6" fill="#00b388" filter="url(#shadow)">
+      <animateMotion dur="3s" begin="3s" repeatCount="indefinite">
+        <mpath href="#ec4"/>
+      </animateMotion>
+    </circle>
+    
+  
+    <circle r="6" fill="#00b388" filter="url(#shadow)">
+      <animateMotion dur="2.5s" begin="4s" repeatCount="indefinite">
+        <mpath href="#ec5"/>
+      </animateMotion>
+    </circle>
+    
+  
+    <circle r="6" fill="#e87b35" filter="url(#shadow)">
+      <animateMotion dur="4s" begin="5s" repeatCount="indefinite">
+        <mpath href="#ec6"/>
+      </animateMotion>
+    </circle>
+    
+
+  <!-- Step labels -->
+  <text x="348" y="100" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">① CreateSnapshots</text>
+  <text x="370" y="215" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">② Snapshot saved</text>
+  <text x="80" y="320" text-anchor="start" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">③ CreateVolume</text>
+  <text x="415" y="248" text-anchor="start" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">④ AttachVolume</text>
+  <text x="610" y="315" text-anchor="start" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">⑤ Index upload</text>
+  <text x="450" y="410" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#a84e10">⑥ Storage tiering (async, per SLA)</text>
+</svg>
+
+</div>
+
+<details open><summary><strong>How it works step by step</strong></summary>
+<ol class="numbered-steps">
+  <li><strong>RSC orchestrates:</strong> calls EC2 API <code>CreateSnapshots</code> in the workload account (via cross-account role).</li>
+  <li><strong>AWS creates the EBS snapshot:</strong> crash-consistent at instance level (uses <code>CreateSnapshots</code>, the multi-volume variant). Encryption inherited from source volume.</li>
+  <li><strong>If indexing enabled:</strong> Exocompute spins up a pod in host account. Calls <code>CreateVolume</code> from snapshot.</li>
+  <li><strong>Volume mounted to Exocompute pod:</strong> via AttachVolume. Filesystem mounted read-only. Exocompute walks the FS metadata.</li>
+  <li><strong>Index file uploaded:</strong> filesystem metadata (paths, names, sizes — no data) compressed and uploaded to RSC's GCS-backed metadata store via <code>storage.googleapis.com</code>.</li>
+  <li><strong>If archival in SLA:</strong> snapshot data is read via EBS direct API and uploaded to the archive S3 bucket — runs asynchronously per the SLA's tiering policy.</li>
+  <li><strong>Cleanup:</strong> temp volume deleted. Exocompute pod terminated.</li>
+</ol>
+</details>
+
+<details><summary><strong>App-consistent snapshots (optional)</strong></summary>
+<p>Requires Rubrik Backup Service (RBS) installed on the EC2 instance. Process:</p>
+<ol>
+  <li>Exocompute talks to RBS on the instance (via 12800/12801)</li>
+  <li>Pre-script runs (e.g. SQL quiesce)</li>
+  <li>Snapshot taken</li>
+  <li>Post-script runs (e.g. resume)</li>
+</ol>
+<p>Adds ~30s latency vs crash-consistent. Required for transactional databases running in EC2.</p>
+</details>
+
+<details><summary><strong>Cross-region replication</strong></summary>
+<p>If SLA has replication target region:</p>
+<ol>
+  <li>Local snapshot taken in source region</li>
+  <li>Rubrik calls <code>CopySnapshot</code> with destination region</li>
+  <li>AWS replicates encrypted snapshot data</li>
+  <li>For CMK-encrypted volumes: target region needs CMK pre-shared (see Foundation → SCPs + KMS)</li>
+</ol>
+</details>
+
+<h3>Restore flow</h3>
+<div class="diagram-frame">
+  
+<svg viewBox="0 0 900 380" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:900px;height:auto;background:url(#bgGrad);border-radius:12px;">
+  
+<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+  </marker>
+  <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+    <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.12"/>
+  </filter>
+  <linearGradient id="bgGrad" x1="0" x2="0" y1="0" y2="1">
+    <stop offset="0%"  stop-color="#fafaf7"/>
+    <stop offset="100%" stop-color="#f3f3ee"/>
+  </linearGradient>
+</defs>
+
+  <rect width="900" height="380" fill="url(#bgGrad)" rx="12"/>
+
+  
+    <g>
+      <rect x="380" y="30" width="140" height="50" rx="8" fill="#dff5ee" stroke="#00533f" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="450.0" y="51.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">RSC</text>
+      <text x="450.0" y="69.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">User initiates restore</text>
+    </g>
+    
+
+  
+    <g>
+      <rect x="40" y="110" width="820" height="240" rx="12" fill="#fdf0e3" stroke="#e87b35" stroke-width="1.5" stroke-dasharray="6 3" opacity="0.6"/>
+      <text x="54" y="128" font-family="Geist Mono, monospace" font-size="11" font-weight="600" fill="#e87b35" letter-spacing="1">AWS ACCOUNT A — REGION &amp; AZ</text>
+    </g>
+    
+  
+    <g>
+      <rect x="70" y="150" width="130" height="50" rx="8" fill="#fdf0e3" stroke="#a84e10" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="135.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">EBS Snapshot</text>
+      <text x="135.0" y="189.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">selected version</text>
+    </g>
+    
+  
+    <g>
+      <rect x="230" y="150" width="130" height="50" rx="8" fill="#fff" stroke="#e87b35" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="295.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">CreateVolume</text>
+      <text x="295.0" y="189.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">from snapshot</text>
+    </g>
+    
+  
+    <g>
+      <rect x="390" y="150" width="130" height="50" rx="8" fill="#fff" stroke="#e87b35" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="455.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Restored Volume</text>
+      <text x="455.0" y="189.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">available state</text>
+    </g>
+    
+  
+    <g>
+      <rect x="550" y="150" width="130" height="50" rx="8" fill="#fff" stroke="#e87b35" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="615.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Detach old vol</text>
+      <text x="615.0" y="189.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">Stop instance first</text>
+    </g>
+    
+  
+    <g>
+      <rect x="710" y="150" width="130" height="50" rx="8" fill="#fff" stroke="#e87b35" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="775.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Attach + Start</text>
+      <text x="775.0" y="189.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">instance restored</text>
+    </g>
+    
+
+  
+    <g>
+      <rect x="390" y="240" width="130" height="50" rx="8" fill="#fff" stroke="#a84e10" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="455.0" y="261.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">FLR alternative</text>
+      <text x="455.0" y="279.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">File → S3 download</text>
+    </g>
+    
+
+  <path id="r1" d="M 450 80 C 450 120, 135 120, 135 150" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <path id="r2" d="M 200 175 L 230 175" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <path id="r3" d="M 360 175 L 390 175" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <path id="r4" d="M 520 175 L 550 175" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <path id="r5" d="M 680 175 L 710 175" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+
+  
+    <circle r="6" fill="#00b388" filter="url(#shadow)">
+      <animateMotion dur="2s" begin="0s" repeatCount="indefinite">
+        <mpath href="#r1"/>
+      </animateMotion>
+    </circle>
+    
+  
+    <circle r="6" fill="#00b388" filter="url(#shadow)">
+      <animateMotion dur="1.5s" begin="1s" repeatCount="indefinite">
+        <mpath href="#r2"/>
+      </animateMotion>
+    </circle>
+    
+  
+    <circle r="6" fill="#00b388" filter="url(#shadow)">
+      <animateMotion dur="1.5s" begin="2s" repeatCount="indefinite">
+        <mpath href="#r3"/>
+      </animateMotion>
+    </circle>
+    
+  
+    <circle r="6" fill="#00b388" filter="url(#shadow)">
+      <animateMotion dur="1.5s" begin="3s" repeatCount="indefinite">
+        <mpath href="#r4"/>
+      </animateMotion>
+    </circle>
+    
+  
+    <circle r="6" fill="#00b388" filter="url(#shadow)">
+      <animateMotion dur="1.5s" begin="4s" repeatCount="indefinite">
+        <mpath href="#r5"/>
+      </animateMotion>
+    </circle>
+    
+
+  <text x="450" y="365" text-anchor="middle" font-family="Geist Mono, monospace" font-size="11" font-weight="500" fill="#374151">EC2 restore preserves InstanceId and private IP. File-level recovery is a different path (Exocompute → S3 download URL).</text>
+</svg>
+
+</div>
+
+<details open><summary><strong>Restore options</strong></summary>
+<ul>
+  <li><strong>Restore in place:</strong> stops instance, detaches existing volumes, creates new volumes from snapshot, attaches, restarts. Preserves InstanceId + private IP.</li>
+  <li><strong>Export to new instance:</strong> creates new EC2 with new InstanceId. Old instance untouched.</li>
+  <li><strong>File-level recovery:</strong> Exocompute mounts the snapshot, copies requested files to a target S3 bucket, generates a download URL.</li>
+</ul>
+</details>
+
+<details><summary><strong>Cross-account export</strong></summary>
+<p>If exporting to a different AWS account: the CMK protecting the snapshot must be pre-shared with the target account before export.</p>
+<p>For default-key encrypted volumes: pre-create a Gateway Key (alias <code>rk_cnp_encryption_key</code>) in source region and share with target.</p>
+</details>
+
+<div class="nav-buttons">
+  <a class="btn-prev" href="#/onboard/mapping">← Map accounts</a>
+  <a class="btn-next" href="#/workloads/rds">Next: RDS →</a>
+</div>
+
+</article>
+<article class="page" data-route="/workloads/rds" data-group="workloads">
+  <div class="breadcrumb"><a href="#/">Home</a><span class="sep">/</span><span>3 · Workloads</span><span class="sep">/</span><span>RDS / Aurora</span></div>
+  <header class="page-head"><h1>RDS / Aurora</h1></header>
+
+<p class="lede">Uses AWS-native RDS snapshots. No agent installed inside the database. Restore = always a new RDS instance (cannot in-place).</p>
+
+<h3>Backup data flow</h3>
+<div class="diagram-frame">
+  
+<svg viewBox="0 0 900 420" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:900px;height:auto;background:url(#bgGrad);border-radius:12px;">
+  
+<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+  </marker>
+  <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+    <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.12"/>
+  </filter>
+  <linearGradient id="bgGrad" x1="0" x2="0" y1="0" y2="1">
+    <stop offset="0%"  stop-color="#fafaf7"/>
+    <stop offset="100%" stop-color="#f3f3ee"/>
+  </linearGradient>
+</defs>
+
+  <rect width="900" height="420" fill="url(#bgGrad)" rx="12"/>
+
+  
+    <g>
+      <rect x="380" y="30" width="140" height="50" rx="8" fill="#dff5ee" stroke="#00533f" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="450.0" y="51.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">RSC</text>
+      <text x="450.0" y="69.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">Orchestrator</text>
+    </g>
+    
+
+  <!-- Source -->
+  
+    <g>
+      <rect x="40" y="110" width="380" height="280" rx="12" fill="#fdf0e3" stroke="#e87b35" stroke-width="1.5" stroke-dasharray="6 3" opacity="0.6"/>
+      <text x="54" y="128" font-family="Geist Mono, monospace" font-size="11" font-weight="600" fill="#e87b35" letter-spacing="1">AWS ACCOUNT A — WORKLOADS</text>
+    </g>
+    
+  
+    <g>
+      <rect x="70" y="150" width="130" height="50" rx="8" fill="#fff" stroke="#e87b35" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="135.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">RDS Instance</text>
+      <text x="135.0" y="189.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">MySQL/PG/SQL/Oracle</text>
+    </g>
+    
+  
+    <g>
+      <rect x="230" y="150" width="90" height="50" rx="8" fill="#fff" stroke="#a84e10" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="275.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">RDS API</text>
+      <text x="275.0" y="189.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">rds.region....</text>
+    </g>
+    
+  
+    <g>
+      <rect x="70" y="230" width="250" height="50" rx="8" fill="#fdf0e3" stroke="#a84e10" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="195.0" y="251.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">RDS Snapshot</text>
+      <text x="195.0" y="269.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">AWS-managed</text>
+    </g>
+    
+  
+    <g>
+      <rect x="70" y="320" width="250" height="50" rx="8" fill="#fff" stroke="#e87b35" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="195.0" y="341.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Cross-region copy</text>
+      <text x="195.0" y="359.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">(if replication SLA)</text>
+    </g>
+    
+
+  <!-- Target / Archive -->
+  
+    <g>
+      <rect x="480" y="110" width="380" height="280" rx="12" fill="#fdf0e3" stroke="#e87b35" stroke-width="1.5" stroke-dasharray="6 3" opacity="0.6"/>
+      <text x="494" y="128" font-family="Geist Mono, monospace" font-size="11" font-weight="600" fill="#e87b35" letter-spacing="1">AWS ACCOUNT B — STORAGE</text>
+    </g>
+    
+  
+    <g>
+      <rect x="510" y="150" width="200" height="50" rx="8" fill="#fff" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="610.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Snapshot index meta</text>
+      <text x="610.0" y="189.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">to RSC GCS</text>
+    </g>
+    
+  
+    <g>
+      <rect x="510" y="230" width="250" height="50" rx="8" fill="#e6f0fb" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="635.0" y="251.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">S3 Archive</text>
+      <text x="635.0" y="269.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">RDS snapshot archive tier</text>
+    </g>
+    
+  
+    <g>
+      <rect x="510" y="320" width="350" height="50" rx="8" fill="#fff" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="685.0" y="341.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Restore: RestoreDBInstanceFromDBSnapshot</text>
+      <text x="685.0" y="359.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">creates a NEW RDS instance</text>
+    </g>
+    
+
+  <!-- Flow -->
+  <path id="rds1" d="M 440 80 C 440 120, 275 120, 275 150" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <path id="rds2" d="M 275 200 L 275 230" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <path id="rds3" d="M 320 255 C 400 255, 400 255, 510 255" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <path id="rds4" d="M 320 345 C 400 345, 400 345, 510 345" stroke="#9ca3af" stroke-width="1.5" fill="none" marker-end="url(#arrow)" stroke-dasharray="4 3"/>
+
+  
+    <circle r="6" fill="#00b388" filter="url(#shadow)">
+      <animateMotion dur="3s" begin="0s" repeatCount="indefinite">
+        <mpath href="#rds1"/>
+      </animateMotion>
+    </circle>
+    
+  
+    <circle r="6" fill="#00b388" filter="url(#shadow)">
+      <animateMotion dur="2s" begin="1s" repeatCount="indefinite">
+        <mpath href="#rds2"/>
+      </animateMotion>
+    </circle>
+    
+  
+    <circle r="6" fill="#00b388" filter="url(#shadow)">
+      <animateMotion dur="3s" begin="2.5s" repeatCount="indefinite">
+        <mpath href="#rds3"/>
+      </animateMotion>
+    </circle>
+    
+  
+    <circle r="6" fill="#9ca3af" filter="url(#shadow)">
+      <animateMotion dur="3s" begin="4s" repeatCount="indefinite">
+        <mpath href="#rds4"/>
+      </animateMotion>
+    </circle>
+    
+
+  <text x="350" y="110" text-anchor="start" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">① CopyDBSnapshot</text>
+  <text x="285" y="220" text-anchor="start" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">② Snapshot</text>
+  <text x="415" y="245" text-anchor="start" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">③ Archive (S3)</text>
+  <text x="450" y="405" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#374151">Restore = brand-new RDS instance (cannot in-place)</text>
+</svg>
+
+</div>
+
+<details open><summary><strong>How it works step by step</strong></summary>
+<ol class="numbered-steps">
+  <li><strong>RSC calls <code>CopyDBSnapshot</code> (non-Aurora) or <code>CopyDBClusterSnapshot</code> (Aurora):</strong> via the workload account's Rubrik role.</li>
+  <li><strong>AWS creates the snapshot:</strong> includes storage volume + log backups (if automated backups were enabled).</li>
+  <li><strong>Snapshot metadata to RSC:</strong> instance details, region, AZ, engine version, storage size, KMS key, port, VPC ID, parameter/option groups, backup retention — all indexed for inventory.</li>
+  <li><strong>Cross-region copy (if SLA):</strong> <code>CopyDBSnapshot</code> with destination region for replication target.</li>
+  <li><strong>Archive (if SLA):</strong> snapshot data copied to archive S3 bucket — uses the standard storage-tiering pipeline.</li>
+</ol>
+</details>
+
+<details><summary><strong>What metadata Rubrik captures</strong></summary>
+<ul>
+  <li>DB instance identifier, DbiResourceId, instance ARN</li>
+  <li>DB engine + engine version</li>
+  <li>DB instance class (e.g. <code>db.r5.large</code>)</li>
+  <li>Allocated storage</li>
+  <li>Region + primary AZ + multi-AZ flag</li>
+  <li>Status, maintenance window</li>
+  <li>Option group, parameter group, subnet group</li>
+  <li>Backup retention period</li>
+  <li>Storage type + IOPS</li>
+  <li>KMS key</li>
+  <li>Port + VPC ID</li>
+</ul>
+</details>
+
+<h3>Restore flow</h3>
+<details open><summary><strong>Restore mechanics</strong></summary>
+<ol class="numbered-steps">
+  <li><strong>User picks a snapshot.</strong> If snapshot is in a remote region, Rubrik first calls <code>CopyDBSnapshot</code> to bring it to the export region.</li>
+  <li><strong>Rubrik calls <code>RestoreDBInstanceFromDBSnapshot</code></strong> (non-Aurora) or <code>RestoreDBClusterFromSnapshot</code> (Aurora) with the chosen parameters.</li>
+  <li><strong>AWS launches the new RDS instance.</strong> This is always a new instance with a new endpoint — you cannot in-place restore RDS.</li>
+  <li><strong>For PITR (Point-in-Time):</strong> Rubrik calls <code>RestoreDBInstanceToPointInTime</code> instead, using AWS automated backups + transaction logs.</li>
+  <li><strong>Cleanup:</strong> if a snapshot copy was created for the restore, it's deleted after the restore completes.</li>
+</ol>
+</details>
+
+<details><summary><strong>Snapshot exports</strong></summary>
+<p>Snapshot-based recovery is available for any day with a check on the calendar view. The export process:</p>
+<ol>
+  <li>If export region ≠ source region: <code>CopyDBSnapshot</code> to destination first</li>
+  <li><code>RestoreDBInstanceFromDBSnapshot</code> with target parameters</li>
+  <li>Copied snapshot deleted via <code>DeleteDBSnapshot</code> if copy was made</li>
+</ol>
+</details>
+
+<div class="nav-buttons">
+  <a class="btn-prev" href="#/workloads/ec2">← EC2 + EBS</a>
+  <a class="btn-next" href="#/workloads/dynamo">Next: DynamoDB →</a>
+</div>
+
+</article>
+<article class="page" data-route="/workloads/dynamo" data-group="workloads">
+  <div class="breadcrumb"><a href="#/">Home</a><span class="sep">/</span><span>3 · Workloads</span><span class="sep">/</span><span>DynamoDB</span></div>
+  <header class="page-head"><h1>DynamoDB</h1></header>
+
+<p class="lede">Different model from EBS/RDS — uses DynamoDB's native Export-to-S3 API. Backup doesn't need Exocompute (AWS does the work); restore does.</p>
+
+<h3>Backup data flow</h3>
+<div class="diagram-frame">
+  
+<svg viewBox="0 0 900 420" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:900px;height:auto;background:url(#bgGrad);border-radius:12px;">
+  
+<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+  </marker>
+  <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+    <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.12"/>
+  </filter>
+  <linearGradient id="bgGrad" x1="0" x2="0" y1="0" y2="1">
+    <stop offset="0%"  stop-color="#fafaf7"/>
+    <stop offset="100%" stop-color="#f3f3ee"/>
+  </linearGradient>
+</defs>
+
+  <rect width="900" height="420" fill="url(#bgGrad)" rx="12"/>
+
+  
+    <g>
+      <rect x="380" y="30" width="140" height="50" rx="8" fill="#dff5ee" stroke="#00533f" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="450.0" y="51.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">RSC</text>
+      <text x="450.0" y="69.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">Orchestrator</text>
+    </g>
+    
+
+  
+    <g>
+      <rect x="40" y="110" width="380" height="280" rx="12" fill="#fdf0e3" stroke="#e87b35" stroke-width="1.5" stroke-dasharray="6 3" opacity="0.6"/>
+      <text x="54" y="128" font-family="Geist Mono, monospace" font-size="11" font-weight="600" fill="#e87b35" letter-spacing="1">AWS ACCOUNT A — WORKLOADS</text>
+    </g>
+    
+  
+    <g>
+      <rect x="70" y="150" width="130" height="50" rx="8" fill="#fff" stroke="#e87b35" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="135.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">DynamoDB Table</text>
+      <text x="135.0" y="189.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">PITR enabled</text>
+    </g>
+    
+  
+    <g>
+      <rect x="230" y="150" width="90" height="50" rx="8" fill="#fff" stroke="#a84e10" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="275.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">DDB API</text>
+      <text x="275.0" y="189.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">ExportTableToPointInTime</text>
+    </g>
+    
+  
+    <g>
+      <rect x="70" y="240" width="250" height="50" rx="8" fill="#fdf0e3" stroke="#a84e10" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="195.0" y="261.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Primary S3 bucket</text>
+      <text x="195.0" y="279.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">JSON exports (compressed)</text>
+    </g>
+    
+
+  
+    <g>
+      <rect x="480" y="110" width="380" height="280" rx="12" fill="#fdf0e3" stroke="#e87b35" stroke-width="1.5" stroke-dasharray="6 3" opacity="0.6"/>
+      <text x="494" y="128" font-family="Geist Mono, monospace" font-size="11" font-weight="600" fill="#e87b35" letter-spacing="1">AWS ACCOUNT B — EXOCOMPUTE</text>
+    </g>
+    
+  
+    <g>
+      <rect x="510" y="150" width="350" height="50" rx="8" fill="#e6f0fb" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="685.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">S3 Archive (Standard-IA / Glacier)</text>
+      <text x="685.0" y="189.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">Object Lock for immutability</text>
+    </g>
+    
+  
+    <g>
+      <rect x="510" y="240" width="200" height="50" rx="8" fill="#fff" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="610.0" y="261.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Exocompute (EKS)</text>
+      <text x="610.0" y="279.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">needed for restore only</text>
+    </g>
+    
+  
+    <g>
+      <rect x="730" y="240" width="130" height="50" rx="8" fill="#fff" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="795.0" y="261.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Restored table</text>
+      <text x="795.0" y="279.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">(new DDB table)</text>
+    </g>
+    
+
+  <path id="dd1" d="M 440 80 C 440 120, 275 120, 275 150" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <path id="dd2" d="M 275 200 L 195 240" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <path id="dd3" d="M 320 265 C 400 265, 400 175, 510 175" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <path id="dd4" d="M 610 200 L 610 240" stroke="#9ca3af" stroke-width="1.5" fill="none" marker-end="url(#arrow)" stroke-dasharray="4 3"/>
+  <path id="dd5" d="M 710 265 L 730 265" stroke="#9ca3af" stroke-width="1.5" fill="none" marker-end="url(#arrow)" stroke-dasharray="4 3"/>
+
+  
+    <circle r="6" fill="#00b388" filter="url(#shadow)">
+      <animateMotion dur="3s" begin="0s" repeatCount="indefinite">
+        <mpath href="#dd1"/>
+      </animateMotion>
+    </circle>
+    
+  
+    <circle r="6" fill="#00b388" filter="url(#shadow)">
+      <animateMotion dur="2s" begin="1s" repeatCount="indefinite">
+        <mpath href="#dd2"/>
+      </animateMotion>
+    </circle>
+    
+  
+    <circle r="6" fill="#00b388" filter="url(#shadow)">
+      <animateMotion dur="3s" begin="2s" repeatCount="indefinite">
+        <mpath href="#dd3"/>
+      </animateMotion>
+    </circle>
+    
+  
+    <circle r="6" fill="#9ca3af" filter="url(#shadow)">
+      <animateMotion dur="3s" begin="4s" repeatCount="indefinite">
+        <mpath href="#dd4"/>
+      </animateMotion>
+    </circle>
+    
+  
+    <circle r="6" fill="#9ca3af" filter="url(#shadow)">
+      <animateMotion dur="2s" begin="5s" repeatCount="indefinite">
+        <mpath href="#dd5"/>
+      </animateMotion>
+    </circle>
+    
+
+  <text x="350" y="110" text-anchor="start" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">① ExportTableToPointInTime</text>
+  <text x="180" y="230" text-anchor="start" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">② Native AWS export</text>
+  <text x="400" y="165" text-anchor="start" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">③ Lifecycle → archive</text>
+  <text x="450" y="405" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" font-weight="500" fill="#374151">Backup uses native DDB Export-to-S3 — no Exocompute needed for backup; only for restore (&gt;1 TB or with LSIs)</text>
+</svg>
+
+</div>
+
+<details open><summary><strong>How it works step by step</strong></summary>
+<ol class="numbered-steps">
+  <li><strong>Prerequisite:</strong> Point-in-Time Recovery (PITR) must be enabled on the table. RSC enables it automatically when you assign an SLA.</li>
+  <li><strong>RSC calls <code>ExportTableToPointInTime</code>:</strong> AWS DynamoDB exports the table data to an S3 bucket as JSON files. Files are compressed and encrypted with default S3 encryption.</li>
+  <li><strong>Primary location is S3:</strong> Rubrik provisions a Primary S3 bucket per protected table to hold these exports. Native AWS feature — no Exocompute touches the data.</li>
+  <li><strong>Lifecycle to archive:</strong> S3 lifecycle policy transitions exports from Standard → Standard-IA → Glacier per SLA. Object Lock provides immutability.</li>
+  <li><strong>Note on PITR:</strong> if PITR is disabled by someone on the AWS side, the next Rubrik backup will be a full (not incremental) because the PITR retention window broke.</li>
+</ol>
+</details>
+
+<details><summary><strong>Why this matters</strong></summary>
+<p>Compared to EBS/RDS where Exocompute pulls block data:</p>
+<ul>
+  <li>Backup is offloaded entirely to AWS DynamoDB service — fast, no impact on production.</li>
+  <li>JSON files are randomly re-ordered within and across files (DDB does this for parallel export).</li>
+  <li>This makes restore more complex — see below.</li>
+</ul>
+</details>
+
+<h3>Restore flow</h3>
+<details open><summary><strong>Restore decision tree</strong></summary>
+<p>Restore behavior depends on table size + secondary indexes:</p>
+<ul>
+  <li><strong>Local Secondary Indexes (LSIs) requested for restore:</strong> Exocompute is required. Reads exports via <code>GetObject</code>, writes to new DDB table via <code>PutItem</code>.</li>
+  <li><strong>No LSIs + base snapshot &lt; 1 TB:</strong> No Exocompute needed for base. Uses native DynamoDB <code>ImportTable</code> API. Exocompute then applies incrementals via GetObject + PutItem.</li>
+  <li><strong>No LSIs + base snapshot ≥ 1 TB:</strong> Falls back to Exocompute for everything because of the AWS Import-from-S3 limit (default 1 TB, can be raised).</li>
+</ul>
+</details>
+
+<details><summary><strong>Configurable Write Capacity Units (WCU)</strong></summary>
+<p>RSC defaults to the AWS account's max WCU (default 40,000) for the restore. You can choose a lower value to save cost or higher (within account limit) to speed up restore.</p>
+<p>After restore completes, the new table's capacity reverts to what was stored in the snapshot.</p>
+</details>
+
+<details><summary><strong>Restore limitations</strong></summary>
+<ul>
+  <li>Partition Key and Sort Keys cannot be changed during restore</li>
+  <li>Global Secondary Indexes (GSI) and LSIs can be restored, but they take additional time to rebuild after the base table is in place</li>
+  <li>RCV not supported for DynamoDB</li>
+</ul>
+</details>
+
+<div class="nav-buttons">
+  <a class="btn-prev" href="#/workloads/rds">← RDS</a>
+  <a class="btn-next" href="#/workloads/s3">Next: S3 →</a>
+</div>
+
+</article>
+<article class="page" data-route="/workloads/s3" data-group="workloads">
+  <div class="breadcrumb"><a href="#/">Home</a><span class="sep">/</span><span>3 · Workloads</span><span class="sep">/</span><span>S3</span></div>
+  <header class="page-head"><h1>S3</h1></header>
+
+<p class="lede">Version-based protection. Source bucket MUST have versioning enabled. Exocompute scans object versions and tracks changes — this is closer to "log of changes" than "snapshot".</p>
+
+<h3>Backup data flow</h3>
+<div class="diagram-frame">
+  
+<svg viewBox="0 0 900 420" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:900px;height:auto;background:url(#bgGrad);border-radius:12px;">
+  
+<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+  </marker>
+  <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+    <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.12"/>
+  </filter>
+  <linearGradient id="bgGrad" x1="0" x2="0" y1="0" y2="1">
+    <stop offset="0%"  stop-color="#fafaf7"/>
+    <stop offset="100%" stop-color="#f3f3ee"/>
+  </linearGradient>
+</defs>
+
+  <rect width="900" height="420" fill="url(#bgGrad)" rx="12"/>
+
+  
+    <g>
+      <rect x="380" y="30" width="140" height="50" rx="8" fill="#dff5ee" stroke="#00533f" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="450.0" y="51.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">RSC</text>
+      <text x="450.0" y="69.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">Orchestrator</text>
+    </g>
+    
+
+  
+    <g>
+      <rect x="40" y="110" width="380" height="280" rx="12" fill="#fdf0e3" stroke="#e87b35" stroke-width="1.5" stroke-dasharray="6 3" opacity="0.6"/>
+      <text x="54" y="128" font-family="Geist Mono, monospace" font-size="11" font-weight="600" fill="#e87b35" letter-spacing="1">AWS ACCOUNT A — SOURCE</text>
+    </g>
+    
+  
+    <g>
+      <rect x="70" y="150" width="250" height="50" rx="8" fill="#fff" stroke="#e87b35" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="195.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Source S3 bucket</text>
+      <text x="195.0" y="189.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">Versioning REQUIRED</text>
+    </g>
+    
+  
+    <g>
+      <rect x="70" y="230" width="250" height="50" rx="8" fill="#fdf0e3" stroke="#a84e10" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="195.0" y="251.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Object versions</text>
+      <text x="195.0" y="269.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">captured per change</text>
+    </g>
+    
+  
+    <g>
+      <rect x="70" y="320" width="250" height="50" rx="8" fill="#fff" stroke="#e87b35" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="195.0" y="341.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Workload Index bucket</text>
+      <text x="195.0" y="359.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">rubrik-s3-workload-index-*</text>
+    </g>
+    
+
+  
+    <g>
+      <rect x="480" y="110" width="380" height="280" rx="12" fill="#fdf0e3" stroke="#e87b35" stroke-width="1.5" stroke-dasharray="6 3" opacity="0.6"/>
+      <text x="494" y="128" font-family="Geist Mono, monospace" font-size="11" font-weight="600" fill="#e87b35" letter-spacing="1">AWS ACCOUNT B — EXOCOMPUTE</text>
+    </g>
+    
+  
+    <g>
+      <rect x="510" y="150" width="200" height="50" rx="8" fill="#e6f0fb" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="610.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Exocompute (EKS)</text>
+      <text x="610.0" y="189.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">scans object versions</text>
+    </g>
+    
+  
+    <g>
+      <rect x="730" y="150" width="130" height="50" rx="8" fill="#dff5ee" stroke="#00533f" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="795.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Metadata Store</text>
+      <text x="795.0" y="189.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">cloudslab.rubrik.com</text>
+    </g>
+    
+  
+    <g>
+      <rect x="510" y="230" width="350" height="50" rx="8" fill="#fff" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="685.0" y="251.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Archival S3 bucket</text>
+      <text x="685.0" y="269.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">long-term tier (Standard-IA / Glacier)</text>
+    </g>
+    
+  
+    <g>
+      <rect x="510" y="320" width="350" height="50" rx="8" fill="#fff" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="685.0" y="341.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Recovery → original or new bucket</text>
+      <text x="685.0" y="359.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">in-place or out-of-place</text>
+    </g>
+    
+
+  <path id="s31" d="M 440 80 C 440 120, 195 120, 195 150" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <path id="s32" d="M 195 200 L 195 230" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <path id="s33" d="M 320 255 C 400 255, 400 175, 510 175" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <path id="s34" d="M 710 175 L 730 175" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <path id="s35" d="M 610 200 L 610 230" stroke="#e87b35" stroke-width="1.5" fill="none" marker-end="url(#arrow)" stroke-dasharray="4 3"/>
+  <path id="s36" d="M 195 370 C 400 370, 400 345, 510 345" stroke="#9ca3af" stroke-width="1.5" fill="none" marker-end="url(#arrow)" stroke-dasharray="4 3"/>
+
+  
+    <circle r="6" fill="#00b388" filter="url(#shadow)">
+      <animateMotion dur="3s" begin="0s" repeatCount="indefinite">
+        <mpath href="#s31"/>
+      </animateMotion>
+    </circle>
+    
+  
+    <circle r="6" fill="#00b388" filter="url(#shadow)">
+      <animateMotion dur="2s" begin="1s" repeatCount="indefinite">
+        <mpath href="#s32"/>
+      </animateMotion>
+    </circle>
+    
+  
+    <circle r="6" fill="#00b388" filter="url(#shadow)">
+      <animateMotion dur="3s" begin="2s" repeatCount="indefinite">
+        <mpath href="#s33"/>
+      </animateMotion>
+    </circle>
+    
+  
+    <circle r="6" fill="#00b388" filter="url(#shadow)">
+      <animateMotion dur="2s" begin="3s" repeatCount="indefinite">
+        <mpath href="#s34"/>
+      </animateMotion>
+    </circle>
+    
+  
+    <circle r="6" fill="#e87b35" filter="url(#shadow)">
+      <animateMotion dur="3s" begin="4s" repeatCount="indefinite">
+        <mpath href="#s35"/>
+      </animateMotion>
+    </circle>
+    
+  
+    <circle r="6" fill="#9ca3af" filter="url(#shadow)">
+      <animateMotion dur="4s" begin="5s" repeatCount="indefinite">
+        <mpath href="#s36"/>
+      </animateMotion>
+    </circle>
+    
+
+  <text x="350" y="110" text-anchor="start" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">① Enable versioning</text>
+  <text x="220" y="220" text-anchor="start" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">② Versions captured</text>
+  <text x="400" y="165" text-anchor="start" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">③ Exo scans + indexes</text>
+  <text x="610" y="220" text-anchor="start" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">④ Archive tier</text>
+  <text x="450" y="405" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" font-weight="500" fill="#374151">Workload-index bucket holds the index manifest; archive bucket holds backed-up data</text>
+</svg>
+
+</div>
+
+<details open><summary><strong>How it works step by step</strong></summary>
+<ol class="numbered-steps">
+  <li><strong>Prerequisite:</strong> Versioning must be enabled on the source bucket. Rubrik can enable it as part of onboarding via <code>s3:PutBucketVersioning</code>.</li>
+  <li><strong>Exocompute scans:</strong> per the SLA schedule, Exocompute lists object versions via <code>ListObjectVersions</code> and tracks new/modified/deleted objects.</li>
+  <li><strong>Workload index bucket:</strong> Rubrik provisions a workload index S3 bucket (named <code>rubrik-s3-workload-index-*</code>) in the host account. Index manifest objects go here.</li>
+  <li><strong>Metadata Store:</strong> object metadata posted to the per-customer cloudslab endpoint — <code>&lt;customer-hostname&gt;.cloudslab.rubrik.com</code>. Find this exact FQDN in RSC → Inventory → S3 → Subscriptions tab → Metadata Store DNS column. <strong>This FQDN must be in your firewall allowlist.</strong></li>
+  <li><strong>Archive (if SLA):</strong> object versions transitioned to the archival S3 bucket per the SLA tiering policy (Standard-IA / Glacier).</li>
+</ol>
+</details>
+
+<details><summary><strong>About cloudslab.rubrik.com</strong></summary>
+<p>cloudslab is Rubrik's Metadata Store backend. Each RSC tenant gets its own subdomain (e.g. <code>customer1234.cloudslab.rubrik.com</code>) for connecting workload index data to RSC.</p>
+<p>For S3 protection (and Azure Blob protection), the worker pods must reach this URL on 443/TCP. Add it to your firewall allowlist.</p>
+<p>Get the exact FQDN: RSC → Inventory → AWS S3 → Subscriptions tab → Metadata Store DNS column. (If the column isn't visible, use Column Settings to enable it.)</p>
+</details>
+
+<h3>Restore flow</h3>
+<details open><summary><strong>Restore options</strong></summary>
+<ul>
+  <li><strong>In-place restore:</strong> restore object versions to the original bucket (overwrites or creates new versions per the source bucket's versioning state).</li>
+  <li><strong>Out-of-place restore:</strong> restore to a different S3 bucket. Useful for forensics or DR testing.</li>
+  <li><strong>Granular object-level recovery:</strong> select specific objects or version timestamps to restore. Filter by prefix.</li>
+</ul>
+</details>
+
+<details><summary><strong>RCV for S3</strong></summary>
+<p>Both Backup AND Archive tiers supported (one of the few workloads where RCV supports both). Multi-zone redundancy (MAZ) also supported for both tiers.</p>
+</details>
+
+<div class="nav-buttons">
+  <a class="btn-prev" href="#/workloads/dynamo">← DynamoDB</a>
+  <a class="btn-next" href="#/reference/firewall">Next: Firewall reference →</a>
+</div>
+
+</article>
+<article class="page" data-route="/reference/firewall" data-group="reference">
+  <div class="breadcrumb"><a href="#/">Home</a><span class="sep">/</span><span>4 · Reference</span><span class="sep">/</span><span>Firewall ports + FQDNs</span></div>
+  <header class="page-head"><h1>Firewall ports + FQDNs</h1></header>
+
+<p class="lede">The complete outbound allowlist for AWS CNP. Every FQDN your Exocompute subnet (and CCES, if you have it) needs to reach.</p>
+
+<h3>Exocompute worker nodes — outbound 443/TCP</h3>
+<table class="ref-table">
+<thead><tr><th>Destination</th><th>Purpose</th><th>Required?</th><th>Endpoint alternative</th></tr></thead>
+<tbody>
+<tr><td><code>*.sk1.&lt;region&gt;.eks.amazonaws.com</code></td><td>EKS master endpoint</td><td>Yes</td><td>EKS Interface Endpoint</td></tr>
+<tr><td><code>*.dkr.ecr.&lt;region&gt;.amazonaws.com</code></td><td>ECR Docker registry</td><td>Yes</td><td>ECR DKR Interface Endpoint + S3 Gateway</td></tr>
+<tr><td><code>api.ecr.&lt;region&gt;.amazonaws.com</code></td><td>ECR API</td><td>Yes</td><td>ECR API Interface Endpoint</td></tr>
+<tr><td><code>ec2.&lt;region&gt;.amazonaws.com</code></td><td>EC2 API</td><td>Yes</td><td>EC2 Interface Endpoint</td></tr>
+<tr><td><code>ebs.&lt;region&gt;.amazonaws.com</code></td><td>EBS direct API (snapshot block read)</td><td>Yes</td><td>EBS Interface Endpoint</td></tr>
+<tr><td><code>s3.&lt;region&gt;.amazonaws.com</code></td><td>S3 archive + storage tiering</td><td>Yes</td><td>S3 Gateway Endpoint (FREE)</td></tr>
+<tr><td><code>sts.amazonaws.com</code></td><td>STS:AssumeRole</td><td>Yes</td><td>STS Interface Endpoint</td></tr>
+<tr><td><code>kms.&lt;region&gt;.amazonaws.com</code></td><td>KMS Decrypt/GenerateDataKey</td><td>If encrypted</td><td>KMS Interface Endpoint</td></tr>
+<tr><td><code>autoscaling.&lt;region&gt;.amazonaws.com</code></td><td>ASG management</td><td>Yes</td><td>Auto Scaling Interface Endpoint</td></tr>
+<tr><td><code>www.googleapis.com</code></td><td>Index upload to RSC GCS backend</td><td>Yes</td><td>No alternative (Google APIs)</td></tr>
+<tr><td><code>www.oauth2.googleapis.com</code></td><td>OAuth for GCS</td><td>Yes</td><td>No alternative</td></tr>
+<tr><td><code>storage.googleapis.com</code></td><td>Index file storage</td><td>Yes</td><td>No alternative</td></tr>
+<tr><td>RSC IP addresses (from <code>&lt;subdomain&gt;.my.rubrik.com</code>)</td><td>Logs + metrics</td><td>Yes</td><td>No alternative</td></tr>
+<tr><td><code>&lt;customer-hostname&gt;.cloudslab.rubrik.com</code></td><td>Metadata Store (S3 + Azure Blob workloads)</td><td>If S3 protection</td><td>No alternative</td></tr>
+</tbody>
+</table>
+
+<div class="note warn">
+<strong>cloudslab.rubrik.com is dynamic.</strong> Get the exact FQDN from <em>RSC → Inventory → AWS S3 → Subscriptions tab → Metadata Store DNS column.</em> If the column isn't visible, enable it via Column Settings. The FQDN is per-customer (e.g. <code>customer1234.cloudslab.rubrik.com</code>).
+</div>
+
+<h3>CCES (Rubrik CDM in EC2) — additional ports</h3>
+<details><summary><strong>If you're also deploying Cloud Cluster ES</strong></summary>
+<table class="ref-table">
+<thead><tr><th>Port</th><th>Protocol</th><th>Source</th><th>Destination</th><th>Purpose</th></tr></thead>
+<tbody>
+<tr><td>22</td><td>TCP</td><td>Admin bastion</td><td>CCES nodes</td><td>SSH for one-time bootstrap</td></tr>
+<tr><td>443</td><td>TCP</td><td>Admin browser</td><td>CCES nodes</td><td>CDM web UI</td></tr>
+<tr><td>12800</td><td>TCP</td><td>CCES nodes</td><td>Protected EC2 hosts</td><td>Rubrik Backup Service (RBS)</td></tr>
+<tr><td>12801</td><td>TCP</td><td>CCES nodes</td><td>Protected EC2 hosts</td><td>Rubrik Backup Service (RBS)</td></tr>
+<tr><td>All</td><td>All</td><td>CCES nodes (self)</td><td>CCES nodes (self)</td><td>Inter-node cluster traffic</td></tr>
+</tbody>
+</table>
+<p><strong>CCES outbound:</strong> all 443/TCP — same Rubrik tenant URL, support tunnel (<code>proxy.rubrik.com</code>), CDN (<code>cdn-rsc.rubrik.com</code>), support bundles (<code>apollo-ingest.s3.amazonaws.com</code>, <code>rubrikstats.s3.amazonaws.com</code>).</p>
+</details>
+
+<h3>VPC Endpoints — Polaris-Exocompute SG attachment</h3>
+<div class="note warn">
+After Exocompute is created in Phase 2, the <code>Polaris-Exocompute-eks-worker-node</code> security group must be in the inbound list of every VPC Interface Endpoint. Otherwise traffic falls back to NAT GW even though endpoints exist. Easy to miss. Check via CloudWatch NAT Gateway BytesOutToDestination after first job — should be near-zero.
+</div>
+
+<h3>RSC tenant IP capture</h3>
+<p>Get the static IPs that <code>&lt;subdomain&gt;.my.rubrik.com</code> resolves to:</p>
+<ol class="numbered-steps">
+  <li>RSC console → profile menu (top right) → About Rubrik Security Cloud</li>
+  <li>Hover the region link — IPs are shown</li>
+  <li>Document these for the firewall ticket; they're static per region</li>
+</ol>
+
+<div class="nav-buttons">
+  <a class="btn-prev" href="#/workloads/s3">← S3</a>
+  <a class="btn-next" href="#/reference/costs">Next: Cost optimisation →</a>
+</div>
+
+</article>
+<article class="page" data-route="/reference/costs" data-group="reference">
+  <div class="breadcrumb"><a href="#/">Home</a><span class="sep">/</span><span>4 · Reference</span><span class="sep">/</span><span>Cost optimisation</span></div>
+  <header class="page-head"><h1>Cost optimisation</h1></header>
+
+<p class="lede">Where the AWS bill comes from with Rubrik CNP, and what to do about it.</p>
+
+<h3>The big four cost lines</h3>
+
+<details open><summary><strong>1. NAT Gateway data processing</strong></summary>
+<p><strong>Cost:</strong> $0.045/GB processed + $0.045/hour. Cross-AZ + cross-region transfer extra.</p>
+<p><strong>Cause:</strong> Exocompute traffic without VPC Endpoints. Every snapshot block read, every ECR pull, every API call hits NAT.</p>
+<p><strong>Fix:</strong> Build VPC Endpoints (Foundation → VPC Endpoints). S3 Gateway alone removes most of it. Full set removes ~95%.</p>
+<p><strong>How to verify:</strong> CloudWatch → NAT Gateway → BytesOutToDestination. After Exocompute runs, this should be tiny (only Google APIs + RSC tenant traffic).</p>
+</details>
+
+<details><summary><strong>2. EBS snapshot storage</strong></summary>
+<p><strong>Cost:</strong> $0.05/GB-month for standard EBS snapshots.</p>
+<p><strong>Driver:</strong> long retention SLAs. 100 GB volume × 30 days = $150/month per volume if retained as snapshots.</p>
+<p><strong>Fix:</strong> Use storage tiering — SLAs that transition snapshots to S3 Archive after N days. S3 Standard-IA: $0.0125/GB-month (60% cheaper). Glacier Deep Archive: $0.00099/GB-month (98% cheaper).</p>
+</details>
+
+<details><summary><strong>3. EKS hourly + worker node EC2</strong></summary>
+<p><strong>Cost:</strong> $0.10/hour for the EKS control plane + worker node EC2 instance hours.</p>
+<p><strong>Driver:</strong> Exocompute lives in EKS. Workers scale to zero between jobs (ASG min=0), but the control plane runs 24/7.</p>
+<p><strong>Fix:</strong> One Exocompute per region per host account is enough — don't fragment unnecessarily. Centralised model wins.</p>
+</details>
+
+<details><summary><strong>4. Cross-region replication transfer</strong></summary>
+<p><strong>Cost:</strong> $0.02/GB inter-region (US-to-US).</p>
+<p><strong>Driver:</strong> SLAs with cross-region replication target.</p>
+<p><strong>Fix:</strong> Replicate only what you must. Use compression-friendly archive tiers (S3 Standard-IA cross-region is still cheap once the data is there). For DR, consider RCV instead — Rubrik handles replication on their side.</p>
+</details>
+
+<h3>Cost trade-off decisions</h3>
+
+<details><summary><strong>NAT Gateway vs AWS Network Firewall</strong></summary>
+<p>NAT GW is cheaper for predictable AKS-style egress. Network Firewall adds FQDN-based allowlist (better security) but costs more per GB processed. For POC: NAT GW + Endpoints. For prod with mandatory FQDN allowlisting: NFW.</p>
+</details>
+
+<details><summary><strong>Service endpoints (free) vs Private Endpoints (paid)</strong></summary>
+<p>Gateway endpoints (S3, DynamoDB) are free — no reason to skip. Interface endpoints cost ~$0.01/hr per endpoint per AZ + $0.01/GB. At Exocompute traffic volumes, this is still cheaper than NAT. For tiny POCs (under 1 TB total monthly traffic), NAT may break even — but security posture argues for endpoints anyway.</p>
+</details>
+
+<details><summary><strong>Same-region vs cross-region archive</strong></summary>
+<p>Same-region archive = no inter-region transfer charge. Cross-region archive doubles the storage class transition cost and adds transfer cost. Only do cross-region archive for DR requirements.</p>
+</details>
+
+<details><summary><strong>S3 Standard vs Standard-IA vs Glacier for archive</strong></summary>
+<table class="ref-table">
+<thead><tr><th>Tier</th><th>Storage cost</th><th>Retrieval cost</th><th>Latency</th></tr></thead>
+<tbody>
+<tr><td>Standard</td><td>$0.023/GB-month</td><td>Free</td><td>ms</td></tr>
+<tr><td>Standard-IA</td><td>$0.0125/GB-month</td><td>$0.01/GB</td><td>ms</td></tr>
+<tr><td>Glacier Instant Retrieval</td><td>$0.004/GB-month</td><td>$0.03/GB</td><td>ms</td></tr>
+<tr><td>Glacier Flexible Retrieval</td><td>$0.0036/GB-month</td><td>$0.01/GB</td><td>minutes-hours</td></tr>
+<tr><td>Glacier Deep Archive</td><td>$0.00099/GB-month</td><td>$0.02/GB</td><td>12+ hours</td></tr>
+</tbody>
+</table>
+<p>Pattern: tier hot to Standard-IA after 30 days; Glacier IR or FR after 90 days. For 7-year compliance retention: Deep Archive.</p>
+</details>
+
+<div class="nav-buttons">
+  <a class="btn-prev" href="#/reference/firewall">← Firewall</a>
+  <a class="btn-next" href="#/reference/troubleshooting">Next: Troubleshooting →</a>
+</div>
+
+</article>
+<article class="page" data-route="/reference/troubleshooting" data-group="reference">
+  <div class="breadcrumb"><a href="#/">Home</a><span class="sep">/</span><span>4 · Reference</span><span class="sep">/</span><span>Troubleshooting</span></div>
+  <header class="page-head"><h1>Troubleshooting</h1></header>
+
+<p class="lede">Top 10 things that go wrong, in order of frequency.</p>
+
+<details open><summary><strong>1. Surprise NAT bill after the first month</strong></summary>
+<p><strong>Cause:</strong> VPC Endpoints missing, or Polaris-Exocompute-eks-worker-node SG not added to endpoint SGs.</p>
+<p><strong>Fix:</strong> Build all 9 endpoints (Foundation → VPC Endpoints). Then for each Interface Endpoint, edit its SG to allow inbound 443/TCP from the worker-node SG. Verify via CloudWatch NAT GW BytesOutToDestination near-zero after a job.</p>
+</details>
+
+<details><summary><strong>2. First restore fails with KMS Decrypt errors</strong></summary>
+<p><strong>Cause:</strong> CMK key policy doesn't grant the Rubrik role. IAM looks fine because IAM permissions are on the role, but KMS authorization happens at the key policy too — both must allow.</p>
+<p><strong>Fix:</strong> Edit each in-scope CMK's key policy. Add the Rubrik role as a principal with <code>kms:Decrypt</code>, <code>kms:Encrypt</code>, <code>kms:GenerateDataKey*</code>, <code>kms:DescribeKey</code>, <code>kms:ReEncrypt*</code> (Foundation → SCPs + KMS).</p>
+</details>
+
+<details><summary><strong>3. Account onboarding hangs at "Connecting"</strong></summary>
+<p><strong>Cause:</strong> SNS callback from the CFT didn't reach Rubrik. Usually an SCP issue or someone deleted the SNS topic prematurely.</p>
+<p><strong>Fix:</strong> Check the CFT created the SNS topic. Check SCPs allow <code>sns:Publish</code>. Re-run the onboarding wizard.</p>
+</details>
+
+<details><summary><strong>4. Indexing job stuck "Pending" forever</strong></summary>
+<p><strong>Cause:</strong> Exocompute can't reach AWS APIs. Either endpoints aren't reachable (SG issue), or egress is broken (route table issue).</p>
+<p><strong>Diagnose:</strong> Look at EKS cluster status. If workers aren't reaching the EKS API, it's the SG/route/DNS layer. If workers are up but can't reach EBS API, it's the EBS endpoint SG.</p>
+</details>
+
+<details><summary><strong>5. First Exocompute run takes 15+ minutes</strong></summary>
+<p><strong>Cause:</strong> EKS cluster provisions on first use. Workers cold-start, pull container images. Normal.</p>
+<p><strong>Fix:</strong> Just wait. Subsequent runs spin up in seconds. Don't tell the customer it's broken on day one.</p>
+</details>
+
+<details><summary><strong>6. RDS PostgreSQL recovery fails to connect</strong></summary>
+<p><strong>Cause:</strong> Recovery uses Exocompute to connect to the restored RDS instance on 5432/TCP inside the protected VPC. If Exocompute's subnet can't reach the RDS VPC (no peering / no TGW), connection fails.</p>
+<p><strong>Fix:</strong> For RDS PostgreSQL persistent recovery, ensure Exocompute's subnet has L3 reachability to the restored RDS endpoint's VPC. VPC peering or Transit Gateway.</p>
+</details>
+
+<details><summary><strong>7. S3 protection not seeing all objects</strong></summary>
+<p><strong>Cause:</strong> Versioning not enabled on the source bucket. Without versioning, Rubrik can't see object changes.</p>
+<p><strong>Fix:</strong> Enable versioning on the source bucket. Re-trigger discovery in RSC.</p>
+</details>
+
+<details><summary><strong>8. cloudslab.rubrik.com timeouts</strong></summary>
+<p><strong>Cause:</strong> Customer hostname FQDN not in firewall allowlist. Or the Metadata Store DNS column wasn't enabled in RSC so the customer didn't know the exact FQDN.</p>
+<p><strong>Fix:</strong> RSC → Inventory → AWS S3 → Subscriptions tab → Column Settings → enable "Metadata Store DNS". Capture the exact FQDN. Add to allowlist.</p>
+</details>
+
+<details><summary><strong>9. DynamoDB PITR keeps getting disabled</strong></summary>
+<p><strong>Cause:</strong> Someone (or a policy) is disabling PITR after Rubrik enables it. Next backup will be a full instead of incremental.</p>
+<p><strong>Fix:</strong> Identify the source — usually an Org-wide policy that disables PITR for cost reasons. Carve an exception for protected tables.</p>
+</details>
+
+<details><summary><strong>10. SCP silently denies things mid-job</strong></summary>
+<p><strong>Cause:</strong> Onboarding worked (SCP allowed iam:* for the admin), but the Rubrik role can't perform a specific action because an SCP on the OU denies it.</p>
+<p><strong>Diagnose:</strong> CloudTrail → search for AccessDenied events on the Rubrik role ARN. The error message typically names the action that was denied.</p>
+<p><strong>Fix:</strong> Add an SCP exception for that specific action on the Rubrik role ARN. Or scope an OU-level allow.</p>
+</details>
+
+<div class="nav-buttons">
+  <a class="btn-prev" href="#/reference/costs">← Costs</a>
+  <a class="btn-next" href="#/">Back to home →</a>
+</div>
+
+</article>
+</div></main>
+</div>
+<script>
+
+(function(){
+  const pages = Array.from(document.querySelectorAll('.page'));
+  const navLinks = Array.from(document.querySelectorAll('.nav-list a'));
+
+  function showRoute(route){
+    if (!route || route === '#' || route === '#/' || route === '') route = '/';
+    if (route.startsWith('#')) route = route.slice(1);
+
+    let target = pages.find(p => p.dataset.route === route);
+    if (!target) target = pages.find(p => p.dataset.route === '/');
+
+    pages.forEach(p => p.classList.toggle('active', p === target));
+    navLinks.forEach(a => a.classList.toggle('active', a.dataset.route === target.dataset.route));
+    window.scrollTo({top: 0, behavior: 'instant'});
+
+    const title = target.querySelector('h1')?.textContent || 'Rubrik AWS CNP POC Playbook';
+    document.title = title + ' — Rubrik POC Playbook';
+  }
+  window.addEventListener('hashchange', () => showRoute(location.hash));
+  showRoute(location.hash);
+})();
+
+</script>
+</body>
+</html>
