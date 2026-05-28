@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Rubrik AWS CNP POC Playbook</title>
+<title>Rubrik Multi-Cloud POC Playbook</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
@@ -251,6 +251,272 @@ details > p:first-of-type{margin-top: 0}
 .btn-prev:hover, .btn-next:hover{border-color: var(--ink-3); text-decoration:none}
 .btn-next{margin-left: auto}
 
+/* ===== Cloud picker on home page ===== */
+.cloud-picker{
+  display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 18px; margin: 14px 0 30px;
+}
+.cloud-card{
+  display:block; padding: 22px;
+  background: #fff; border: 1px solid var(--rule); border-radius: 14px;
+  box-shadow: var(--shadow); color: inherit; text-decoration: none;
+  border-top: 5px solid var(--ink);
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.cloud-card:hover{transform: translateY(-3px); box-shadow: 0 14px 32px rgba(0,0,0,.10); text-decoration:none}
+.cloud-aws{border-top-color: var(--aws)}
+.cloud-azure{border-top-color: var(--az)}
+.cloud-gcp{border-top-color: var(--cc)}
+.cloud-card-head{
+  display:flex; justify-content: space-between; align-items: baseline;
+  margin-bottom: 10px;
+}
+.cloud-logo{
+  font-family: var(--mono); font-size: 13px; font-weight: 700;
+  letter-spacing: .08em; padding: 4px 10px; border-radius: 5px;
+  background: var(--paper-2); color: var(--ink);
+}
+.cloud-aws .cloud-logo{background: var(--aws); color: #fff}
+.cloud-azure .cloud-logo{background: var(--az); color: #fff}
+.cloud-gcp .cloud-logo{background: var(--cc); color: #fff}
+.cloud-status{
+  font-family: var(--mono); font-size: 10.5px; color: var(--muted);
+  text-transform: uppercase; letter-spacing: .12em;
+}
+.cloud-card h3{margin: 4px 0 8px; font-size: 18px; font-weight: 600}
+.cloud-card p{margin: 0 0 12px; color: var(--ink-3); font-size: 13.5px; line-height: 1.55}
+.cloud-features{
+  list-style: none; padding: 0; margin: 0 0 14px;
+  font-size: 12.5px; color: var(--ink-3);
+}
+.cloud-features li{
+  padding: 4px 0 4px 18px; position: relative;
+}
+.cloud-features li::before{
+  content: ""; position: absolute; left: 0; top: 11px;
+  width: 6px; height: 6px; border-radius: 2px;
+}
+.cloud-aws .cloud-features li::before{background: var(--aws)}
+.cloud-azure .cloud-features li::before{background: var(--az)}
+.cloud-gcp .cloud-features li::before{background: var(--cc)}
+.cloud-card-cta{
+  font-size: 13px; font-weight: 600; color: var(--ink);
+  padding-top: 10px; border-top: 1px solid var(--rule);
+}
+
+/* Cross-cloud info cards on home */
+.cross-cloud-grid{
+  display:grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 12px; margin: 12px 0 24px;
+}
+.cross-cloud-card{
+  background: var(--paper-2); border: 1px solid var(--rule);
+  border-radius: 10px; padding: 14px;
+  border-left: 3px solid var(--ink);
+}
+.cross-cloud-card h4{margin: 0 0 6px; font-size: 13.5px; font-weight: 600; color: var(--ink)}
+.cross-cloud-card p{margin: 0; font-size: 12.5px; color: var(--ink-3); line-height: 1.5}
+
+/* Sidebar cloud tabs */
+.cloud-tabs{
+  display:flex; gap: 4px; margin: 12px 6px 16px;
+  padding: 4px; background: var(--paper-2); border: 1px solid var(--rule);
+  border-radius: 8px;
+}
+.cloud-tab{
+  flex: 1; text-align: center; padding: 6px 8px;
+  font-family: var(--mono); font-size: 11px; font-weight: 600;
+  letter-spacing: .04em; text-transform: uppercase;
+  color: var(--muted); text-decoration: none;
+  border-radius: 5px;
+}
+.cloud-tab:hover{color: var(--ink); background: rgba(0,0,0,.03); text-decoration: none}
+.cloud-tab.active{background: #fff; box-shadow: var(--shadow); color: var(--ink)}
+.cloud-tab-aws.active{color: var(--aws-dark)}
+.cloud-tab-azure.active{color: var(--az-dark)}
+.cloud-tab-gcp.active{color: var(--cc-dark)}
+
+/* Tile colors per cloud */
+.tile-azure{border-top-color: var(--az)}
+.tile-gcp{border-top-color: var(--cc)}
+
+/* Per-cloud accent for page heads */
+.page[data-group="aws"] .page-head,
+.page[data-group^="aws-"] .page-head{border-left-color: var(--aws)}
+.page[data-group="azure"] .page-head,
+.page[data-group^="azure-"] .page-head{border-left-color: var(--az)}
+.page[data-group="gcp"] .page-head,
+.page[data-group^="gcp-"] .page-head{border-left-color: var(--cc)}
+
+/* Per-cloud accent for sub-section markers */
+.page[data-group="aws"] .page-body h3.sub::before,
+.page[data-group^="aws-"] .page-body h3.sub::before{background: var(--aws)}
+.page[data-group="azure"] .page-body h3.sub::before,
+.page[data-group^="azure-"] .page-body h3.sub::before{background: var(--az)}
+.page[data-group="gcp"] .page-body h3.sub::before,
+.page[data-group^="gcp-"] .page-body h3.sub::before{background: var(--cc)}
+
+/* Per-cloud sidebar active link border */
+.nav-group[data-cloud="aws"] .nav-list a.active{border-left-color: var(--aws)}
+.nav-group[data-cloud="azure"] .nav-list a.active{border-left-color: var(--az)}
+.nav-group[data-cloud="gcp"] .nav-list a.active{border-left-color: var(--cc)}
+
+
+
+
+/* ===== Uniform list styling — replace default disc bullets ===== */
+.page-body ul,
+.page-body ol{
+  margin: 8px 0 12px;
+  padding-left: 22px;
+}
+.page-body ul{
+  list-style: none;
+  padding-left: 4px;
+}
+.page-body ul > li,
+details ul > li{
+  position: relative;
+  padding: 3px 0 3px 18px;
+  line-height: 1.55;
+  color: var(--ink-2);
+}
+.page-body ul > li::before,
+details ul > li::before{
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 12px;
+  width: 6px;
+  height: 6px;
+  border-radius: 2px;
+  background: var(--ink-3);
+}
+.page[data-group^="aws"]   .page-body ul > li::before,
+.page[data-group^="aws"]   details ul > li::before{ background: var(--aws); }
+.page[data-group^="azure"] .page-body ul > li::before,
+.page[data-group^="azure"] details ul > li::before{ background: var(--az); }
+.page[data-group^="gcp"]   .page-body ul > li::before,
+.page[data-group^="gcp"]   details ul > li::before{ background: var(--cc); }
+
+details ul, details ol{
+  margin: 6px 0 8px;
+  padding-left: 4px;
+}
+details ul{ list-style: none; }
+
+.page-body ol,
+details ol{ list-style: decimal; padding-left: 24px; }
+.page-body ol > li,
+details ol > li{ padding: 3px 0; line-height: 1.55; color: var(--ink-2); }
+
+li > ul, li > ol{ margin: 4px 0 6px; }
+
+/* numbered-steps already styled separately — keep it */
+.numbered-steps li{ margin: 6px 0; }
+
+/* Print / PDF button */
+.print-btn{
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 12px;
+  background: #fff; border: 1px solid var(--rule); border-radius: 6px;
+  font-family: var(--mono); font-size: 11.5px; font-weight: 500;
+  color: var(--ink-2); cursor: pointer;
+  box-shadow: var(--shadow);
+  transition: border-color .15s, color .15s;
+}
+.print-btn:hover{ border-color: var(--ink-3); color: var(--ink); }
+.print-btn svg{ width: 13px; height: 13px; }
+.page-head{ position: relative; }
+.page-head .print-btn{
+  position: absolute; top: 14px; right: 16px;
+}
+@media (max-width: 600px){
+  .page-head .print-btn{ position: static; margin-top: 10px; }
+}
+
+/* ============================================================ */
+/*  PRINT / PDF stylesheet                                       */
+/* ============================================================ */
+@media print {
+  aside.sidebar,
+  nav.pn,
+  .totop,
+  .print-btn,
+  .breadcrumb,
+  .cloud-tabs{
+    display: none !important;
+  }
+  .shell{ grid-template-columns: 1fr !important; }
+  body{
+    background: #fff !important;
+    color: #000 !important;
+    font-size: 11pt !important;
+  }
+  main, .main-inner{ padding: 0 !important; max-width: 100% !important; }
+
+  /* Force ALL pages hidden, print only the active one */
+  .page{ display: none !important; }
+  .page.active{ display: block !important; }
+
+  details, table, .diagram-frame, .note, .tile-grid{
+    break-inside: avoid;
+  }
+  details{ break-inside: avoid-page; }
+  h1, h2, h3{ break-after: avoid; }
+
+  /* Force all <details> open when printing so content is complete */
+  details{ display: block !important; }
+  details > summary{ list-style: none; }
+  details > summary::after{ content: "" !important; }
+  details:not([open]) > *:not(summary){
+    display: block !important;
+    padding: 0 16px 14px !important;
+  }
+
+  .page-head{
+    border: 1px solid #999 !important;
+    border-left-width: 4px !important;
+    box-shadow: none !important;
+    padding: 10pt 14pt !important;
+  }
+  .page-head h1{ font-size: 18pt !important; }
+  .lede{ font-size: 11pt !important; padding: 6pt 12pt !important; }
+  .note{ box-shadow: none !important; padding: 8pt 12pt !important; }
+  details{
+    box-shadow: none !important;
+    border: 1px solid #ccc !important;
+  }
+  details > summary{ padding: 8pt 12pt !important; font-size: 11pt !important; }
+  table.ref-table{ font-size: 9.5pt !important; }
+  table.ref-table thead th{
+    background: #f0f0f0 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  code{
+    font-size: 9pt !important; background: #f5f5f5 !important;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  pre{
+    font-size: 8.5pt !important;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  svg{
+    max-width: 100% !important;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+
+  @page{ size: A4; margin: 15mm 12mm; }
+  @page :first{ margin-top: 12mm; }
+
+  body::after{
+    content: "Rubrik Multi-Cloud POC Playbook";
+    display: block; position: fixed; bottom: 5mm; left: 0; right: 0;
+    text-align: center; font-size: 8pt; color: #666;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -259,54 +525,196 @@ details > p:first-of-type{margin-top: 0}
 
   <a class="brand" href="#/">
     <div class="logo">R</div>
-    <div class="name">Rubrik AWS CNP<small>POC Playbook</small></div>
+    <div class="name">Rubrik Cloud<small>POC Playbook</small></div>
   </a>
+  <div class="cloud-tabs">
+    <a href="#/" class="cloud-tab cloud-tab-home" data-cloud="home">Home</a>
+    <a href="#/aws/" class="cloud-tab cloud-tab-aws" data-cloud="aws">AWS</a>
+    <a href="#/azure/" class="cloud-tab cloud-tab-azure" data-cloud="azure">Azure</a>
+    <a href="#/gcp/" class="cloud-tab cloud-tab-gcp" data-cloud="gcp">GCP</a>
+  </div>
 
-<div class="nav-group" data-group="home">
-  <div class="nav-group-title"><span class="dot" style="background:var(--ink)"></span>Start</div>
+<div class="nav-group" data-group="home" data-cloud="home">
+  <div class="nav-group-title"><span class="dot" style="background:var(--ink)"></span>Pick your cloud</div>
   <ul class="nav-list">
-    <li><a href="#/" data-route="/">Welcome</a></li>
+    <li><a href="#/" data-route="/">Pick your cloud</a></li>
   </ul>
 </div>
-<div class="nav-group" data-group="foundation">
+<div class="nav-group" data-group="aws" data-cloud="aws">
+  <div class="nav-group-title"><span class="dot" style="background:var(--aws)"></span>AWS — Overview</div>
+  <ul class="nav-list">
+    <li><a href="#/aws/" data-route="/aws/">AWS Overview</a></li>
+  </ul>
+</div>
+<div class="nav-group" data-group="aws-foundation" data-cloud="aws">
   <div class="nav-group-title"><span class="dot" style="background:var(--aws)"></span>1 · Foundation</div>
   <ul class="nav-list">
-    <li><a href="#/foundation/decisions" data-route="/foundation/decisions">Decisions</a></li>
-    <li><a href="#/foundation/identity" data-route="/foundation/identity">Identity</a></li>
-    <li><a href="#/foundation/network" data-route="/foundation/network">Network</a></li>
-    <li><a href="#/foundation/endpoints" data-route="/foundation/endpoints">VPC Endpoints</a></li>
-    <li><a href="#/foundation/security" data-route="/foundation/security">SCPs + KMS</a></li>
+    <li><a href="#/aws/foundation/decisions" data-route="/aws/foundation/decisions">Decisions</a></li>
+    <li><a href="#/aws/foundation/identity" data-route="/aws/foundation/identity">Identity</a></li>
+    <li><a href="#/aws/foundation/network" data-route="/aws/foundation/network">Network</a></li>
+    <li><a href="#/aws/foundation/endpoints" data-route="/aws/foundation/endpoints">VPC Endpoints</a></li>
+    <li><a href="#/aws/foundation/security" data-route="/aws/foundation/security">SCPs + KMS</a></li>
   </ul>
 </div>
-<div class="nav-group" data-group="onboard">
+<div class="nav-group" data-group="aws-onboard" data-cloud="aws">
+  <div class="nav-group-title"><span class="dot" style="background:var(--aws)"></span>2 · Onboard</div>
+  <ul class="nav-list">
+    <li><a href="#/aws/onboard/account" data-route="/aws/onboard/account">Add accounts</a></li>
+    <li><a href="#/aws/onboard/exocompute" data-route="/aws/onboard/exocompute">Exocompute</a></li>
+    <li><a href="#/aws/onboard/archival" data-route="/aws/onboard/archival">Archival location</a></li>
+    <li><a href="#/aws/onboard/mapping" data-route="/aws/onboard/mapping">Map accounts</a></li>
+  </ul>
+</div>
+<div class="nav-group" data-group="aws-workloads" data-cloud="aws">
+  <div class="nav-group-title"><span class="dot" style="background:var(--aws)"></span>3 · Workloads</div>
+  <ul class="nav-list">
+    <li><a href="#/aws/workloads/ec2" data-route="/aws/workloads/ec2">EC2 + EBS</a></li>
+    <li><a href="#/aws/workloads/rds" data-route="/aws/workloads/rds">RDS / Aurora</a></li>
+    <li><a href="#/aws/workloads/dynamo" data-route="/aws/workloads/dynamo">DynamoDB</a></li>
+    <li><a href="#/aws/workloads/s3" data-route="/aws/workloads/s3">S3</a></li>
+  </ul>
+</div>
+<div class="nav-group" data-group="aws-reference" data-cloud="aws">
+  <div class="nav-group-title"><span class="dot" style="background:var(--aws)"></span>4 · Reference</div>
+  <ul class="nav-list">
+    <li><a href="#/aws/reference/firewall" data-route="/aws/reference/firewall">Firewall ports + FQDNs</a></li>
+    <li><a href="#/aws/reference/costs" data-route="/aws/reference/costs">Cost optimisation</a></li>
+    <li><a href="#/aws/reference/troubleshooting" data-route="/aws/reference/troubleshooting">Troubleshooting</a></li>
+  </ul>
+</div>
+<div class="nav-group" data-group="azure" data-cloud="azure">
+  <div class="nav-group-title"><span class="dot" style="background:var(--az)"></span>Azure — Overview</div>
+  <ul class="nav-list">
+    <li><a href="#/azure/" data-route="/azure/">Azure Overview</a></li>
+  </ul>
+</div>
+<div class="nav-group" data-group="azure-foundation" data-cloud="azure">
+  <div class="nav-group-title"><span class="dot" style="background:var(--az)"></span>1 · Foundation</div>
+  <ul class="nav-list">
+    <li><a href="#/azure/foundation/decisions" data-route="/azure/foundation/decisions">Decisions</a></li>
+    <li><a href="#/azure/foundation/identity" data-route="/azure/foundation/identity">Identity</a></li>
+    <li><a href="#/azure/foundation/network" data-route="/azure/foundation/network">Network</a></li>
+    <li><a href="#/azure/foundation/endpoints" data-route="/azure/foundation/endpoints">Service Endpoints</a></li>
+    <li><a href="#/azure/foundation/security" data-route="/azure/foundation/security">RPs + Key Vault</a></li>
+  </ul>
+</div>
+<div class="nav-group" data-group="azure-onboard" data-cloud="azure">
   <div class="nav-group-title"><span class="dot" style="background:var(--az)"></span>2 · Onboard</div>
   <ul class="nav-list">
-    <li><a href="#/onboard/account" data-route="/onboard/account">Add accounts</a></li>
-    <li><a href="#/onboard/exocompute" data-route="/onboard/exocompute">Exocompute</a></li>
-    <li><a href="#/onboard/archival" data-route="/onboard/archival">Archival location</a></li>
-    <li><a href="#/onboard/mapping" data-route="/onboard/mapping">Map accounts</a></li>
+    <li><a href="#/azure/onboard/subscription" data-route="/azure/onboard/subscription">Add subscription</a></li>
+    <li><a href="#/azure/onboard/exocompute" data-route="/azure/onboard/exocompute">Exocompute on AKS</a></li>
+    <li><a href="#/azure/onboard/archival" data-route="/azure/onboard/archival">Archival location</a></li>
+    <li><a href="#/azure/onboard/mapping" data-route="/azure/onboard/mapping">Map subscriptions</a></li>
   </ul>
 </div>
-<div class="nav-group" data-group="workloads">
-  <div class="nav-group-title"><span class="dot" style="background:var(--cc)"></span>3 · Workloads</div>
+<div class="nav-group" data-group="azure-workloads" data-cloud="azure">
+  <div class="nav-group-title"><span class="dot" style="background:var(--az)"></span>3 · Workloads</div>
   <ul class="nav-list">
-    <li><a href="#/workloads/ec2" data-route="/workloads/ec2">EC2 + EBS</a></li>
-    <li><a href="#/workloads/rds" data-route="/workloads/rds">RDS / Aurora</a></li>
-    <li><a href="#/workloads/dynamo" data-route="/workloads/dynamo">DynamoDB</a></li>
-    <li><a href="#/workloads/s3" data-route="/workloads/s3">S3</a></li>
+    <li><a href="#/azure/workloads/vm" data-route="/azure/workloads/vm">Azure VMs + Disks</a></li>
+    <li><a href="#/azure/workloads/sql" data-route="/azure/workloads/sql">Azure SQL DB/MI</a></li>
+    <li><a href="#/azure/workloads/blob" data-route="/azure/workloads/blob">Azure Blob</a></li>
+    <li><a href="#/azure/workloads/adls" data-route="/azure/workloads/adls">ADLS Gen2</a></li>
   </ul>
 </div>
-<div class="nav-group" data-group="reference">
-  <div class="nav-group-title"><span class="dot" style="background:var(--ink-3)"></span>4 · Reference</div>
+<div class="nav-group" data-group="azure-reference" data-cloud="azure">
+  <div class="nav-group-title"><span class="dot" style="background:var(--az)"></span>4 · Reference</div>
   <ul class="nav-list">
-    <li><a href="#/reference/firewall" data-route="/reference/firewall">Firewall ports + FQDNs</a></li>
-    <li><a href="#/reference/costs" data-route="/reference/costs">Cost optimisation</a></li>
-    <li><a href="#/reference/troubleshooting" data-route="/reference/troubleshooting">Troubleshooting</a></li>
+    <li><a href="#/azure/reference/firewall" data-route="/azure/reference/firewall">Firewall + FQDNs</a></li>
+    <li><a href="#/azure/reference/costs" data-route="/azure/reference/costs">Cost optimisation</a></li>
+  </ul>
+</div>
+<div class="nav-group" data-group="gcp" data-cloud="gcp">
+  <div class="nav-group-title"><span class="dot" style="background:var(--cc)"></span>GCP</div>
+  <ul class="nav-list">
+    <li><a href="#/gcp/" data-route="/gcp/">GCP Overview</a></li>
+    <li><a href="#/gcp/scope" data-route="/gcp/scope">CNP or CCES?</a></li>
+    <li><a href="#/gcp/foundation" data-route="/gcp/foundation">Foundation</a></li>
+    <li><a href="#/gcp/onboard" data-route="/gcp/onboard">Onboard CNP</a></li>
+    <li><a href="#/gcp/workloads/gce" data-route="/gcp/workloads/gce">GCE + Persistent Disks</a></li>
+    <li><a href="#/gcp/cces-pointer" data-route="/gcp/cces-pointer">When to deploy CCES on GCP</a></li>
   </ul>
 </div>
 </aside>
 <main><div class="main-inner">
 <article class="page" data-route="/" data-group="home">
+<div class="hero">
+  <div class="eyebrow">Rubrik Cloud · POC Playbook</div>
+  <h1>Onboard Rubrik Security Cloud — <em>pick your cloud</em></h1>
+  <p>The opinionated path for AWS, Azure, and GCP. Decisions, foundation, onboarding, workloads, and the operational reference for each. Pick the cloud you're working on below.</p>
+</div>
+
+<h2 class="section-title">Choose a cloud</h2>
+<div class="cloud-picker">
+  <a class="cloud-card cloud-aws" href="#/aws/">
+    <div class="cloud-card-head">
+      <div class="cloud-logo">AWS</div>
+      <div class="cloud-status">Full playbook</div>
+    </div>
+    <h3>Amazon Web Services</h3>
+    <p>Cloud Native Protection for EC2, EBS, RDS, DynamoDB, S3. Exocompute on EKS, archival, cross-account model.</p>
+    <ul class="cloud-features">
+      <li>17 pages · 4 animated data-flow diagrams</li>
+      <li>Foundation → Onboard → Workloads → Reference</li>
+      <li>Complete IAM, network, KMS, SCP coverage</li>
+    </ul>
+    <div class="cloud-card-cta">Open AWS playbook →</div>
+  </a>
+
+  <a class="cloud-card cloud-azure" href="#/azure/">
+    <div class="cloud-card-head">
+      <div class="cloud-logo">Azure</div>
+      <div class="cloud-status">Full playbook</div>
+    </div>
+    <h3>Microsoft Azure</h3>
+    <p>Cloud Native Protection for Azure VMs, managed disks, Azure SQL, Blob, ADLS. Exocompute on AKS with CNI Overlay.</p>
+    <ul class="cloud-features">
+      <li>13 pages · 4 animated data-flow diagrams</li>
+      <li>Microsoft Entra ID OAuth onboarding model</li>
+      <li>Custom RBAC role + Resource Provider registration</li>
+    </ul>
+    <div class="cloud-card-cta">Open Azure playbook →</div>
+  </a>
+
+  <a class="cloud-card cloud-gcp" href="#/gcp/">
+    <div class="cloud-card-head">
+      <div class="cloud-logo">GCP</div>
+      <div class="cloud-status">Lighter scope</div>
+    </div>
+    <h3>Google Cloud Platform</h3>
+    <p>Narrower CNP scope — GCE + Persistent Disks only. Most GCP customers deploy CCES (Rubrik CDM in GCE) for in-guest workloads.</p>
+    <ul class="cloud-features">
+      <li>6 pages · CNP-vs-CCES decision tree</li>
+      <li>Service account, PGA, GCS bucket setup</li>
+      <li>CCES pointer for SQL/Oracle/SAP HANA</li>
+    </ul>
+    <div class="cloud-card-cta">Open GCP playbook →</div>
+  </a>
+</div>
+
+<h2 class="section-title">What's the same across clouds</h2>
+<div class="cross-cloud-grid">
+  <div class="cross-cloud-card">
+    <h4>RSC tenant</h4>
+    <p>Same tenant URL (<code>&lt;subdomain&gt;.my.rubrik.com</code>) regardless of which clouds you protect. One pane of glass, multi-cloud.</p>
+  </div>
+  <div class="cross-cloud-card">
+    <h4>Exocompute model</h4>
+    <p>Managed Kubernetes (EKS / AKS) running in your cloud, on-demand for file indexing, FLR, app-consistent snapshots, and storage tiering. Scales to zero between jobs.</p>
+  </div>
+  <div class="cross-cloud-card">
+    <h4>Metadata Store (cloudslab)</h4>
+    <p><code>&lt;customer-hostname&gt;.cloudslab.rubrik.com</code> — used by Azure Blob and AWS S3 workloads. Dynamic per customer, found on the Subscriptions tab.</p>
+  </div>
+  <div class="cross-cloud-card">
+    <h4>Index file destination</h4>
+    <p>All clouds upload filesystem metadata to RSC's GCS-backed metadata store via <code>storage.googleapis.com</code>. Same outbound FQDN whether you're AWS, Azure, or GCP.</p>
+  </div>
+</div>
+</article>
+<article class="page" data-route="/aws/" data-group="aws">
+  <div class="breadcrumb"><a href="#/">Home</a><span class="sep">/</span><span>AWS — Overview</span><span class="sep">/</span><span>AWS Overview</span></div>
+  <header class="page-head"><h1>AWS Overview</h1><button class="print-btn" onclick="window.print()" title="Save this page as PDF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>Save as PDF</button></header>
+
 <div class="hero">
   <div class="eyebrow">Rubrik AWS CNP · POC Playbook</div>
   <h1>Onboard AWS Cloud Native Protection — <em>end to end</em></h1>
@@ -315,34 +723,34 @@ details > p:first-of-type{margin-top: 0}
 
 <h2 class="section-title">Phase 1 — Foundation</h2>
 <div class="tile-grid">
-  <a class="tile tile-aws" href="#/foundation/decisions"><div class="tile-num">1.1</div><h3>Decisions</h3><p>Nine choices you make once. Re-doing these mid-build = re-doing IAM.</p></a>
-  <a class="tile tile-aws" href="#/foundation/identity"><div class="tile-num">1.2</div><h3>Identity</h3><p>How Rubrik authenticates into AWS. Cross-account roles + STS chaining.</p></a>
-  <a class="tile tile-aws" href="#/foundation/network"><div class="tile-num">1.3</div><h3>Network</h3><p>VPC, subnets, egress, DNS. Per region with Exocompute.</p></a>
-  <a class="tile tile-aws" href="#/foundation/endpoints"><div class="tile-num">1.4</div><h3>VPC Endpoints</h3><p>The cost layer. Build BEFORE Exocompute.</p></a>
-  <a class="tile tile-aws" href="#/foundation/security"><div class="tile-num">1.5</div><h3>SCPs + KMS</h3><p>Silent killers if missed. Especially CMK key policies.</p></a>
+  <a class="tile tile-aws" href="#/aws/foundation/decisions"><div class="tile-num">1.1</div><h3>Decisions</h3><p>Nine choices you make once. Re-doing these mid-build = re-doing IAM.</p></a>
+  <a class="tile tile-aws" href="#/aws/foundation/identity"><div class="tile-num">1.2</div><h3>Identity</h3><p>How Rubrik authenticates into AWS. Cross-account roles + STS chaining.</p></a>
+  <a class="tile tile-aws" href="#/aws/foundation/network"><div class="tile-num">1.3</div><h3>Network</h3><p>VPC, subnets, egress, DNS. Per region with Exocompute.</p></a>
+  <a class="tile tile-aws" href="#/aws/foundation/endpoints"><div class="tile-num">1.4</div><h3>VPC Endpoints</h3><p>The cost layer. Build BEFORE Exocompute.</p></a>
+  <a class="tile tile-aws" href="#/aws/foundation/security"><div class="tile-num">1.5</div><h3>SCPs + KMS</h3><p>Silent killers if missed. Especially CMK key policies.</p></a>
 </div>
 
 <h2 class="section-title">Phase 2 — Onboard</h2>
 <div class="tile-grid">
-  <a class="tile tile-az" href="#/onboard/account"><div class="tile-num">2.1</div><h3>Add accounts</h3><p>CloudFormation-driven onboarding in RSC.</p></a>
-  <a class="tile tile-az" href="#/onboard/exocompute"><div class="tile-num">2.2</div><h3>Exocompute</h3><p>EKS cluster config + worker SGs.</p></a>
-  <a class="tile tile-az" href="#/onboard/archival"><div class="tile-num">2.3</div><h3>Archival location</h3><p>S3 bucket for long-term tier.</p></a>
-  <a class="tile tile-az" href="#/onboard/mapping"><div class="tile-num">2.4</div><h3>Map accounts</h3><p>Workload → Exocompute mapping (the critical wire).</p></a>
+  <a class="tile tile-aws" href="#/aws/onboard/account"><div class="tile-num">2.1</div><h3>Add accounts</h3><p>CloudFormation-driven onboarding in RSC.</p></a>
+  <a class="tile tile-aws" href="#/aws/onboard/exocompute"><div class="tile-num">2.2</div><h3>Exocompute</h3><p>EKS cluster config + worker SGs.</p></a>
+  <a class="tile tile-aws" href="#/aws/onboard/archival"><div class="tile-num">2.3</div><h3>Archival location</h3><p>S3 bucket for long-term tier.</p></a>
+  <a class="tile tile-aws" href="#/aws/onboard/mapping"><div class="tile-num">2.4</div><h3>Map accounts</h3><p>Workload → Exocompute mapping (the critical wire).</p></a>
 </div>
 
 <h2 class="section-title">Phase 3 — Workloads</h2>
 <div class="tile-grid">
-  <a class="tile tile-cc" href="#/workloads/ec2"><div class="tile-num">3.1</div><h3>EC2 + EBS</h3><p>Snapshot-based. Indexing via Exocompute.</p></a>
-  <a class="tile tile-cc" href="#/workloads/rds"><div class="tile-num">3.2</div><h3>RDS / Aurora</h3><p>Native AWS snapshots, cross-region copy.</p></a>
-  <a class="tile tile-cc" href="#/workloads/dynamo"><div class="tile-num">3.3</div><h3>DynamoDB</h3><p>PITR + Export-to-S3 (different from EBS).</p></a>
-  <a class="tile tile-cc" href="#/workloads/s3"><div class="tile-num">3.4</div><h3>S3</h3><p>Version-based protection, archive tier.</p></a>
+  <a class="tile tile-aws" href="#/aws/workloads/ec2"><div class="tile-num">3.1</div><h3>EC2 + EBS</h3><p>Snapshot-based. Indexing via Exocompute.</p></a>
+  <a class="tile tile-aws" href="#/aws/workloads/rds"><div class="tile-num">3.2</div><h3>RDS / Aurora</h3><p>Native AWS snapshots, cross-region copy.</p></a>
+  <a class="tile tile-aws" href="#/aws/workloads/dynamo"><div class="tile-num">3.3</div><h3>DynamoDB</h3><p>PITR + Export-to-S3 (different from EBS).</p></a>
+  <a class="tile tile-aws" href="#/aws/workloads/s3"><div class="tile-num">3.4</div><h3>S3</h3><p>Version-based protection, archive tier.</p></a>
 </div>
 
 <h2 class="section-title">Phase 4 — Reference</h2>
 <div class="tile-grid">
-  <a class="tile tile-ref" href="#/reference/firewall"><div class="tile-num">4.1</div><h3>Firewall ports + FQDNs</h3><p>The complete allowlist incl. cloudslab.</p></a>
-  <a class="tile tile-ref" href="#/reference/costs"><div class="tile-num">4.2</div><h3>Cost optimisation</h3><p>NAT vs endpoints, archive tiers.</p></a>
-  <a class="tile tile-ref" href="#/reference/troubleshooting"><div class="tile-num">4.3</div><h3>Troubleshooting</h3><p>The top 10 things that go wrong.</p></a>
+  <a class="tile tile-aws" href="#/aws/reference/firewall"><div class="tile-num">4.1</div><h3>Firewall ports + FQDNs</h3><p>The complete allowlist incl. cloudslab.</p></a>
+  <a class="tile tile-aws" href="#/aws/reference/costs"><div class="tile-num">4.2</div><h3>Cost optimisation</h3><p>NAT vs endpoints, archive tiers.</p></a>
+  <a class="tile tile-aws" href="#/aws/reference/troubleshooting"><div class="tile-num">4.3</div><h3>Troubleshooting</h3><p>The top 10 things that go wrong.</p></a>
 </div>
 
 <h2 class="section-title">Architecture at a glance</h2>
@@ -492,10 +900,11 @@ details > p:first-of-type{margin-top: 0}
 </svg>
 
 </div>
+
 </article>
-<article class="page" data-route="/foundation/decisions" data-group="foundation">
+<article class="page" data-route="/aws/foundation/decisions" data-group="aws-foundation">
   <div class="breadcrumb"><a href="#/">Home</a><span class="sep">/</span><span>1 · Foundation</span><span class="sep">/</span><span>Decisions</span></div>
-  <header class="page-head"><h1>Decisions</h1></header>
+  <header class="page-head"><h1>Decisions</h1><button class="print-btn" onclick="window.print()" title="Save this page as PDF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>Save as PDF</button></header>
 
 <p class="lede">Answer these nine before touching any console. Document the answers. Coming back to change them = re-doing IAM, VPC, and SCP work.</p>
 
@@ -554,13 +963,13 @@ details > p:first-of-type{margin-top: 0}
 </details>
 
 <div class="nav-buttons">
-  <a class="btn-next" href="#/foundation/identity">Next: Identity →</a>
+  <a class="btn-next" href="#/aws/foundation/identity">Next: Identity →</a>
 </div>
 
 </article>
-<article class="page" data-route="/foundation/identity" data-group="foundation">
+<article class="page" data-route="/aws/foundation/identity" data-group="aws-foundation">
   <div class="breadcrumb"><a href="#/">Home</a><span class="sep">/</span><span>1 · Foundation</span><span class="sep">/</span><span>Identity</span></div>
-  <header class="page-head"><h1>Identity</h1></header>
+  <header class="page-head"><h1>Identity</h1><button class="print-btn" onclick="window.print()" title="Save this page as PDF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>Save as PDF</button></header>
 
 <p class="lede">How Rubrik authenticates into AWS. Cross-account roles + STS chaining. No long-lived keys are stored.</p>
 
@@ -606,14 +1015,14 @@ details > p:first-of-type{margin-top: 0}
 </details>
 
 <div class="nav-buttons">
-  <a class="btn-prev" href="#/foundation/decisions">← Decisions</a>
-  <a class="btn-next" href="#/foundation/network">Next: Network →</a>
+  <a class="btn-prev" href="#/aws/foundation/decisions">← Decisions</a>
+  <a class="btn-next" href="#/aws/foundation/network">Next: Network →</a>
 </div>
 
 </article>
-<article class="page" data-route="/foundation/network" data-group="foundation">
+<article class="page" data-route="/aws/foundation/network" data-group="aws-foundation">
   <div class="breadcrumb"><a href="#/">Home</a><span class="sep">/</span><span>1 · Foundation</span><span class="sep">/</span><span>Network</span></div>
-  <header class="page-head"><h1>Network</h1></header>
+  <header class="page-head"><h1>Network</h1><button class="print-btn" onclick="window.print()" title="Save this page as PDF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>Save as PDF</button></header>
 
 <p class="lede">Per region per account that hosts an Exocompute instance. Workload-only regions skip this.</p>
 
@@ -681,14 +1090,14 @@ details > p:first-of-type{margin-top: 0}
 </details>
 
 <div class="nav-buttons">
-  <a class="btn-prev" href="#/foundation/identity">← Identity</a>
-  <a class="btn-next" href="#/foundation/endpoints">Next: VPC Endpoints →</a>
+  <a class="btn-prev" href="#/aws/foundation/identity">← Identity</a>
+  <a class="btn-next" href="#/aws/foundation/endpoints">Next: VPC Endpoints →</a>
 </div>
 
 </article>
-<article class="page" data-route="/foundation/endpoints" data-group="foundation">
+<article class="page" data-route="/aws/foundation/endpoints" data-group="aws-foundation">
   <div class="breadcrumb"><a href="#/">Home</a><span class="sep">/</span><span>1 · Foundation</span><span class="sep">/</span><span>VPC Endpoints</span></div>
-  <header class="page-head"><h1>VPC Endpoints</h1></header>
+  <header class="page-head"><h1>VPC Endpoints</h1><button class="print-btn" onclick="window.print()" title="Save this page as PDF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>Save as PDF</button></header>
 
 <div class="note danger">
 <strong>WARNING — Read this before going to Phase 2.</strong> Without VPC Endpoints, every snapshot read, ECR image pull, EKS API call, and STS request from Exocompute goes via your NAT Gateway at <strong>$0.045/GB processed</strong> + hourly + cross-AZ data transfer. A 10 TB monthly POC easily clears $400–600 in NAT charges that would be near-zero with endpoints in place.
@@ -764,14 +1173,14 @@ details > p:first-of-type{margin-top: 0}
 </div>
 
 <div class="nav-buttons">
-  <a class="btn-prev" href="#/foundation/network">← Network</a>
-  <a class="btn-next" href="#/foundation/security">Next: SCPs + KMS →</a>
+  <a class="btn-prev" href="#/aws/foundation/network">← Network</a>
+  <a class="btn-next" href="#/aws/foundation/security">Next: SCPs + KMS →</a>
 </div>
 
 </article>
-<article class="page" data-route="/foundation/security" data-group="foundation">
+<article class="page" data-route="/aws/foundation/security" data-group="aws-foundation">
   <div class="breadcrumb"><a href="#/">Home</a><span class="sep">/</span><span>1 · Foundation</span><span class="sep">/</span><span>SCPs + KMS</span></div>
-  <header class="page-head"><h1>SCPs + KMS</h1></header>
+  <header class="page-head"><h1>SCPs + KMS</h1><button class="print-btn" onclick="window.print()" title="Save this page as PDF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>Save as PDF</button></header>
 
 <p class="lede">The silent killers. Items that don't show in any UI but break things at job time if missed.</p>
 
@@ -851,14 +1260,14 @@ details > p:first-of-type{margin-top: 0}
 </details>
 
 <div class="nav-buttons">
-  <a class="btn-prev" href="#/foundation/endpoints">← VPC Endpoints</a>
-  <a class="btn-next" href="#/onboard/account">Next: Add accounts →</a>
+  <a class="btn-prev" href="#/aws/foundation/endpoints">← VPC Endpoints</a>
+  <a class="btn-next" href="#/aws/onboard/account">Next: Add accounts →</a>
 </div>
 
 </article>
-<article class="page" data-route="/onboard/account" data-group="onboard">
+<article class="page" data-route="/aws/onboard/account" data-group="aws-onboard">
   <div class="breadcrumb"><a href="#/">Home</a><span class="sep">/</span><span>2 · Onboard</span><span class="sep">/</span><span>Add accounts</span></div>
-  <header class="page-head"><h1>Add accounts</h1></header>
+  <header class="page-head"><h1>Add accounts</h1><button class="print-btn" onclick="window.print()" title="Save this page as PDF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>Save as PDF</button></header>
 
 <p class="lede">CloudFormation-driven onboarding. Each account takes ~5 minutes if Foundation is done.</p>
 
@@ -908,14 +1317,14 @@ details > p:first-of-type{margin-top: 0}
 </details>
 
 <div class="nav-buttons">
-  <a class="btn-prev" href="#/foundation/security">← SCPs + KMS</a>
-  <a class="btn-next" href="#/onboard/exocompute">Next: Exocompute →</a>
+  <a class="btn-prev" href="#/aws/foundation/security">← SCPs + KMS</a>
+  <a class="btn-next" href="#/aws/onboard/exocompute">Next: Exocompute →</a>
 </div>
 
 </article>
-<article class="page" data-route="/onboard/exocompute" data-group="onboard">
+<article class="page" data-route="/aws/onboard/exocompute" data-group="aws-onboard">
   <div class="breadcrumb"><a href="#/">Home</a><span class="sep">/</span><span>2 · Onboard</span><span class="sep">/</span><span>Exocompute</span></div>
-  <header class="page-head"><h1>Exocompute</h1></header>
+  <header class="page-head"><h1>Exocompute</h1><button class="print-btn" onclick="window.print()" title="Save this page as PDF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>Save as PDF</button></header>
 
 <p class="lede">Configure once per region per host account. RSC does NOT provision EKS now — it does that lazily on the first job. So the first indexing run takes 10–15 min while EKS comes up.</p>
 
@@ -959,14 +1368,14 @@ details > p:first-of-type{margin-top: 0}
 </details>
 
 <div class="nav-buttons">
-  <a class="btn-prev" href="#/onboard/account">← Add accounts</a>
-  <a class="btn-next" href="#/onboard/archival">Next: Archival →</a>
+  <a class="btn-prev" href="#/aws/onboard/account">← Add accounts</a>
+  <a class="btn-next" href="#/aws/onboard/archival">Next: Archival →</a>
 </div>
 
 </article>
-<article class="page" data-route="/onboard/archival" data-group="onboard">
+<article class="page" data-route="/aws/onboard/archival" data-group="aws-onboard">
   <div class="breadcrumb"><a href="#/">Home</a><span class="sep">/</span><span>2 · Onboard</span><span class="sep">/</span><span>Archival location</span></div>
-  <header class="page-head"><h1>Archival location</h1></header>
+  <header class="page-head"><h1>Archival location</h1><button class="print-btn" onclick="window.print()" title="Save this page as PDF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>Save as PDF</button></header>
 
 <p class="lede">Where SLA archive tier writes data. RSC can create the S3 bucket or use an existing one.</p>
 
@@ -998,14 +1407,14 @@ details > p:first-of-type{margin-top: 0}
 </details>
 
 <div class="nav-buttons">
-  <a class="btn-prev" href="#/onboard/exocompute">← Exocompute</a>
-  <a class="btn-next" href="#/onboard/mapping">Next: Map accounts →</a>
+  <a class="btn-prev" href="#/aws/onboard/exocompute">← Exocompute</a>
+  <a class="btn-next" href="#/aws/onboard/mapping">Next: Map accounts →</a>
 </div>
 
 </article>
-<article class="page" data-route="/onboard/mapping" data-group="onboard">
+<article class="page" data-route="/aws/onboard/mapping" data-group="aws-onboard">
   <div class="breadcrumb"><a href="#/">Home</a><span class="sep">/</span><span>2 · Onboard</span><span class="sep">/</span><span>Map accounts</span></div>
-  <header class="page-head"><h1>Map accounts</h1></header>
+  <header class="page-head"><h1>Map accounts</h1><button class="print-btn" onclick="window.print()" title="Save this page as PDF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>Save as PDF</button></header>
 
 <p class="lede">The critical wire. Workload accounts won't use the host's Exocompute until you explicitly map them. Miss this and jobs succeed at snapshot but fail at indexing/FLR/storage tiering.</p>
 
@@ -1039,14 +1448,14 @@ details > p:first-of-type{margin-top: 0}
 </details>
 
 <div class="nav-buttons">
-  <a class="btn-prev" href="#/onboard/archival">← Archival</a>
-  <a class="btn-next" href="#/workloads/ec2">Next: EC2 + EBS →</a>
+  <a class="btn-prev" href="#/aws/onboard/archival">← Archival</a>
+  <a class="btn-next" href="#/aws/workloads/ec2">Next: EC2 + EBS →</a>
 </div>
 
 </article>
-<article class="page" data-route="/workloads/ec2" data-group="workloads">
+<article class="page" data-route="/aws/workloads/ec2" data-group="aws-workloads">
   <div class="breadcrumb"><a href="#/">Home</a><span class="sep">/</span><span>3 · Workloads</span><span class="sep">/</span><span>EC2 + EBS</span></div>
-  <header class="page-head"><h1>EC2 + EBS</h1></header>
+  <header class="page-head"><h1>EC2 + EBS</h1><button class="print-btn" onclick="window.print()" title="Save this page as PDF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>Save as PDF</button></header>
 
 <p class="lede">Snapshot-based protection using AWS-native EBS snapshots. Exocompute is used for indexing, file-level recovery, app-consistent snapshots, and storage tiering — not for the snapshot itself.</p>
 
@@ -1399,14 +1808,14 @@ details > p:first-of-type{margin-top: 0}
 </details>
 
 <div class="nav-buttons">
-  <a class="btn-prev" href="#/onboard/mapping">← Map accounts</a>
-  <a class="btn-next" href="#/workloads/rds">Next: RDS →</a>
+  <a class="btn-prev" href="#/aws/onboard/mapping">← Map accounts</a>
+  <a class="btn-next" href="#/aws/workloads/rds">Next: RDS →</a>
 </div>
 
 </article>
-<article class="page" data-route="/workloads/rds" data-group="workloads">
+<article class="page" data-route="/aws/workloads/rds" data-group="aws-workloads">
   <div class="breadcrumb"><a href="#/">Home</a><span class="sep">/</span><span>3 · Workloads</span><span class="sep">/</span><span>RDS / Aurora</span></div>
-  <header class="page-head"><h1>RDS / Aurora</h1></header>
+  <header class="page-head"><h1>RDS / Aurora</h1><button class="print-btn" onclick="window.print()" title="Save this page as PDF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>Save as PDF</button></header>
 
 <p class="lede">Uses AWS-native RDS snapshots. No agent installed inside the database. Restore = always a new RDS instance (cannot in-place).</p>
 
@@ -1593,14 +2002,14 @@ details > p:first-of-type{margin-top: 0}
 </details>
 
 <div class="nav-buttons">
-  <a class="btn-prev" href="#/workloads/ec2">← EC2 + EBS</a>
-  <a class="btn-next" href="#/workloads/dynamo">Next: DynamoDB →</a>
+  <a class="btn-prev" href="#/aws/workloads/ec2">← EC2 + EBS</a>
+  <a class="btn-next" href="#/aws/workloads/dynamo">Next: DynamoDB →</a>
 </div>
 
 </article>
-<article class="page" data-route="/workloads/dynamo" data-group="workloads">
+<article class="page" data-route="/aws/workloads/dynamo" data-group="aws-workloads">
   <div class="breadcrumb"><a href="#/">Home</a><span class="sep">/</span><span>3 · Workloads</span><span class="sep">/</span><span>DynamoDB</span></div>
-  <header class="page-head"><h1>DynamoDB</h1></header>
+  <header class="page-head"><h1>DynamoDB</h1><button class="print-btn" onclick="window.print()" title="Save this page as PDF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>Save as PDF</button></header>
 
 <p class="lede">Different model from EBS/RDS — uses DynamoDB's native Export-to-S3 API. Backup doesn't need Exocompute (AWS does the work); restore does.</p>
 
@@ -1781,14 +2190,14 @@ details > p:first-of-type{margin-top: 0}
 </details>
 
 <div class="nav-buttons">
-  <a class="btn-prev" href="#/workloads/rds">← RDS</a>
-  <a class="btn-next" href="#/workloads/s3">Next: S3 →</a>
+  <a class="btn-prev" href="#/aws/workloads/rds">← RDS</a>
+  <a class="btn-next" href="#/aws/workloads/s3">Next: S3 →</a>
 </div>
 
 </article>
-<article class="page" data-route="/workloads/s3" data-group="workloads">
+<article class="page" data-route="/aws/workloads/s3" data-group="aws-workloads">
   <div class="breadcrumb"><a href="#/">Home</a><span class="sep">/</span><span>3 · Workloads</span><span class="sep">/</span><span>S3</span></div>
-  <header class="page-head"><h1>S3</h1></header>
+  <header class="page-head"><h1>S3</h1><button class="print-btn" onclick="window.print()" title="Save this page as PDF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>Save as PDF</button></header>
 
 <p class="lede">Version-based protection. Source bucket MUST have versioning enabled. Exocompute scans object versions and tracks changes — this is closer to "log of changes" than "snapshot".</p>
 
@@ -1972,14 +2381,14 @@ details > p:first-of-type{margin-top: 0}
 </details>
 
 <div class="nav-buttons">
-  <a class="btn-prev" href="#/workloads/dynamo">← DynamoDB</a>
-  <a class="btn-next" href="#/reference/firewall">Next: Firewall reference →</a>
+  <a class="btn-prev" href="#/aws/workloads/dynamo">← DynamoDB</a>
+  <a class="btn-next" href="#/aws/reference/firewall">Next: Firewall reference →</a>
 </div>
 
 </article>
-<article class="page" data-route="/reference/firewall" data-group="reference">
+<article class="page" data-route="/aws/reference/firewall" data-group="aws-reference">
   <div class="breadcrumb"><a href="#/">Home</a><span class="sep">/</span><span>4 · Reference</span><span class="sep">/</span><span>Firewall ports + FQDNs</span></div>
-  <header class="page-head"><h1>Firewall ports + FQDNs</h1></header>
+  <header class="page-head"><h1>Firewall ports + FQDNs</h1><button class="print-btn" onclick="window.print()" title="Save this page as PDF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>Save as PDF</button></header>
 
 <p class="lede">The complete outbound allowlist for AWS CNP. Every FQDN your Exocompute subnet (and CCES, if you have it) needs to reach.</p>
 
@@ -2037,14 +2446,14 @@ After Exocompute is created in Phase 2, the <code>Polaris-Exocompute-eks-worker-
 </ol>
 
 <div class="nav-buttons">
-  <a class="btn-prev" href="#/workloads/s3">← S3</a>
-  <a class="btn-next" href="#/reference/costs">Next: Cost optimisation →</a>
+  <a class="btn-prev" href="#/aws/workloads/s3">← S3</a>
+  <a class="btn-next" href="#/aws/reference/costs">Next: Cost optimisation →</a>
 </div>
 
 </article>
-<article class="page" data-route="/reference/costs" data-group="reference">
+<article class="page" data-route="/aws/reference/costs" data-group="aws-reference">
   <div class="breadcrumb"><a href="#/">Home</a><span class="sep">/</span><span>4 · Reference</span><span class="sep">/</span><span>Cost optimisation</span></div>
-  <header class="page-head"><h1>Cost optimisation</h1></header>
+  <header class="page-head"><h1>Cost optimisation</h1><button class="print-btn" onclick="window.print()" title="Save this page as PDF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>Save as PDF</button></header>
 
 <p class="lede">Where the AWS bill comes from with Rubrik CNP, and what to do about it.</p>
 
@@ -2104,14 +2513,14 @@ After Exocompute is created in Phase 2, the <code>Polaris-Exocompute-eks-worker-
 </details>
 
 <div class="nav-buttons">
-  <a class="btn-prev" href="#/reference/firewall">← Firewall</a>
-  <a class="btn-next" href="#/reference/troubleshooting">Next: Troubleshooting →</a>
+  <a class="btn-prev" href="#/aws/reference/firewall">← Firewall</a>
+  <a class="btn-next" href="#/aws/reference/troubleshooting">Next: Troubleshooting →</a>
 </div>
 
 </article>
-<article class="page" data-route="/reference/troubleshooting" data-group="reference">
+<article class="page" data-route="/aws/reference/troubleshooting" data-group="aws-reference">
   <div class="breadcrumb"><a href="#/">Home</a><span class="sep">/</span><span>4 · Reference</span><span class="sep">/</span><span>Troubleshooting</span></div>
-  <header class="page-head"><h1>Troubleshooting</h1></header>
+  <header class="page-head"><h1>Troubleshooting</h1><button class="print-btn" onclick="window.print()" title="Save this page as PDF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>Save as PDF</button></header>
 
 <p class="lede">Top 10 things that go wrong, in order of frequency.</p>
 
@@ -2167,8 +2576,1951 @@ After Exocompute is created in Phase 2, the <code>Polaris-Exocompute-eks-worker-
 </details>
 
 <div class="nav-buttons">
-  <a class="btn-prev" href="#/reference/costs">← Costs</a>
+  <a class="btn-prev" href="#/aws/reference/costs">← Costs</a>
   <a class="btn-next" href="#/">Back to home →</a>
+</div>
+
+</article>
+<article class="page" data-route="/azure/" data-group="azure">
+  <div class="breadcrumb"><a href="#/">Home</a><span class="sep">/</span><span>Azure — Overview</span><span class="sep">/</span><span>Azure Overview</span></div>
+  <header class="page-head"><h1>Azure Overview</h1><button class="print-btn" onclick="window.print()" title="Save this page as PDF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>Save as PDF</button></header>
+
+<div class="hero">
+  <div class="eyebrow">Rubrik Azure CNP · POC Playbook</div>
+  <h1>Onboard Azure Cloud Native Protection — <em>end to end</em></h1>
+  <p>Protect Azure VMs, managed disks, Azure SQL Database, Azure SQL Managed Instance, Azure Blob, and ADLS Gen2. Exocompute runs on AKS in your tenant.</p>
+</div>
+
+<h2 class="section-title">Phase 1 — Foundation</h2>
+<div class="tile-grid">
+  <a class="tile tile-azure" href="#/azure/foundation/decisions"><div class="tile-num">1.1</div><h3>Decisions</h3><p>Architectural choices: subscription model, OAuth onboarding, workloads.</p></a>
+  <a class="tile tile-azure" href="#/azure/foundation/identity"><div class="tile-num">1.2</div><h3>Identity</h3><p>Microsoft Entra ID app + custom RBAC role at subscription scope.</p></a>
+  <a class="tile tile-azure" href="#/azure/foundation/network"><div class="tile-num">1.3</div><h3>Network</h3><p>VNet, /25 AKS subnet, /18 Pod CIDR, CNI Overlay.</p></a>
+  <a class="tile tile-azure" href="#/azure/foundation/endpoints"><div class="tile-num">1.4</div><h3>Service Endpoints</h3><p>Microsoft.Storage on AKS subnet — FREE, biggest cost saver.</p></a>
+  <a class="tile tile-azure" href="#/azure/foundation/security"><div class="tile-num">1.5</div><h3>RPs + Key Vault</h3><p>Resource Provider registration, ADE, CMK handling.</p></a>
+</div>
+
+<h2 class="section-title">Phase 2 — Onboard</h2>
+<div class="tile-grid">
+  <a class="tile tile-azure" href="#/azure/onboard/subscription"><div class="tile-num">2.1</div><h3>Add subscription</h3><p>OAuth flow — RSCAzure app consent.</p></a>
+  <a class="tile tile-azure" href="#/azure/onboard/exocompute"><div class="tile-num">2.2</div><h3>Exocompute</h3><p>AKS cluster config in your tenant.</p></a>
+  <a class="tile tile-azure" href="#/azure/onboard/archival"><div class="tile-num">2.3</div><h3>Archival location</h3><p>Storage Account + container settings.</p></a>
+  <a class="tile tile-azure" href="#/azure/onboard/mapping"><div class="tile-num">2.4</div><h3>Map subscriptions</h3><p>Workload → Exocompute host mapping.</p></a>
+</div>
+
+<h2 class="section-title">Phase 3 — Workloads</h2>
+<div class="tile-grid">
+  <a class="tile tile-azure" href="#/azure/workloads/vm"><div class="tile-num">3.1</div><h3>Azure VMs + Disks</h3><p>Managed disk snapshots, ADE support.</p></a>
+  <a class="tile tile-azure" href="#/azure/workloads/sql"><div class="tile-num">3.2</div><h3>Azure SQL DB/MI</h3><p>Persistent backup via Exocompute on TCP/1433.</p></a>
+  <a class="tile tile-azure" href="#/azure/workloads/blob"><div class="tile-num">3.3</div><h3>Azure Blob</h3><p>Version-based, cloudslab metadata store.</p></a>
+  <a class="tile tile-azure" href="#/azure/workloads/adls"><div class="tile-num">3.4</div><h3>ADLS Gen2</h3><p>Hierarchical namespace, dfs.core.windows.net.</p></a>
+</div>
+
+<h2 class="section-title">Phase 4 — Reference</h2>
+<div class="tile-grid">
+  <a class="tile tile-azure" href="#/azure/reference/firewall"><div class="tile-num">4.1</div><h3>Firewall + FQDNs</h3><p>Public + Government endpoint allowlists.</p></a>
+  <a class="tile tile-azure" href="#/azure/reference/costs"><div class="tile-num">4.2</div><h3>Cost optimisation</h3><p>Service Endpoint vs Private Endpoint, NAT GW vs Firewall.</p></a>
+</div>
+
+<h2 class="section-title">Architecture at a glance</h2>
+<div class="diagram-frame">
+  
+<svg viewBox="0 0 900 460" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:900px;height:auto;background:url(#bgGrad);border-radius:12px;">
+  
+<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+  </marker>
+  <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+    <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.12"/>
+  </filter>
+  <linearGradient id="bgGrad" x1="0" x2="0" y1="0" y2="1">
+    <stop offset="0%"  stop-color="#fafaf7"/>
+    <stop offset="100%" stop-color="#f3f3ee"/>
+  </linearGradient>
+</defs>
+
+  <rect width="900" height="460" fill="url(#bgGrad)" rx="12"/>
+
+  <g>
+    <ellipse cx="450" cy="50" rx="80" ry="28" fill="#00b388" opacity="0.15"/>
+    <ellipse cx="450" cy="50" rx="60" ry="20" fill="#00b388" opacity="0.25"/>
+    <text x="450" y="46" text-anchor="middle" font-family="Geist, sans-serif" font-size="14" font-weight="600" fill="#00533f">Rubrik Security Cloud</text>
+    <text x="450" y="61" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#00533f">prod-XXX.prod.my.rubrik.com</text>
+  </g>
+
+  
+    <g>
+      <rect x="40" y="130" width="380" height="290" rx="12" fill="#e6f0fb" stroke="#2272d6" stroke-width="1.5" stroke-dasharray="6 3" opacity="0.6"/>
+      <text x="54" y="148" font-family="Geist Mono, monospace" font-size="11" font-weight="600" fill="#2272d6" letter-spacing="1">AZURE SUBSCRIPTION — WORKLOADS</text>
+    </g>
+    
+  
+    <g>
+      <rect x="70" y="170" width="140" height="56" rx="8" fill="#fff" stroke="#2272d6" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="140.0" y="194.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Azure VMs</text>
+      <text x="140.0" y="212.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">managed disks</text>
+    </g>
+    
+  
+    <g>
+      <rect x="230" y="170" width="160" height="56" rx="8" fill="#fff" stroke="#2272d6" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="310.0" y="194.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Azure SQL DB / MI</text>
+      <text x="310.0" y="212.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">PaaS databases</text>
+    </g>
+    
+  
+    <g>
+      <rect x="70" y="250" width="140" height="56" rx="8" fill="#fff" stroke="#2272d6" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="140.0" y="274.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Azure Blob</text>
+      <text x="140.0" y="292.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">storage accounts</text>
+    </g>
+    
+  
+    <g>
+      <rect x="230" y="250" width="160" height="56" rx="8" fill="#fff" stroke="#2272d6" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="310.0" y="274.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">ADLS Gen2</text>
+      <text x="310.0" y="292.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">(if in scope)</text>
+    </g>
+    
+  
+    <g>
+      <rect x="70" y="340" width="320" height="50" rx="8" fill="#e6f0fb" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="230.0" y="361.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Microsoft Entra ID — RSCAzure app</text>
+      <text x="230.0" y="379.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">OAuth + custom RBAC role</text>
+    </g>
+    
+
+  
+    <g>
+      <rect x="480" y="130" width="380" height="290" rx="12" fill="#e6f0fb" stroke="#2272d6" stroke-width="1.5" stroke-dasharray="6 3" opacity="0.6"/>
+      <text x="494" y="148" font-family="Geist Mono, monospace" font-size="11" font-weight="600" fill="#2272d6" letter-spacing="1">AZURE SUBSCRIPTION — EXOCOMPUTE + STORAGE</text>
+    </g>
+    
+  
+    <g>
+      <rect x="510" y="170" width="180" height="56" rx="8" fill="#fff" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="600.0" y="194.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">AKS — Exocompute</text>
+      <text x="600.0" y="212.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">CNI Overlay /25 + /18</text>
+    </g>
+    
+  
+    <g>
+      <rect x="710" y="170" width="130" height="56" rx="8" fill="#fff" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="775.0" y="194.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Storage Account</text>
+      <text x="775.0" y="212.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">archive blob</text>
+    </g>
+    
+  
+    <g>
+      <rect x="510" y="250" width="320" height="56" rx="8" fill="#e6f0fb" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="670.0" y="274.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Service Endpoints / Private Endpoints</text>
+      <text x="670.0" y="292.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">Microsoft.Storage on AKS subnet</text>
+    </g>
+    
+  
+    <g>
+      <rect x="510" y="340" width="320" height="50" rx="8" fill="#e6f0fb" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="670.0" y="361.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">User-assigned Managed Identity + Key Vault</text>
+      <text x="670.0" y="379.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">for SSE-CMK on archival</text>
+    </g>
+    
+
+  <path id="az-rsc-a" d="M 450 78 C 250 100, 250 130, 250 130" stroke="#9ca3af" stroke-width="1.5" fill="none" marker-end="url(#arrow)" stroke-dasharray="4 3"/>
+  <path id="az-rsc-b" d="M 450 78 C 670 100, 670 130, 670 130" stroke="#9ca3af" stroke-width="1.5" fill="none" marker-end="url(#arrow)" stroke-dasharray="4 3"/>
+  <path id="az-b-to-a" d="M 420 280 C 460 280, 470 280, 510 280" stroke="#00b388" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+
+  
+    <circle r="6" fill="#00b388" filter="url(#shadow)">
+      <animateMotion dur="3s" begin="0s" repeatCount="indefinite">
+        <mpath href="#az-rsc-a"/>
+      </animateMotion>
+    </circle>
+    
+  
+    <circle r="6" fill="#00b388" filter="url(#shadow)">
+      <animateMotion dur="3s" begin="1s" repeatCount="indefinite">
+        <mpath href="#az-rsc-b"/>
+      </animateMotion>
+    </circle>
+    
+  
+    <circle r="6" fill="#2272d6" filter="url(#shadow)">
+      <animateMotion dur="2.5s" begin="0s" repeatCount="indefinite">
+        <mpath href="#az-b-to-a"/>
+      </animateMotion>
+    </circle>
+    
+  
+    <circle r="6" fill="#2272d6" filter="url(#shadow)">
+      <animateMotion dur="2.5s" begin="1.2s" repeatCount="indefinite">
+        <mpath href="#az-b-to-a"/>
+      </animateMotion>
+    </circle>
+    
+
+  <text x="450" y="430" text-anchor="middle" font-family="Geist Mono, monospace" font-size="11" font-weight="500" fill="#374151">RSC orchestrates from above. Exocompute on AKS in your tenant performs the work via Entra ID OAuth.</text>
+</svg>
+
+</div>
+
+</article>
+<article class="page" data-route="/azure/foundation/decisions" data-group="azure-foundation">
+  <div class="breadcrumb"><a href="#/">Home</a><span class="sep">/</span><span>1 · Foundation</span><span class="sep">/</span><span>Decisions</span></div>
+  <header class="page-head"><h1>Decisions</h1><button class="print-btn" onclick="window.print()" title="Save this page as PDF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>Save as PDF</button></header>
+
+<p class="lede">Answer these before touching any console. Re-doing them mid-build = re-doing IAM, VNet, and SCP work.</p>
+
+<details open><summary><strong>1. Single-subscription or multi-subscription model?</strong></summary>
+<p><strong>Recommendation:</strong> Two-subscription model. One for workloads, one for Exocompute + archive Storage Account. Same logic as AWS — cleaner blast radius, easier auditing.</p>
+<p><strong>When single-subscription is OK:</strong> Tiny POC with one subscription end-to-end. You'll likely outgrow it.</p>
+<p><strong>Multi-tenant Entra ID:</strong> If your subscriptions span multiple Entra ID tenants, plan separate onboarding per tenant.</p>
+</details>
+
+<details><summary><strong>2. Which Azure regions are in scope?</strong></summary>
+<p>Start with <strong>one region</strong> for POC. Each region with Exocompute needs its own VNet, AKS subnet, NSG, service endpoints. Regions = duplication of work.</p>
+<p>Cross-region replication is at the SLA level — doesn't require multi-region Exocompute.</p>
+</details>
+
+<details><summary><strong>3. Which workloads to protect?</strong></summary>
+<p>Each workload type adds different permissions to the custom RBAC role. Common scope:</p>
+<ul>
+  <li><strong>Azure VMs + managed disks</strong> — the typical starting point.</li>
+  <li><strong>Azure SQL Database</strong> — needs Exocompute → SQL VNet reachability on TCP/1433.</li>
+  <li><strong>Azure SQL Managed Instance</strong> — same but storage Rubrik-hosted (Exocompute still required).</li>
+  <li><strong>Azure Blob Storage</strong> — version-based protection, needs cloudslab Metadata Store FQDN allowlisted.</li>
+  <li><strong>ADLS Gen2</strong> — adds <code>*.dfs.core.windows.net</code> to the allowlist.</li>
+</ul>
+</details>
+
+<details><summary><strong>4. Onboarding method?</strong></summary>
+<p><strong>POC default:</strong> OAuth via RSC wizard. RSC creates the RSCAzure enterprise app in your Entra ID tenant; you consent; RSC adds a custom RBAC role to the subscription. ~5 min per subscription.</p>
+<p><strong>Alternative:</strong> Manual app registration if your security team requires reviewing the role JSON first.</p>
+<p>No CloudFormation-equivalent — Azure doesn't have it. ARM templates exist but the RSC wizard is the documented path.</p>
+</details>
+
+<details><summary><strong>5. Where will Exocompute run?</strong></summary>
+<p><strong>Centralised host subscription (recommended):</strong> One AKS per region, mapped to many workload subscriptions. Same pattern as AWS.</p>
+<p><strong>Per-subscription:</strong> Only if regulatory boundaries forbid cross-subscription access. Multiplies AKS clusters and cost.</p>
+</details>
+
+<details><summary><strong>6. Are protected disks CMK-encrypted?</strong></summary>
+<p>If managed disks use a Disk Encryption Set (DES) with a CMK in Key Vault — you must edit each Key Vault key policy to grant the RSCAzure managed identity wrap/unwrap permissions.</p>
+<p>For Azure Disk Encryption (ADE) — also requires <code>Microsoft.KeyVault/vaults/deploy/action</code> + <code>Microsoft.Compute/virtualMachines/extensions/write</code> on the role.</p>
+<p>If everything uses platform-managed keys (PMK) you can skip the Key Vault work entirely.</p>
+</details>
+
+<details><summary><strong>7. Egress for Exocompute (AKS) subnet?</strong></summary>
+<p><strong>POC default:</strong> NAT Gateway. Simplest. Combined with Service Endpoints (next page) most traffic doesn't touch the NAT.</p>
+<p><strong>Production:</strong> Azure Firewall with FQDN application rules — more setup, finer control, higher cost.</p>
+<p><strong>Cheapest at scale:</strong> Service Endpoints for Storage + Key Vault + SQL, NAT only for the few FQDNs that can't be private (cloudslab, googleapis.com, Rubrik tenant).</p>
+</details>
+
+<div class="nav-buttons">
+  <a class="btn-prev" href="#/azure/">← Azure overview</a>
+  <a class="btn-next" href="#/azure/foundation/identity">Next: Identity →</a>
+</div>
+
+</article>
+<article class="page" data-route="/azure/foundation/identity" data-group="azure-foundation">
+  <div class="breadcrumb"><a href="#/">Home</a><span class="sep">/</span><span>1 · Foundation</span><span class="sep">/</span><span>Identity</span></div>
+  <header class="page-head"><h1>Identity</h1><button class="print-btn" onclick="window.print()" title="Save this page as PDF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>Save as PDF</button></header>
+
+<p class="lede">How Rubrik authenticates into Azure. Microsoft Entra ID enterprise app + custom RBAC role at subscription scope. No long-lived secrets.</p>
+
+<h3>The OAuth onboarding model</h3>
+<p>RSC creates a Microsoft Entra ID enterprise application called <strong>RSCAzure</strong> in your tenant during onboarding. You consent via OAuth. RSC then creates a custom RBAC role at subscription scope and assigns it to the RSCAzure service principal.</p>
+
+<h3>Prerequisites</h3>
+
+<details open><summary><strong>Azure subscription IDs documented</strong></summary>
+<p>One custom RBAC role + one role assignment per subscription. Document each in-scope subscription ID, name, and tenant ID.</p>
+</details>
+
+<details><summary><strong>Subscription role for onboarding admin</strong></summary>
+<p>The user who runs the OAuth flow needs:</p>
+<ul>
+  <li><strong>Owner</strong> OR <strong>User Access Administrator</strong> on the target subscription</li>
+  <li>Specifically: <code>Microsoft.Authorization/roleDefinitions/*</code> + <code>Microsoft.Authorization/roleAssignments/*</code></li>
+</ul>
+<p>Owner is the simplest path; revoke down after onboarding completes.</p>
+</details>
+
+<details><summary><strong>Microsoft Entra ID tenant role for the onboarding admin (any ONE)</strong></summary>
+<ul>
+  <li>Global administrator</li>
+  <li>Application administrator</li>
+  <li>Application developer</li>
+  <li>Cloud application administrator</li>
+</ul>
+<p>Used <strong>once</strong> during onboarding to consent to the RSCAzure app. Not needed afterwards.</p>
+</details>
+
+<details><summary><strong>"Allow user consent for apps" setting</strong></summary>
+<p>In Entra ID admin center → enable "Allow user consent for apps". Without this, only Global Admins can consent. (Microsoft docs: <em>Configure user consent settings</em>.)</p>
+<p>Alternative: have a Global Admin perform the consent on behalf of the tenant.</p>
+</details>
+
+<details><summary><strong>Microsoft Graph permissions for Exocompute OAuth</strong></summary>
+<p>RSC uses Entra ID groups to authenticate AKS for Exocompute operations. Two Graph permissions required on the onboarding admin:</p>
+<ul>
+  <li><code>Group.ReadWrite.All</code> — create/update Entra ID groups</li>
+  <li><code>GroupMember.Read.Write.All</code> — add RSCAzure app as group member</li>
+</ul>
+<p>These are read/write at the directory level. Used only during Exocompute setup, not for backup operations. View usage in RSC Audit log + Azure audit logs.</p>
+</details>
+
+<details><summary><strong>RSC tenant URL captured</strong></summary>
+<p>Format: <code>&lt;subdomain&gt;.my.rubrik.com</code>. From RSC profile menu → About Rubrik Security Cloud → hover region. Static IPs per region.</p>
+</details>
+
+<div class="nav-buttons">
+  <a class="btn-prev" href="#/azure/foundation/decisions">← Decisions</a>
+  <a class="btn-next" href="#/azure/foundation/network">Next: Network →</a>
+</div>
+
+</article>
+<article class="page" data-route="/azure/foundation/network" data-group="azure-foundation">
+  <div class="breadcrumb"><a href="#/">Home</a><span class="sep">/</span><span>1 · Foundation</span><span class="sep">/</span><span>Network</span></div>
+  <header class="page-head"><h1>Network</h1><button class="print-btn" onclick="window.print()" title="Save this page as PDF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>Save as PDF</button></header>
+
+<p class="lede">Per region per subscription that hosts an Exocompute instance. Uses AKS with Azure CNI Overlay networking.</p>
+
+<h3>The non-negotiables</h3>
+
+<details open><summary><strong>VNet for AKS</strong></summary>
+<p>Existing VNet in the chosen region. RSC does not create it. Verify CIDR doesn't overlap on-prem or peered VNets.</p>
+</details>
+
+<details><summary><strong>Subnet for AKS nodes — /25 recommended</strong></summary>
+<p>Rubrik recommends a <strong>/25 subnet</strong> (128 IPs, 123 usable after Azure's 5 reserved). Each AKS node consumes 1 IP from the subnet — pods come from the Pod CIDR (next item) so they don't drain the subnet.</p>
+<p><strong>/26 is too small</strong> — only 64 IPs, sustained workloads will run short.</p>
+</details>
+
+<details><summary><strong>Pod CIDR — /18 minimum</strong></summary>
+<p>Azure CNI Overlay separates pod IPs from node IPs. Pods get IPs from a Pod CIDR — <strong>private to the cluster</strong>, NOT routable in your VNet.</p>
+<p><strong>Sizing:</strong> /18 or larger. Must NOT overlap subnet, on-prem, or peered VNets.</p>
+<p><strong>Default:</strong> if left empty in RSC, Azure assigns 10.244.0.0/16.</p>
+</details>
+
+<details><summary><strong>Outbound egress for AKS subnet</strong></summary>
+<p>Worker nodes pull container images (from <code>centralacrprod.azurecr.io</code> + Microsoft Container Registry), call ARM API, write to archive blob, upload index to GCS. No egress = nothing works.</p>
+<p><strong>Choose ONE:</strong></p>
+<ul>
+  <li><strong>Azure NAT Gateway</strong> — recommended for predictable SNAT (64K ports per public IP)</li>
+  <li><strong>Azure Firewall</strong> — centralised egress with FQDN application rules (see Firewall reference page for <code>az cli</code> commands)</li>
+  <li><strong>User-Defined Route to NVA / on-prem proxy</strong></li>
+</ul>
+<p><strong>Watch-out — SNAT exhaustion:</strong> Standard Load Balancer outbound has limited SNAT ports. With many parallel index jobs you can exhaust them. NAT GW is strongly preferred.</p>
+</details>
+
+<details><summary><strong>Azure DNS resolution</strong></summary>
+<p>Worker nodes must resolve:</p>
+<ul>
+  <li><code>*.hcp.&lt;region&gt;.azmk8s.io</code> — AKS control plane FQDN</li>
+  <li><code>*.blob.core.windows.net</code>, <code>*.dfs.core.windows.net</code></li>
+  <li><code>mcr.microsoft.com</code>, <code>centralacrprod.azurecr.io</code></li>
+  <li><code>management.azure.com</code>, <code>login.microsoftonline.com</code></li>
+  <li><code>prod-*.prod.my.rubrik.com</code></li>
+  <li><code>googleapis.com</code>, <code>storage.googleapis.com</code></li>
+  <li><code>&lt;customer&gt;.cloudslab.rubrik.com</code> (for Blob workloads)</li>
+</ul>
+<p>Azure DNS (168.63.129.16) handles internal resolution; ensure custom DNS forwards to it for AKS-internal FQDNs.</p>
+</details>
+
+<div class="nav-buttons">
+  <a class="btn-prev" href="#/azure/foundation/identity">← Identity</a>
+  <a class="btn-next" href="#/azure/foundation/endpoints">Next: Service Endpoints →</a>
+</div>
+
+</article>
+<article class="page" data-route="/azure/foundation/endpoints" data-group="azure-foundation">
+  <div class="breadcrumb"><a href="#/">Home</a><span class="sep">/</span><span>1 · Foundation</span><span class="sep">/</span><span>Service Endpoints</span></div>
+  <header class="page-head"><h1>Service Endpoints</h1><button class="print-btn" onclick="window.print()" title="Save this page as PDF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>Save as PDF</button></header>
+
+<div class="note danger">
+<strong>WARNING — Read this before Phase 2.</strong> Without Service Endpoints (or Private Endpoints) between the AKS subnet and Storage Accounts (workload + archive), all traffic egresses via NAT Gateway and is billed as outbound data + NAT processing. Service Endpoints for Microsoft.Storage are <strong>FREE</strong> and keep traffic on the Azure backbone.
+</div>
+
+<p class="lede">Cost layer for Azure. Service Endpoints are free; Private Endpoints are paid but add private IP + stricter posture.</p>
+
+<h3>Service Endpoints (free) vs Private Endpoints (paid)</h3>
+
+<details open><summary><strong>Service Endpoint to Microsoft.Storage on AKS subnet — REQUIRED</strong></summary>
+<p>Removes the bulk of cross-AZ + NAT egress on snapshot reads, archive writes, and Blob workload scans.</p>
+<p><strong>Action:</strong> VNet → AKS subnet → Service Endpoints → add <code>Microsoft.Storage</code> (or <code>Microsoft.Storage.Global</code> if storage spans regions). FREE.</p>
+<p>Storage account firewall: enable "Allow Public Access from selected virtual networks and IP addresses", add the AKS subnet.</p>
+</details>
+
+<details><summary><strong>Service Endpoint to Microsoft.KeyVault — if KV in use</strong></summary>
+<p>Required if you use ADE / SSE-CMK / archival CMK. Same pattern: add <code>Microsoft.KeyVault</code> as a service endpoint on the AKS subnet. FREE.</p>
+</details>
+
+<details><summary><strong>Service Endpoint to Microsoft.Sql — if Azure SQL in scope</strong></summary>
+<p>Required for persistent Azure SQL backups via Exocompute on TCP/1433. Same pattern. FREE.</p>
+</details>
+
+<details><summary><strong>Private Endpoints — when to use instead</strong></summary>
+<p>Service Endpoints are usually enough and cheaper. Use Private Endpoints when:</p>
+<ul>
+  <li>Network policy requires private IPs only on Storage (no public endpoint)</li>
+  <li>Strict security posture for KV access</li>
+  <li>Cross-VNet without peering (Private Endpoints work across VNets)</li>
+</ul>
+<p>Cost: ~$0.01/hour per Private Endpoint per AZ + $0.01/GB processed. At Exocompute traffic volumes, Service Endpoints save real money.</p>
+</details>
+
+<details><summary><strong>VNet peering for Azure SQL — if persistent SQL in scope</strong></summary>
+<p>If Azure SQL is in a different VNet from Exocompute, peer the VNets OR use Private Endpoints to expose SQL into the Exocompute VNet. Exocompute needs L4 reachability on TCP/1433.</p>
+</details>
+
+<div class="nav-buttons">
+  <a class="btn-prev" href="#/azure/foundation/network">← Network</a>
+  <a class="btn-next" href="#/azure/foundation/security">Next: RPs + Key Vault →</a>
+</div>
+
+</article>
+<article class="page" data-route="/azure/foundation/security" data-group="azure-foundation">
+  <div class="breadcrumb"><a href="#/">Home</a><span class="sep">/</span><span>1 · Foundation</span><span class="sep">/</span><span>RPs + Key Vault</span></div>
+  <header class="page-head"><h1>RPs + Key Vault</h1><button class="print-btn" onclick="window.print()" title="Save this page as PDF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>Save as PDF</button></header>
+
+<p class="lede">Resource Providers must be Registered on each subscription. Key Vault edits required only if you use CMKs.</p>
+
+<h3>Resource Providers to register</h3>
+<details open><summary><strong>Required RPs on each in-scope subscription</strong></summary>
+<table class="ref-table">
+<thead><tr><th>Resource Provider</th><th>Status</th><th>Used for</th></tr></thead>
+<tbody>
+<tr><td><code>Microsoft.Compute</code></td><td>Required</td><td>VMs, disks, snapshots (usually pre-registered)</td></tr>
+<tr><td><code>Microsoft.Storage</code></td><td>Required</td><td>Storage accounts, blobs (usually pre-registered)</td></tr>
+<tr><td><code>Microsoft.Network</code></td><td>Required</td><td>VNets, NICs, NSGs (usually pre-registered)</td></tr>
+<tr><td><code>Microsoft.KeyVault</code></td><td>Conditional</td><td>If ADE or SSE-CMK is in scope</td></tr>
+<tr><td><code>Microsoft.ManagedIdentity</code></td><td>Required</td><td>User-assigned MIs for archival CMK + CCES</td></tr>
+<tr><td><code>Microsoft.Resources</code></td><td>Required</td><td>Resource group create/list operations</td></tr>
+<tr><td><code>Microsoft.Authorization</code></td><td>Required</td><td>Role definitions, assignments, locks</td></tr>
+<tr><td><code>Microsoft.ContainerService</code></td><td>Required</td><td>AKS for Exocompute (RSC will register if missing)</td></tr>
+<tr><td><code>Microsoft.ContainerRegistry</code></td><td>Required</td><td>ACR for Exocompute images</td></tr>
+<tr><td><code>Microsoft.Insights</code></td><td>Required</td><td>Storage account metrics for Blob protection</td></tr>
+<tr><td><code>Microsoft.Sql</code> + <code>Microsoft.SqlVirtualMachine</code></td><td>Conditional</td><td>Only if Azure SQL DB / MI in scope</td></tr>
+</tbody>
+</table>
+<p>Most are pre-registered on modern subscriptions. Verify in Azure Portal → Subscriptions → Resource Providers.</p>
+</details>
+
+<h3>Azure Policy watch-outs</h3>
+<details><summary><strong>Common policy denies that break Rubrik</strong></summary>
+<table class="ref-table">
+<thead><tr><th>Policy</th><th>What it breaks</th><th>Mitigation</th></tr></thead>
+<tbody>
+<tr><td>Deny resource group creation</td><td>RSC can't create the RG that holds snapshots</td><td>Scope exception to Rubrik SP</td></tr>
+<tr><td>Deny role assignments</td><td>Onboarding wizard fails</td><td>Scope exception or pre-create role + assignment</td></tr>
+<tr><td>Allowed locations</td><td>Restricts which regions Rubrik can operate in</td><td>Add POC regions to allowed list for Rubrik SP</td></tr>
+<tr><td>Allowed VM SKUs</td><td>AKS workers can't launch on default Standard_DS2_v2</td><td>Allowlist the Exocompute worker SKU</td></tr>
+<tr><td>Deny storage account create</td><td>Archival provisioning fails</td><td>Scope exception</td></tr>
+</tbody>
+</table>
+</details>
+
+<h3>Key Vault — if using ADE or CMKs</h3>
+<details open><summary><strong>Azure Disk Encryption (ADE)</strong></summary>
+<p>If protected VM disks use ADE (BitLocker/dm-crypt via Key Vault key), the role needs:</p>
+<ul>
+  <li><code>Microsoft.KeyVault/vaults/deploy/action</code></li>
+  <li><code>Microsoft.Compute/virtualMachines/extensions/write</code></li>
+</ul>
+<p>Key Vault firewall: enable "Allow trusted Microsoft services" or add the AKS subnet via Service Endpoint.</p>
+</details>
+
+<details><summary><strong>SSE-CMK on managed disks (Disk Encryption Set + CMK)</strong></summary>
+<p>If disks use a DES backed by a Key Vault key, the role needs <code>Microsoft.Compute/diskEncryptionSets/read</code>. The Key Vault key must allow the user-assigned MI / Rubrik SP wrap/unwrap if cross-region export is in scope.</p>
+</details>
+
+<details><summary><strong>SSE-CMK on archival storage account</strong></summary>
+<p>If you want CMK encryption on the archive Storage Account, assign the user-assigned MI a Key Vault role with these permissions:</p>
+<ul>
+  <li><code>Microsoft.KeyVault/vaults/keys/wrap/action</code></li>
+  <li><code>Microsoft.KeyVault/vaults/keys/unwrap/action</code></li>
+  <li><code>Microsoft.KeyVault/vaults/keys/read</code></li>
+</ul>
+</details>
+
+<div class="nav-buttons">
+  <a class="btn-prev" href="#/azure/foundation/endpoints">← Service Endpoints</a>
+  <a class="btn-next" href="#/azure/onboard/subscription">Next: Add subscription →</a>
+</div>
+
+</article>
+<article class="page" data-route="/azure/onboard/subscription" data-group="azure-onboard">
+  <div class="breadcrumb"><a href="#/">Home</a><span class="sep">/</span><span>2 · Onboard</span><span class="sep">/</span><span>Add subscription</span></div>
+  <header class="page-head"><h1>Add subscription</h1><button class="print-btn" onclick="window.print()" title="Save this page as PDF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>Save as PDF</button></header>
+
+<p class="lede">OAuth-driven onboarding via the RSCAzure enterprise app. ~5 min per subscription if Foundation is done.</p>
+
+<h3>Steps</h3>
+<ol class="numbered-steps">
+  <li>RSC → <strong>Add Cloud Accounts</strong> → <strong>Azure</strong> → <strong>Subscription</strong></li>
+  <li>Select <strong>Authentication: OAuth</strong></li>
+  <li>Tick the <strong>features/use cases</strong> in scope:
+    <ul>
+      <li>Virtual Machines</li>
+      <li>Azure SQL Database / Managed Instance</li>
+      <li>Azure Blob Storage</li>
+      <li>Azure Data Lake Storage Gen2</li>
+      <li>Exocompute (for FLR, archival, persistent SQL)</li>
+      <li>Cloud Native Archival Location (for storage tiering)</li>
+    </ul>
+  </li>
+  <li>Click <strong>Add</strong>. RSC redirects to the Microsoft sign-in flow.</li>
+  <li>Sign in as the onboarding admin (with the required Entra ID + subscription roles).</li>
+  <li>Consent to the RSCAzure app. The OAuth flow returns the consented permissions to RSC.</li>
+  <li>RSC creates the custom RBAC role at subscription scope and assigns it to the RSCAzure SP.</li>
+  <li>Subscription flips to <strong>Connected</strong> in RSC within ~30 seconds.</li>
+</ol>
+
+<details open><summary><strong>What gets created in your tenant</strong></summary>
+<ul>
+  <li><strong>RSCAzure enterprise app</strong> in Microsoft Entra ID (one per RSC tenant, shared across all your subscriptions)</li>
+  <li><strong>Custom RBAC role</strong> at subscription scope, with the actions/dataActions appropriate to the use cases you ticked</li>
+  <li><strong>Role assignment</strong> binding the role to the RSCAzure SP</li>
+  <li><strong>Entra ID group + group member</strong> if Exocompute OAuth is enabled (for AKS authentication)</li>
+</ul>
+</details>
+
+<details><summary><strong>If onboarding hangs at "Connecting"</strong></summary>
+<p>Common causes:</p>
+<ul>
+  <li>Onboarding admin lacks the Entra ID tenant role</li>
+  <li>"Allow user consent for apps" disabled and no admin consent</li>
+  <li>Azure Policy denies role assignments at the subscription</li>
+  <li>Subscription ID doesn't match the consented tenant</li>
+</ul>
+<p>Fix: re-run the wizard, or contact Rubrik Support with the subscription ID.</p>
+</details>
+
+<div class="nav-buttons">
+  <a class="btn-prev" href="#/azure/foundation/security">← RPs + Key Vault</a>
+  <a class="btn-next" href="#/azure/onboard/exocompute">Next: Exocompute →</a>
+</div>
+
+</article>
+<article class="page" data-route="/azure/onboard/exocompute" data-group="azure-onboard">
+  <div class="breadcrumb"><a href="#/">Home</a><span class="sep">/</span><span>2 · Onboard</span><span class="sep">/</span><span>Exocompute on AKS</span></div>
+  <header class="page-head"><h1>Exocompute on AKS</h1><button class="print-btn" onclick="window.print()" title="Save this page as PDF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>Save as PDF</button></header>
+
+<p class="lede">Exocompute on Azure = AKS cluster in your tenant with Azure CNI Overlay networking. Provisions lazily on first job.</p>
+
+<h3>Configuration steps</h3>
+<ol class="numbered-steps">
+  <li>RSC → <strong>Settings</strong> → <strong>Cloud Native Settings</strong> → <strong>Exocompute Configurations</strong></li>
+  <li>Click <strong>Add Configuration</strong></li>
+  <li><strong>Cloud Account:</strong> the host subscription from 2.1</li>
+  <li><strong>Region:</strong> where your protected workloads live</li>
+  <li><strong>VNet:</strong> from Foundation → Network</li>
+  <li><strong>Subnet:</strong> the /25 AKS subnet</li>
+  <li><strong>Pod CIDR:</strong> /18 or larger, no overlap (or leave blank for default 10.244.0.0/16)</li>
+  <li><strong>Authentication method:</strong> OAuth (recommended) — uses the Entra ID group permissions from Foundation → Identity</li>
+  <li>Save</li>
+</ol>
+
+<details open><summary><strong>What gets created when AKS provisions on first use</strong></summary>
+<ul>
+  <li>AKS cluster (Standard tier)</li>
+  <li>Node pool with default <code>Standard_DS2_v2</code> workers</li>
+  <li>NSG rules — see Foundation → Network for the inbound 10250/9000/1194/443 + Pod CIDR rules</li>
+  <li>Entra ID group membership for the RSCAzure app (for AKS auth)</li>
+</ul>
+</details>
+
+<details><summary><strong>First-run cold start</strong></summary>
+<p>10–15 min the first time AKS provisions. Subsequent jobs scale workers from 0 in seconds. Tell the customer this upfront.</p>
+</details>
+
+<div class="nav-buttons">
+  <a class="btn-prev" href="#/azure/onboard/subscription">← Add subscription</a>
+  <a class="btn-next" href="#/azure/onboard/archival">Next: Archival →</a>
+</div>
+
+</article>
+<article class="page" data-route="/azure/onboard/archival" data-group="azure-onboard">
+  <div class="breadcrumb"><a href="#/">Home</a><span class="sep">/</span><span>2 · Onboard</span><span class="sep">/</span><span>Archival location</span></div>
+  <header class="page-head"><h1>Archival location</h1><button class="print-btn" onclick="window.print()" title="Save this page as PDF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>Save as PDF</button></header>
+
+<p class="lede">Storage Account + container in the host subscription. RSC creates the SA on demand with the right permissions.</p>
+
+<h3>Steps</h3>
+<ol class="numbered-steps">
+  <li>RSC → <strong>Settings</strong> → <strong>Archival Locations</strong> → <strong>Add</strong></li>
+  <li><strong>Type:</strong> Azure</li>
+  <li><strong>Subscription:</strong> the host subscription</li>
+  <li><strong>Region:</strong> same as Exocompute</li>
+  <li><strong>Storage Account:</strong> let RSC create or supply an existing SA</li>
+  <li><strong>Container:</strong> RSC creates within the SA</li>
+  <li><strong>Encryption:</strong> Microsoft Managed Keys (default, free) or Customer Managed Keys (needs MI + Key Vault from Foundation → security)</li>
+  <li><strong>Access tier:</strong> Hot/Cool/Cold/Archive per SLA retention pattern</li>
+  <li>Save</li>
+</ol>
+
+<details open><summary><strong>Required Storage Account settings</strong></summary>
+<table class="ref-table">
+<thead><tr><th>Setting</th><th>Value</th></tr></thead>
+<tbody>
+<tr><td>Performance</td><td>Standard</td></tr>
+<tr><td>Redundancy</td><td>LRS (cheapest); ZRS/GRS optional</td></tr>
+<tr><td>Versioning</td><td>Enabled</td></tr>
+<tr><td>Blob soft delete</td><td>Disabled (RSC uses versioning + immutability)</td></tr>
+<tr><td>Container immutability</td><td>Version-level immutability ON</td></tr>
+<tr><td>Secure transfer (HTTPS only)</td><td>Enabled</td></tr>
+<tr><td>Minimum TLS</td><td>1.2</td></tr>
+<tr><td>Cross-tenant replication</td><td>Disabled</td></tr>
+<tr><td>Network access</td><td>"Enable Public Access from selected VNets and IPs" + Service Endpoint from AKS subnet</td></tr>
+</tbody>
+</table>
+</details>
+
+<div class="nav-buttons">
+  <a class="btn-prev" href="#/azure/onboard/exocompute">← Exocompute</a>
+  <a class="btn-next" href="#/azure/onboard/mapping">Next: Map subscriptions →</a>
+</div>
+
+</article>
+<article class="page" data-route="/azure/onboard/mapping" data-group="azure-onboard">
+  <div class="breadcrumb"><a href="#/">Home</a><span class="sep">/</span><span>2 · Onboard</span><span class="sep">/</span><span>Map subscriptions</span></div>
+  <header class="page-head"><h1>Map subscriptions</h1><button class="print-btn" onclick="window.print()" title="Save this page as PDF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>Save as PDF</button></header>
+
+<p class="lede">The wire. Workload subscriptions won't use the host's Exocompute until you map them. Same pattern as AWS.</p>
+
+<ol class="numbered-steps">
+  <li>RSC → <strong>Settings</strong> → <strong>Cloud Native Settings</strong> → <strong>Exocompute Configurations</strong></li>
+  <li>Click the Azure Exocompute config (the host subscription's)</li>
+  <li>Find <strong>Map application accounts</strong> (or "Mapped subscriptions")</li>
+  <li>Tick each workload subscription</li>
+  <li>Save</li>
+</ol>
+
+<p>Validation: run an on-demand snapshot of a small VM in a workload subscription with file indexing enabled. Watch Activity for: <code>Snapshot taken</code> → <code>Indexing started</code> → <code>Indexing complete</code>.</p>
+
+<div class="nav-buttons">
+  <a class="btn-prev" href="#/azure/onboard/archival">← Archival</a>
+  <a class="btn-next" href="#/azure/workloads/vm">Next: Azure VMs →</a>
+</div>
+
+</article>
+<article class="page" data-route="/azure/workloads/vm" data-group="azure-workloads">
+  <div class="breadcrumb"><a href="#/">Home</a><span class="sep">/</span><span>3 · Workloads</span><span class="sep">/</span><span>Azure VMs + Disks</span></div>
+  <header class="page-head"><h1>Azure VMs + Disks</h1><button class="print-btn" onclick="window.print()" title="Save this page as PDF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>Save as PDF</button></header>
+
+<p class="lede">Managed disk snapshots — Azure-native, similar model to AWS EBS. Exocompute used for FLR, app-consistent, archival.</p>
+
+<h3>Backup data flow</h3>
+<div class="diagram-frame">
+  
+<svg viewBox="0 0 900 460" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:900px;height:auto;background:url(#bgGrad);border-radius:12px;">
+  
+<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+  </marker>
+  <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+    <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.12"/>
+  </filter>
+  <linearGradient id="bgGrad" x1="0" x2="0" y1="0" y2="1">
+    <stop offset="0%"  stop-color="#fafaf7"/>
+    <stop offset="100%" stop-color="#f3f3ee"/>
+  </linearGradient>
+</defs>
+
+  <rect width="900" height="460" fill="url(#bgGrad)" rx="12"/>
+
+  
+    <g>
+      <rect x="380" y="30" width="140" height="50" rx="8" fill="#dff5ee" stroke="#00533f" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="450.0" y="51.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">RSC</text>
+      <text x="450.0" y="69.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">Orchestrator</text>
+    </g>
+    
+
+  
+    <g>
+      <rect x="40" y="110" width="380" height="320" rx="12" fill="#e6f0fb" stroke="#2272d6" stroke-width="1.5" stroke-dasharray="6 3" opacity="0.6"/>
+      <text x="54" y="128" font-family="Geist Mono, monospace" font-size="11" font-weight="600" fill="#2272d6" letter-spacing="1">AZURE SUBSCRIPTION — WORKLOADS</text>
+    </g>
+    
+  
+    <g>
+      <rect x="70" y="150" width="110" height="50" rx="8" fill="#fff" stroke="#2272d6" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="125.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Azure VM</text>
+      <text x="125.0" y="189.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">running</text>
+    </g>
+    
+  
+    <g>
+      <rect x="210" y="150" width="110" height="50" rx="8" fill="#fff" stroke="#2272d6" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="265.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Managed Disk(s)</text>
+      <text x="265.0" y="189.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">OS + data</text>
+    </g>
+    
+  
+    <g>
+      <rect x="70" y="240" width="250" height="50" rx="8" fill="#e6f0fb" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="195.0" y="261.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Managed Disk Snapshot</text>
+      <text x="195.0" y="279.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">Azure-managed, encrypted</text>
+    </g>
+    
+  
+    <g>
+      <rect x="70" y="330" width="250" height="50" rx="8" fill="#fff" stroke="#2272d6" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="195.0" y="351.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Disk attached to AKS pod</text>
+      <text x="195.0" y="369.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">for FLR indexing</text>
+    </g>
+    
+
+  
+    <g>
+      <rect x="480" y="110" width="380" height="320" rx="12" fill="#e6f0fb" stroke="#2272d6" stroke-width="1.5" stroke-dasharray="6 3" opacity="0.6"/>
+      <text x="494" y="128" font-family="Geist Mono, monospace" font-size="11" font-weight="600" fill="#2272d6" letter-spacing="1">AZURE SUBSCRIPTION — EXOCOMPUTE</text>
+    </g>
+    
+  
+    <g>
+      <rect x="510" y="150" width="200" height="50" rx="8" fill="#fff" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="610.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Compute API</text>
+      <text x="610.0" y="189.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">management.azure.com</text>
+    </g>
+    
+  
+    <g>
+      <rect x="730" y="150" width="130" height="50" rx="8" fill="#fff" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="795.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">ARM Resource</text>
+      <text x="795.0" y="189.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">Provider</text>
+    </g>
+    
+  
+    <g>
+      <rect x="510" y="240" width="350" height="50" rx="8" fill="#e6f0fb" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="685.0" y="261.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Exocompute (AKS pod)</text>
+      <text x="685.0" y="279.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">indexes filesystem metadata</text>
+    </g>
+    
+  
+    <g>
+      <rect x="510" y="330" width="200" height="50" rx="8" fill="#fff" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="610.0" y="351.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Index → GCS</text>
+      <text x="610.0" y="369.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">storage.googleapis.com</text>
+    </g>
+    
+  
+    <g>
+      <rect x="730" y="330" width="130" height="50" rx="8" fill="#fff" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="795.0" y="351.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Blob archive</text>
+      <text x="795.0" y="369.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">Hot/Cool/Archive</text>
+    </g>
+    
+
+  <path id="azvm1" d="M 440 80 C 440 130, 580 130, 580 150" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <path id="azvm2" d="M 580 200 C 580 220, 195 220, 195 240" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <path id="azvm3" d="M 195 290 L 195 330" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <path id="azvm4" d="M 320 355 C 400 355, 400 265, 510 265" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <path id="azvm5" d="M 685 290 L 610 330" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <path id="azvm6" d="M 320 265 C 400 265, 730 290, 790 330" stroke="#2272d6" stroke-width="1.5" fill="none" marker-end="url(#arrow)" stroke-dasharray="4 3"/>
+
+  
+    <circle r="6" fill="#00b388" filter="url(#shadow)">
+      <animateMotion dur="3s" begin="0s" repeatCount="indefinite">
+        <mpath href="#azvm1"/>
+      </animateMotion>
+    </circle>
+    
+  
+    <circle r="6" fill="#00b388" filter="url(#shadow)">
+      <animateMotion dur="3s" begin="1s" repeatCount="indefinite">
+        <mpath href="#azvm2"/>
+      </animateMotion>
+    </circle>
+    
+  
+    <circle r="6" fill="#00b388" filter="url(#shadow)">
+      <animateMotion dur="2s" begin="2s" repeatCount="indefinite">
+        <mpath href="#azvm3"/>
+      </animateMotion>
+    </circle>
+    
+  
+    <circle r="6" fill="#00b388" filter="url(#shadow)">
+      <animateMotion dur="3s" begin="3s" repeatCount="indefinite">
+        <mpath href="#azvm4"/>
+      </animateMotion>
+    </circle>
+    
+  
+    <circle r="6" fill="#00b388" filter="url(#shadow)">
+      <animateMotion dur="2.5s" begin="4s" repeatCount="indefinite">
+        <mpath href="#azvm5"/>
+      </animateMotion>
+    </circle>
+    
+  
+    <circle r="6" fill="#2272d6" filter="url(#shadow)">
+      <animateMotion dur="4s" begin="5s" repeatCount="indefinite">
+        <mpath href="#azvm6"/>
+      </animateMotion>
+    </circle>
+    
+
+  <text x="348" y="100" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">① snapshots/write</text>
+  <text x="370" y="215" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">② Snapshot saved</text>
+  <text x="80" y="320" text-anchor="start" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">③ disks/beginGetAccess</text>
+  <text x="415" y="248" text-anchor="start" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">④ Attach to AKS pod</text>
+  <text x="610" y="315" text-anchor="start" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">⑤ Index upload</text>
+  <text x="450" y="410" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#0a4a9c">⑥ Blob archival (per SLA tiering)</text>
+</svg>
+
+</div>
+
+<details open><summary><strong>Step-by-step</strong></summary>
+<ol class="numbered-steps">
+  <li>RSC calls <code>Microsoft.Compute/snapshots/write</code> via the RSCAzure SP.</li>
+  <li>Azure creates the managed disk snapshot — incremental after the first, encrypted using the source disk's encryption (PMK or CMK via DES).</li>
+  <li>If indexing enabled: Exocompute pod attaches the snapshot via <code>disks/beginGetAccess/action</code> (SAS URI to snapshot data).</li>
+  <li>Pod mounts the disk read-only, walks the filesystem metadata, builds an index.</li>
+  <li>Index uploaded to RSC's GCS metadata store via <code>storage.googleapis.com</code>.</li>
+  <li>If archival in SLA: snapshot data uploaded to the Blob archive Storage Account per the tiering policy.</li>
+  <li>Cleanup: <code>disks/endGetAccess/action</code>, pod terminated.</li>
+</ol>
+</details>
+
+<details><summary><strong>App-consistent snapshots</strong></summary>
+<p>Same model as AWS — requires Rubrik Backup Service (RBS) installed on the VM. Exocompute orchestrates pre/post scripts via RBS, takes snapshot in between. Required for SQL Server / Oracle running inside Azure VMs.</p>
+</details>
+
+<details><summary><strong>Cross-region replication</strong></summary>
+<p>If SLA has a replication target region:</p>
+<ol>
+  <li>Local snapshot taken in source region</li>
+  <li><code>disks/beginGetAccess</code> + Page blob copy to target region storage account</li>
+  <li>For CMK-encrypted disks: target region needs CMK pre-shared (DES referencing a target-region KV key)</li>
+</ol>
+</details>
+
+<details><summary><strong>Disk size limit for archival</strong></summary>
+<p>RSC does not support archival of an Azure VM with a disk size greater than <strong>32 TB</strong>. (RSC docs.)</p>
+</details>
+
+<details><summary><strong>RCV support</strong></summary>
+<p>Azure VMs support both <strong>Backup tier</strong> and <strong>Archive tier</strong> on RCV. App-consistent snapshots + in-place file recovery require Exocompute in your tenant (not Rubrik-hosted compute).</p>
+</details>
+
+<div class="nav-buttons">
+  <a class="btn-prev" href="#/azure/onboard/mapping">← Map subscriptions</a>
+  <a class="btn-next" href="#/azure/workloads/sql">Next: Azure SQL →</a>
+</div>
+
+</article>
+<article class="page" data-route="/azure/workloads/sql" data-group="azure-workloads">
+  <div class="breadcrumb"><a href="#/">Home</a><span class="sep">/</span><span>3 · Workloads</span><span class="sep">/</span><span>Azure SQL DB/MI</span></div>
+  <header class="page-head"><h1>Azure SQL DB/MI</h1><button class="print-btn" onclick="window.print()" title="Save this page as PDF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>Save as PDF</button></header>
+
+<p class="lede">Persistent backup via Exocompute connecting on TCP/1433. Different model from VMs — Exocompute reads the live DB.</p>
+
+<h3>Backup data flow</h3>
+<div class="diagram-frame">
+  
+<svg viewBox="0 0 900 420" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:900px;height:auto;background:url(#bgGrad);border-radius:12px;">
+  
+<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+  </marker>
+  <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+    <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.12"/>
+  </filter>
+  <linearGradient id="bgGrad" x1="0" x2="0" y1="0" y2="1">
+    <stop offset="0%"  stop-color="#fafaf7"/>
+    <stop offset="100%" stop-color="#f3f3ee"/>
+  </linearGradient>
+</defs>
+
+  <rect width="900" height="420" fill="url(#bgGrad)" rx="12"/>
+
+  
+    <g>
+      <rect x="380" y="30" width="140" height="50" rx="8" fill="#dff5ee" stroke="#00533f" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="450.0" y="51.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">RSC</text>
+      <text x="450.0" y="69.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">Orchestrator</text>
+    </g>
+    
+
+  
+    <g>
+      <rect x="40" y="110" width="380" height="280" rx="12" fill="#e6f0fb" stroke="#2272d6" stroke-width="1.5" stroke-dasharray="6 3" opacity="0.6"/>
+      <text x="54" y="128" font-family="Geist Mono, monospace" font-size="11" font-weight="600" fill="#2272d6" letter-spacing="1">AZURE SUBSCRIPTION — WORKLOADS</text>
+    </g>
+    
+  
+    <g>
+      <rect x="70" y="150" width="150" height="50" rx="8" fill="#fff" stroke="#2272d6" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="145.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Azure SQL DB or MI</text>
+      <text x="145.0" y="189.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">PaaS database</text>
+    </g>
+    
+  
+    <g>
+      <rect x="250" y="150" width="130" height="50" rx="8" fill="#fff" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="315.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">VNet of SQL</text>
+      <text x="315.0" y="189.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">(needs TCP/1433)</text>
+    </g>
+    
+  
+    <g>
+      <rect x="70" y="240" width="250" height="50" rx="8" fill="#e6f0fb" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="195.0" y="261.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Export BACPAC / native dump</text>
+      <text x="195.0" y="279.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">via Exocompute connection</text>
+    </g>
+    
+
+  
+    <g>
+      <rect x="480" y="110" width="380" height="280" rx="12" fill="#e6f0fb" stroke="#2272d6" stroke-width="1.5" stroke-dasharray="6 3" opacity="0.6"/>
+      <text x="494" y="128" font-family="Geist Mono, monospace" font-size="11" font-weight="600" fill="#2272d6" letter-spacing="1">AZURE SUBSCRIPTION — EXOCOMPUTE</text>
+    </g>
+    
+  
+    <g>
+      <rect x="510" y="150" width="200" height="50" rx="8" fill="#fff" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="610.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Exocompute (AKS)</text>
+      <text x="610.0" y="189.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">connects on TCP/1433</text>
+    </g>
+    
+  
+    <g>
+      <rect x="730" y="150" width="130" height="50" rx="8" fill="#e6f0fb" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="795.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">VNet peering / PE</text>
+      <text x="795.0" y="189.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">to SQL VNet</text>
+    </g>
+    
+  
+    <g>
+      <rect x="510" y="240" width="350" height="50" rx="8" fill="#fff" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="685.0" y="261.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Blob archive (Hot or Cool only)</text>
+      <text x="685.0" y="279.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">Archive tier NOT supported for Azure SQL</text>
+    </g>
+    
+
+  <path id="azsql1" d="M 440 80 C 440 120, 610 130, 610 150" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <path id="azsql2" d="M 710 175 L 730 175" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <path id="azsql3" d="M 730 200 C 730 230, 320 200, 280 200" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <path id="azsql4" d="M 280 250 C 280 280, 195 270, 195 240" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow)" stroke-dasharray="4 3"/>
+  <path id="azsql5" d="M 320 265 C 400 265, 400 265, 510 265" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+
+  
+    <circle r="6" fill="#00b388" filter="url(#shadow)">
+      <animateMotion dur="3s" begin="0s" repeatCount="indefinite">
+        <mpath href="#azsql1"/>
+      </animateMotion>
+    </circle>
+    
+  
+    <circle r="6" fill="#00b388" filter="url(#shadow)">
+      <animateMotion dur="2s" begin="1s" repeatCount="indefinite">
+        <mpath href="#azsql2"/>
+      </animateMotion>
+    </circle>
+    
+  
+    <circle r="6" fill="#00b388" filter="url(#shadow)">
+      <animateMotion dur="3s" begin="2s" repeatCount="indefinite">
+        <mpath href="#azsql3"/>
+      </animateMotion>
+    </circle>
+    
+  
+    <circle r="6" fill="#00b388" filter="url(#shadow)">
+      <animateMotion dur="3s" begin="3.5s" repeatCount="indefinite">
+        <mpath href="#azsql5"/>
+      </animateMotion>
+    </circle>
+    
+
+  <text x="440" y="110" text-anchor="start" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">① Exocompute connects via VNet peer</text>
+  <text x="220" y="230" text-anchor="start" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">② Read DB via TCP/1433</text>
+  <text x="420" y="250" text-anchor="start" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">③ Write to archive blob</text>
+  <text x="450" y="405" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" font-weight="500" fill="#0a4a9c">Azure SQL persistent backup requires Exocompute → SQL VNet reachability on 1433/TCP</text>
+</svg>
+
+</div>
+
+<details open><summary><strong>Network requirement — critical</strong></summary>
+<p>Exocompute's AKS subnet must have outbound TCP/1433 reachability to the VNet hosting the protected Azure SQL workload. Options:</p>
+<ul>
+  <li><strong>VNet peering</strong> between Exocompute VNet and SQL VNet</li>
+  <li><strong>Private Endpoint</strong> from SQL into Exocompute VNet</li>
+  <li><strong>Service Endpoint Microsoft.Sql</strong> on AKS subnet (if SQL allows public access from selected VNets)</li>
+</ul>
+<p>Without this, persistent SQL backup jobs fail with connection timeouts.</p>
+</details>
+
+<details><summary><strong>Azure SQL Managed Instance</strong></summary>
+<p>For Managed Instance, the storage instance is Rubrik-hosted but Exocompute MUST run in your tenant. RCV does not support Azure SQL Managed Instance.</p>
+</details>
+
+<details><summary><strong>Archival tier restrictions</strong></summary>
+<p>Azure SQL supports only <strong>Hot and Cool</strong> archival tiers — NOT Archive tier. (Archive tier rehydration latency is incompatible with DB backup access patterns.)</p>
+</details>
+
+<details><summary><strong>RCV support</strong></summary>
+<p>RCV Backup tier only. RCV Archive tier not supported for Azure SQL DB; SQL MI not supported at all.</p>
+</details>
+
+<div class="nav-buttons">
+  <a class="btn-prev" href="#/azure/workloads/vm">← Azure VMs</a>
+  <a class="btn-next" href="#/azure/workloads/blob">Next: Azure Blob →</a>
+</div>
+
+</article>
+<article class="page" data-route="/azure/workloads/blob" data-group="azure-workloads">
+  <div class="breadcrumb"><a href="#/">Home</a><span class="sep">/</span><span>3 · Workloads</span><span class="sep">/</span><span>Azure Blob</span></div>
+  <header class="page-head"><h1>Azure Blob</h1><button class="print-btn" onclick="window.print()" title="Save this page as PDF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>Save as PDF</button></header>
+
+<p class="lede">Version-based protection. Source storage account container MUST have versioning enabled. Uses the cloudslab Metadata Store.</p>
+
+<h3>Backup data flow</h3>
+<div class="diagram-frame">
+  
+<svg viewBox="0 0 900 420" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:900px;height:auto;background:url(#bgGrad);border-radius:12px;">
+  
+<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+  </marker>
+  <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+    <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.12"/>
+  </filter>
+  <linearGradient id="bgGrad" x1="0" x2="0" y1="0" y2="1">
+    <stop offset="0%"  stop-color="#fafaf7"/>
+    <stop offset="100%" stop-color="#f3f3ee"/>
+  </linearGradient>
+</defs>
+
+  <rect width="900" height="420" fill="url(#bgGrad)" rx="12"/>
+
+  
+    <g>
+      <rect x="380" y="30" width="140" height="50" rx="8" fill="#dff5ee" stroke="#00533f" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="450.0" y="51.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">RSC</text>
+      <text x="450.0" y="69.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">Orchestrator</text>
+    </g>
+    
+
+  
+    <g>
+      <rect x="40" y="110" width="380" height="280" rx="12" fill="#e6f0fb" stroke="#2272d6" stroke-width="1.5" stroke-dasharray="6 3" opacity="0.6"/>
+      <text x="54" y="128" font-family="Geist Mono, monospace" font-size="11" font-weight="600" fill="#2272d6" letter-spacing="1">AZURE SUBSCRIPTION — SOURCE</text>
+    </g>
+    
+  
+    <g>
+      <rect x="70" y="150" width="250" height="50" rx="8" fill="#fff" stroke="#2272d6" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="195.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Source Blob container</text>
+      <text x="195.0" y="189.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">Versioning + immutability</text>
+    </g>
+    
+  
+    <g>
+      <rect x="70" y="230" width="250" height="50" rx="8" fill="#e6f0fb" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="195.0" y="251.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Blob versions</text>
+      <text x="195.0" y="269.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">captured per change</text>
+    </g>
+    
+  
+    <g>
+      <rect x="70" y="320" width="250" height="50" rx="8" fill="#fff" stroke="#2272d6" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="195.0" y="341.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Workload Index container</text>
+      <text x="195.0" y="359.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">rubrik-blob-index-*</text>
+    </g>
+    
+
+  
+    <g>
+      <rect x="480" y="110" width="380" height="280" rx="12" fill="#e6f0fb" stroke="#2272d6" stroke-width="1.5" stroke-dasharray="6 3" opacity="0.6"/>
+      <text x="494" y="128" font-family="Geist Mono, monospace" font-size="11" font-weight="600" fill="#2272d6" letter-spacing="1">AZURE SUBSCRIPTION — EXOCOMPUTE</text>
+    </g>
+    
+  
+    <g>
+      <rect x="510" y="150" width="200" height="50" rx="8" fill="#e6f0fb" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="610.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Exocompute (AKS)</text>
+      <text x="610.0" y="189.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">scans blob versions</text>
+    </g>
+    
+  
+    <g>
+      <rect x="730" y="150" width="130" height="50" rx="8" fill="#dff5ee" stroke="#00533f" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="795.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Metadata Store</text>
+      <text x="795.0" y="189.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">cloudslab.rubrik.com</text>
+    </g>
+    
+  
+    <g>
+      <rect x="510" y="230" width="350" height="50" rx="8" fill="#fff" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="685.0" y="251.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Archive Storage Account</text>
+      <text x="685.0" y="269.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">Hot / Cool / Cold / Archive tiers</text>
+    </g>
+    
+  
+    <g>
+      <rect x="510" y="320" width="350" height="50" rx="8" fill="#fff" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
+      <text x="685.0" y="341.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Recovery → original or new container</text>
+      <text x="685.0" y="359.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">in-place or out-of-place</text>
+    </g>
+    
+
+  <path id="azb1" d="M 440 80 C 440 120, 195 120, 195 150" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <path id="azb2" d="M 195 200 L 195 230" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <path id="azb3" d="M 320 255 C 400 255, 400 175, 510 175" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <path id="azb4" d="M 710 175 L 730 175" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <path id="azb5" d="M 610 200 L 610 230" stroke="#2272d6" stroke-width="1.5" fill="none" marker-end="url(#arrow)" stroke-dasharray="4 3"/>
+
+  
+    <circle r="6" fill="#00b388" filter="url(#shadow)">
+      <animateMotion dur="3s" begin="0s" repeatCount="indefinite">
+        <mpath href="#azb1"/>
+      </animateMotion>
+    </circle>
+    
+  
+    <circle r="6" fill="#00b388" filter="url(#shadow)">
+      <animateMotion dur="2s" begin="1s" repeatCount="indefinite">
+        <mpath href="#azb2"/>
+      </animateMotion>
+    </circle>
+    
+  
+    <circle r="6" fill="#00b388" filter="url(#shadow)">
+      <animateMotion dur="3s" begin="2s" repeatCount="indefinite">
+        <mpath href="#azb3"/>
+      </animateMotion>
+    </circle>
+    
+  
+    <circle r="6" fill="#00b388" filter="url(#shadow)">
+      <animateMotion dur="2s" begin="3s" repeatCount="indefinite">
+        <mpath href="#azb4"/>
+      </animateMotion>
+    </circle>
+    
+  
+    <circle r="6" fill="#2272d6" filter="url(#shadow)">
+      <animateMotion dur="3s" begin="4s" repeatCount="indefinite">
+        <mpath href="#azb5"/>
+      </animateMotion>
+    </circle>
+    
+
+  <text x="350" y="110" text-anchor="start" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">① Enable versioning</text>
+  <text x="220" y="220" text-anchor="start" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">② Versions captured</text>
+  <text x="400" y="165" text-anchor="start" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">③ Exo scans + indexes</text>
+  <text x="610" y="220" text-anchor="start" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">④ Archive tier</text>
+  <text x="450" y="405" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" font-weight="500" fill="#374151">Metadata Store FQDN: get from RSC &gt; Inventory &gt; Azure Blob &gt; Subscriptions tab &gt; Metadata Store DNS column</text>
+</svg>
+
+</div>
+
+<details open><summary><strong>Step-by-step</strong></summary>
+<ol class="numbered-steps">
+  <li>Versioning enabled on source container (Rubrik can enable via <code>storageAccounts/blobServices write</code>).</li>
+  <li>Exocompute scans blob versions on the SLA schedule — lists via <code>blobServices/containers/blobs read</code>.</li>
+  <li>Workload index manifest written to a Rubrik-provisioned index container in the host subscription.</li>
+  <li><strong>Metadata Store DNS:</strong> Exocompute connects to <code>&lt;customer&gt;.cloudslab.rubrik.com</code> over TCP/443. <strong>This FQDN MUST be in your firewall allowlist.</strong> Get the exact FQDN from RSC → Inventory → Azure Blob → Subscriptions tab → Metadata Store DNS column (enable column via Column Settings if not visible).</li>
+  <li>Per SLA: versions transitioned to Archive Storage Account (Hot/Cool/Cold/Archive tier).</li>
+</ol>
+</details>
+
+<details><summary><strong>About cloudslab.rubrik.com</strong></summary>
+<p>Rubrik's Metadata Store backend. Each RSC tenant gets its own subdomain. Required for Azure Blob protection (and AWS S3 protection — same backend).</p>
+<p><strong>Don't skip this in the firewall ticket.</strong> If the DNS column isn't visible in the UI, use Column Settings to add it.</p>
+</details>
+
+<details><summary><strong>RCV support</strong></summary>
+<p>Azure Blob supports both <strong>RCV Backup tier and RCV Archive tier</strong> — one of the few workloads with full RCV support.</p>
+</details>
+
+<div class="nav-buttons">
+  <a class="btn-prev" href="#/azure/workloads/sql">← Azure SQL</a>
+  <a class="btn-next" href="#/azure/workloads/adls">Next: ADLS Gen2 →</a>
+</div>
+
+</article>
+<article class="page" data-route="/azure/workloads/adls" data-group="azure-workloads">
+  <div class="breadcrumb"><a href="#/">Home</a><span class="sep">/</span><span>3 · Workloads</span><span class="sep">/</span><span>ADLS Gen2</span></div>
+  <header class="page-head"><h1>ADLS Gen2</h1><button class="print-btn" onclick="window.print()" title="Save this page as PDF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>Save as PDF</button></header>
+
+<p class="lede">Hierarchical namespace on top of Blob. Different DNS suffix, otherwise similar pattern to Blob.</p>
+
+<details open><summary><strong>What's different from Blob</strong></summary>
+<ul>
+  <li>Endpoint: <code>*.dfs.core.windows.net</code> (vs <code>*.blob.core.windows.net</code> for plain Blob)</li>
+  <li>Hierarchical namespace must be enabled on the storage account</li>
+  <li>Same versioning + immutability model as Blob</li>
+  <li>Same cloudslab.rubrik.com Metadata Store dependency</li>
+</ul>
+</details>
+
+<details><summary><strong>Firewall additions for ADLS</strong></summary>
+<p>Add to AKS subnet outbound allowlist:</p>
+<ul>
+  <li><code>*.dfs.core.windows.net</code> (Azure Public)</li>
+  <li><code>*.dfs.core.usgovcloudapi.net</code> (Azure Government)</li>
+</ul>
+</details>
+
+<div class="nav-buttons">
+  <a class="btn-prev" href="#/azure/workloads/blob">← Azure Blob</a>
+  <a class="btn-next" href="#/azure/reference/firewall">Next: Firewall →</a>
+</div>
+
+</article>
+<article class="page" data-route="/azure/reference/firewall" data-group="azure-reference">
+  <div class="breadcrumb"><a href="#/">Home</a><span class="sep">/</span><span>4 · Reference</span><span class="sep">/</span><span>Firewall + FQDNs</span></div>
+  <header class="page-head"><h1>Firewall + FQDNs</h1><button class="print-btn" onclick="window.print()" title="Save this page as PDF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>Save as PDF</button></header>
+
+<p class="lede">Complete outbound allowlist for Exocompute on Azure. Public + Government endpoints.</p>
+
+<h3>Exocompute (AKS workers) — outbound 443/TCP</h3>
+<table class="ref-table">
+<thead><tr><th>Destination (Azure Public)</th><th>Destination (Azure Government)</th><th>Purpose</th></tr></thead>
+<tbody>
+<tr><td><code>*.hcp.&lt;region&gt;.azmk8s.io</code></td><td><code>*.hcp.&lt;location&gt;.cx.aks.containerservice.azure.us</code></td><td>AKS control plane</td></tr>
+<tr><td><code>*.mcr.microsoft.com</code>, <code>*.data.mcr.microsoft.com</code></td><td>Same</td><td>Microsoft Container Registry</td></tr>
+<tr><td><code>management.azure.com</code></td><td><code>management.usgovcloudapi.net</code></td><td>Azure Resource Manager API</td></tr>
+<tr><td><code>login.microsoftonline.com</code>, <code>login.windows.net</code></td><td><code>login.microsoftonline.us</code></td><td>Microsoft Entra ID auth</td></tr>
+<tr><td><code>packages.microsoft.com</code></td><td>Same</td><td>AKS node packages</td></tr>
+<tr><td><code>acs-mirror.azureedge.net</code></td><td>Same</td><td>AKS components</td></tr>
+<tr><td><code>centralacrprod.azurecr.io</code></td><td><code>centralacrprod.azurecr.us</code></td><td>Rubrik container images</td></tr>
+<tr><td><code>*.blob.core.windows.net</code>, <code>*.blob.storage.azure.net</code></td><td><code>*.blob.core.usgovcloudapi.net</code>, <code>*.blob.storage.usgovcloudapi.net</code></td><td>Blob workload + archive</td></tr>
+<tr><td><code>*.dfs.core.windows.net</code></td><td><code>*.dfs.core.usgovcloudapi.net</code></td><td>ADLS Gen2 (only if in scope)</td></tr>
+<tr><td><code>googleapis.com</code>, <code>oauth2.googleapis.com</code>, <code>storage.googleapis.com</code></td><td>Same</td><td>Index upload to RSC GCS backend</td></tr>
+<tr><td><code>prod-*.prod.my.rubrik.com</code></td><td>Same</td><td>RSC tenant — logs + metrics</td></tr>
+<tr><td><code>&lt;customer&gt;.cloudslab.rubrik.com</code></td><td>Same</td><td>Metadata Store (Blob + ADLS workloads)</td></tr>
+</tbody>
+</table>
+
+<div class="note warn">
+<strong>cloudslab.rubrik.com is dynamic.</strong> Get the exact FQDN from RSC → Inventory → Azure Blob → Subscriptions tab → Metadata Store DNS column. Enable the column via Column Settings if it's not visible.
+</div>
+
+<h3>AKS internal — fixed ports</h3>
+<table class="ref-table">
+<thead><tr><th>Port</th><th>Source</th><th>Destination</th><th>Purpose</th></tr></thead>
+<tbody>
+<tr><td>10250/TCP</td><td>K8s API server</td><td>Kubelet on workers</td><td>Pod logs, kubectl exec</td></tr>
+<tr><td>9000/TCP</td><td>Any</td><td>Tunnel-front pod</td><td>Tunnel-front pod ops</td></tr>
+<tr><td>1194/TCP</td><td>Any</td><td>AKS-Link pod</td><td>Cluster connectivity</td></tr>
+<tr><td>443/TCP</td><td>Any</td><td>Any</td><td>Konnectivity</td></tr>
+</tbody>
+</table>
+
+<h3>Dynamic outbound — must NOT be blocked</h3>
+<p>Port range <code>49152-65535</code> used dynamically for SNAT'd outbound connections (logs, metrics, health checks). Blocking these causes intermittent failures.</p>
+
+<h3>If using Azure Firewall</h3>
+<details><summary><strong>az CLI commands from RSC docs</strong></summary>
+<pre><code># Network rule for AKS control plane on 9000/TCP
+az network firewall network-rule create -g &lt;rg&gt; -f &lt;fw&gt;   --collection-name 'col' -n 'apitcp' --protocols 'TCP'   --source-addresses '*' --destination-addresses 'AzureCloud.&lt;region&gt;'   --destination-ports 9000 --action allow --priority 100
+
+# Application rule using AKS FQDN tag
+az network firewall application-rule create -g &lt;rg&gt; -f &lt;fw&gt;   --collection-name 'col' -n 'fqdn' --source-addresses '*'   --protocols 'https=443' --fqdn-tags 'AzureKubernetesService'   --action allow --priority 100
+
+# Network rule for Google APIs (index upload)
+az network firewall network-rule create -g &lt;rg&gt; -f &lt;fw&gt;   --collection-name 'col' -n 'gcp-fqdn' --protocols 'TCP'   --source-addresses '*'   --destination-fqdns www.googleapis.com www.oauth2.googleapis.com   --destination-ports 443 --action allow --priority 101</code></pre>
+</details>
+
+<div class="nav-buttons">
+  <a class="btn-prev" href="#/azure/workloads/adls">← ADLS</a>
+  <a class="btn-next" href="#/azure/reference/costs">Next: Costs →</a>
+</div>
+
+</article>
+<article class="page" data-route="/azure/reference/costs" data-group="azure-reference">
+  <div class="breadcrumb"><a href="#/">Home</a><span class="sep">/</span><span>4 · Reference</span><span class="sep">/</span><span>Cost optimisation</span></div>
+  <header class="page-head"><h1>Cost optimisation</h1><button class="print-btn" onclick="window.print()" title="Save this page as PDF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>Save as PDF</button></header>
+
+<p class="lede">Where the Azure bill comes from with Rubrik CNP and what to do about it.</p>
+
+<h3>The big four cost lines</h3>
+
+<details open><summary><strong>1. NAT Gateway data processing</strong></summary>
+<p><strong>Cost:</strong> ~$0.045/GB processed + hourly. Cross-AZ + cross-region transfer extra.</p>
+<p><strong>Cause:</strong> Exocompute traffic without Service Endpoints. Every snapshot read, every container pull, every API call hits NAT.</p>
+<p><strong>Fix:</strong> Service Endpoint to Microsoft.Storage on AKS subnet (FREE). Removes the bulk of it.</p>
+</details>
+
+<details><summary><strong>2. Managed disk snapshot storage</strong></summary>
+<p><strong>Cost:</strong> ~$0.05/GB-month for standard snapshots.</p>
+<p><strong>Driver:</strong> long retention SLAs. Snapshots are incremental after the first but accumulate.</p>
+<p><strong>Fix:</strong> Storage tiering to Blob — Cool / Cold / Archive tiers per SLA.</p>
+</details>
+
+<details><summary><strong>3. AKS hourly + worker node VM cost</strong></summary>
+<p><strong>Cost:</strong> AKS control plane + worker node Standard_DS2_v2 hours.</p>
+<p><strong>Driver:</strong> Exocompute lives in AKS. Workers scale to zero between jobs but the control plane runs 24/7.</p>
+<p><strong>Fix:</strong> One Exocompute per region per host subscription.</p>
+</details>
+
+<details><summary><strong>4. Blob archive tier choices</strong></summary>
+<table class="ref-table">
+<thead><tr><th>Tier</th><th>Cost</th><th>Latency</th><th>Best for</th></tr></thead>
+<tbody>
+<tr><td>Hot</td><td>~$0.018/GB-month</td><td>ms</td><td>Operational backups</td></tr>
+<tr><td>Cool</td><td>~$0.01/GB-month</td><td>ms</td><td>30+ day retention</td></tr>
+<tr><td>Cold</td><td>~$0.0036/GB-month</td><td>ms</td><td>90+ day retention</td></tr>
+<tr><td>Archive</td><td>~$0.00099/GB-month</td><td>hours</td><td>180+ day compliance</td></tr>
+</tbody>
+</table>
+<p>Note: Azure SQL DB only supports Hot and Cool — no Archive tier.</p>
+</details>
+
+<h3>Trade-offs</h3>
+<details><summary><strong>Service Endpoint (free) vs Private Endpoint (paid)</strong></summary>
+<p>Service Endpoints to Microsoft.Storage / KeyVault / Sql are FREE and keep traffic on the Azure backbone. Use them unless your security policy mandates private IPs only.</p>
+<p>Private Endpoints add ~$0.01/hour per endpoint per region + $0.01/GB. At Exocompute traffic volumes, Service Endpoints save real money.</p>
+</details>
+
+<details><summary><strong>NAT Gateway vs Azure Firewall</strong></summary>
+<p>NAT GW is cheaper for predictable AKS egress. Azure Firewall adds FQDN application rules (better security boundary) but costs more per GB processed. POC: NAT GW + Service Endpoints. Production with mandatory FQDN allowlisting: Firewall.</p>
+</details>
+
+<div class="nav-buttons">
+  <a class="btn-prev" href="#/azure/reference/firewall">← Firewall</a>
+  <a class="btn-next" href="#/azure/">Back to Azure home →</a>
+</div>
+
+</article>
+<article class="page" data-route="/gcp/" data-group="gcp">
+  <div class="breadcrumb"><a href="#/">Home</a><span class="sep">/</span><span>GCP</span><span class="sep">/</span><span>GCP Overview</span></div>
+  <header class="page-head"><h1>GCP Overview</h1><button class="print-btn" onclick="window.print()" title="Save this page as PDF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>Save as PDF</button></header>
+
+<div class="hero">
+  <div class="eyebrow">Rubrik GCP · POC Playbook</div>
+  <h1>Rubrik on Google Cloud — <em>scope-first</em></h1>
+  <p>GCP CNP scope is narrower than AWS/Azure: <strong>GCE instances + Persistent Disks only</strong>. For SQL/Oracle/SAP HANA/Filesets on GCP, customers deploy CCES (Rubrik CDM in GCE). Start here to figure out which path you need.</p>
+</div>
+
+<h2 class="section-title">Decision tree first</h2>
+<div class="tile-grid">
+  <a class="tile tile-gcp" href="#/gcp/scope"><div class="tile-num">1</div><h3>CNP or CCES?</h3><p>The most important question. Decision tree based on what you protect.</p></a>
+  <a class="tile tile-gcp" href="#/gcp/foundation"><div class="tile-num">2</div><h3>Foundation</h3><p>Project, service account, VPC, PGA for the CNP path.</p></a>
+  <a class="tile tile-gcp" href="#/gcp/onboard"><div class="tile-num">3</div><h3>Onboard CNP</h3><p>Add GCP project to RSC — service account key flow.</p></a>
+</div>
+
+<h2 class="section-title">CNP workloads (narrow scope)</h2>
+<div class="tile-grid">
+  <a class="tile tile-gcp" href="#/gcp/workloads/gce"><div class="tile-num">4</div><h3>GCE instances + PD</h3><p>The only CNP workload type on GCP. Snapshot-based.</p></a>
+</div>
+
+<h2 class="section-title">For everything else: CCES on GCP</h2>
+<div class="tile-grid">
+  <a class="tile tile-gcp" href="#/gcp/cces-pointer"><div class="tile-num">5</div><h3>CCES on GCP</h3><p>When and how. SQL Server, Oracle, SAP HANA, Filesets, GCVE.</p></a>
+</div>
+
+
+<h2 class="section-title">Architecture at a glance</h2>
+<div class="diagram-frame">
+<svg viewBox="0 0 900 460" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:900px;height:auto;border-radius:12px;">
+  <defs>
+    <marker id="gcparrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <filter id="gcpshadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.12"/>
+    </filter>
+    <linearGradient id="gcpbg" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#fafaf7"/>
+      <stop offset="100%" stop-color="#f3f3ee"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="460" fill="url(#gcpbg)" rx="12"/>
+
+  <!-- RSC cloud -->
+  <ellipse cx="450" cy="50" rx="80" ry="28" fill="#00b388" opacity="0.15"/>
+  <ellipse cx="450" cy="50" rx="60" ry="20" fill="#00b388" opacity="0.25"/>
+  <text x="450" y="46" text-anchor="middle" font-family="Geist, sans-serif" font-size="14" font-weight="600" fill="#00533f">Rubrik Security Cloud</text>
+  <text x="450" y="61" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#00533f">prod-XXX.prod.my.rubrik.com</text>
+
+  <!-- GCP Project zone -->
+  <rect x="40" y="130" width="820" height="290" rx="12" fill="#dff5ee" stroke="#00b388" stroke-width="1.5" stroke-dasharray="6 3" opacity="0.6"/>
+  <text x="54" y="148" font-family="Geist Mono, monospace" font-size="11" font-weight="600" fill="#00b388" letter-spacing="1">GCP PROJECT</text>
+
+  <!-- Service account -->
+  <g>
+    <rect x="70" y="170" width="200" height="56" rx="8" fill="#fff" stroke="#00533f" stroke-width="1.5" filter="url(#gcpshadow)"/>
+    <text x="170" y="194" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">Service Account</text>
+    <text x="170" y="212" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">+ JSON key (RSC uploads)</text>
+  </g>
+
+  <!-- VPC + subnet -->
+  <g>
+    <rect x="290" y="170" width="220" height="56" rx="8" fill="#fff" stroke="#00b388" stroke-width="1.5" filter="url(#gcpshadow)"/>
+    <text x="400" y="194" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">VPC + Subnet</text>
+    <text x="400" y="212" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">PGA enabled for outbound</text>
+  </g>
+
+  <!-- GCE -->
+  <g>
+    <rect x="530" y="170" width="150" height="56" rx="8" fill="#fff" stroke="#00b388" stroke-width="1.5" filter="url(#gcpshadow)"/>
+    <text x="605" y="194" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">GCE instance</text>
+    <text x="605" y="212" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">+ Persistent Disks</text>
+  </g>
+
+  <!-- GCS archive -->
+  <g>
+    <rect x="700" y="170" width="140" height="56" rx="8" fill="#fff" stroke="#00b388" stroke-width="1.5" filter="url(#gcpshadow)"/>
+    <text x="770" y="194" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">GCS bucket</text>
+    <text x="770" y="212" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">archive tier</text>
+  </g>
+
+  <!-- Exocompute on GKE (optional) -->
+  <g>
+    <rect x="70" y="260" width="400" height="56" rx="8" fill="#dff5ee" stroke="#00533f" stroke-width="1.5" filter="url(#gcpshadow)"/>
+    <text x="270" y="284" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">Exocompute on GKE (optional)</text>
+    <text x="270" y="302" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">used for FLR + indexing + archival</text>
+  </g>
+
+  <!-- Snapshots -->
+  <g>
+    <rect x="500" y="260" width="200" height="56" rx="8" fill="#fff" stroke="#00b388" stroke-width="1.5" filter="url(#gcpshadow)"/>
+    <text x="600" y="284" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">Snapshot store</text>
+    <text x="600" y="302" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">native GCE snapshots</text>
+  </g>
+
+  <!-- Note about narrow scope -->
+  <g>
+    <rect x="70" y="350" width="770" height="50" rx="8" fill="#fff8e1" stroke="#b08400" stroke-width="1.5" filter="url(#gcpshadow)"/>
+    <text x="455" y="372" text-anchor="middle" font-family="Geist, sans-serif" font-size="12" font-weight="600" fill="#5a4500">CNP scope on GCP = GCE + Persistent Disks ONLY.</text>
+    <text x="455" y="388" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#5a4500">For SQL Server / Oracle / SAP HANA / GCVE / Filesets → deploy CCES (Rubrik CDM in GCE)</text>
+  </g>
+
+  <!-- Animated packets -->
+  <path id="gcparch1" d="M 450 78 C 250 100, 170 130, 170 170" stroke="#9ca3af" stroke-width="1.5" fill="none" marker-end="url(#gcparrow)" stroke-dasharray="4 3"/>
+  <path id="gcparch2" d="M 270 226 C 350 230, 500 250, 600 260" stroke="#00b388" stroke-width="2" fill="none" marker-end="url(#gcparrow)"/>
+  <path id="gcparch3" d="M 700 288 C 750 280, 780 260, 780 226" stroke="#00b388" stroke-width="2" fill="none" marker-end="url(#gcparrow)"/>
+
+  <circle r="6" fill="#00b388" filter="url(#gcpshadow)">
+    <animateMotion dur="3s" begin="0s" repeatCount="indefinite">
+      <mpath href="#gcparch1"/>
+    </animateMotion>
+  </circle>
+  <circle r="6" fill="#00b388" filter="url(#gcpshadow)">
+    <animateMotion dur="3s" begin="1s" repeatCount="indefinite">
+      <mpath href="#gcparch1"/>
+    </animateMotion>
+  </circle>
+  <circle r="6" fill="#00b388" filter="url(#gcpshadow)">
+    <animateMotion dur="2.5s" begin="1.5s" repeatCount="indefinite">
+      <mpath href="#gcparch2"/>
+    </animateMotion>
+  </circle>
+  <circle r="6" fill="#00b388" filter="url(#gcpshadow)">
+    <animateMotion dur="2.5s" begin="2.5s" repeatCount="indefinite">
+      <mpath href="#gcparch3"/>
+    </animateMotion>
+  </circle>
+
+  <text x="450" y="440" text-anchor="middle" font-family="Geist Mono, monospace" font-size="11" font-weight="500" fill="#374151">RSC authenticates via service-account JSON key. No long-lived broker; uses scoped Google APIs.</text>
+</svg>
+</div>
+
+</article>
+<article class="page" data-route="/gcp/scope" data-group="gcp">
+  <div class="breadcrumb"><a href="#/">Home</a><span class="sep">/</span><span>GCP</span><span class="sep">/</span><span>CNP or CCES?</span></div>
+  <header class="page-head"><h1>CNP or CCES?</h1><button class="print-btn" onclick="window.print()" title="Save this page as PDF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>Save as PDF</button></header>
+
+<p class="lede">GCP CNP supports almost nothing compared to AWS/Azure. Get the path right before you start.</p>
+
+<h3>The decision</h3>
+
+<details open><summary><strong>What CNP on GCP supports</strong></summary>
+<table class="ref-table">
+<thead><tr><th>GCP workload</th><th>CNP supported?</th></tr></thead>
+<tbody>
+<tr><td>Google Compute Engine (GCE) instances</td><td>Yes — snapshot-based</td></tr>
+<tr><td>Persistent Disks</td><td>Yes — snapshot-based</td></tr>
+<tr><td>Cloud SQL (managed DB)</td><td><strong>NO</strong> — not supported via CNP</td></tr>
+<tr><td>Google Cloud Storage (GCS) buckets</td><td><strong>NO</strong> — not supported via CNP</td></tr>
+<tr><td>BigQuery, Firestore, Spanner</td><td><strong>NO</strong> — not supported</td></tr>
+</tbody>
+</table>
+</details>
+
+<details><summary><strong>What requires CCES (Rubrik CDM in GCE)</strong></summary>
+<table class="ref-table">
+<thead><tr><th>Workload</th><th>Path</th><th>Min CDM</th></tr></thead>
+<tbody>
+<tr><td>Microsoft SQL Server in GCE</td><td>CCES</td><td>6.0+</td></tr>
+<tr><td>Oracle Database in GCE</td><td>CCES</td><td>7.0+</td></tr>
+<tr><td>SAP HANA in GCE</td><td>CCES</td><td>7.0+</td></tr>
+<tr><td>IBM Db2 in GCE</td><td>CCES</td><td>8.0+</td></tr>
+<tr><td>Google Cloud VMware Engine (GCVE)</td><td>CCES</td><td>8.0+</td></tr>
+<tr><td>Windows / Linux Filesets</td><td>CCES</td><td>6.0+</td></tr>
+<tr><td>Volume Groups</td><td>CCES</td><td>6.0+</td></tr>
+<tr><td>Managed Volumes</td><td>CCES</td><td>6.0+</td></tr>
+</tbody>
+</table>
+</details>
+
+<h3>The honest take</h3>
+<div class="note warn">
+<strong>Most GCP customers end up deploying CCES, not CNP.</strong> If the customer is on GCP because they run SQL Server, Oracle, or SAP HANA in GCE — that's CCES, not this playbook. Use the dedicated CCES on GCP setup guide instead.
+</div>
+
+<p>If your customer's GCP scope is genuinely just <strong>GCE image-level snapshots + persistent disk snapshots</strong> — proceed with CNP. Otherwise jump to CCES.</p>
+
+<div class="nav-buttons">
+  <a class="btn-prev" href="#/gcp/">← GCP overview</a>
+  <a class="btn-next" href="#/gcp/foundation">Continue with CNP →</a>
+</div>
+
+</article>
+<article class="page" data-route="/gcp/foundation" data-group="gcp">
+  <div class="breadcrumb"><a href="#/">Home</a><span class="sep">/</span><span>GCP</span><span class="sep">/</span><span>Foundation</span></div>
+  <header class="page-head"><h1>Foundation</h1><button class="print-btn" onclick="window.print()" title="Save this page as PDF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>Save as PDF</button></header>
+
+<p class="lede">Project, service account, VPC, Private Google Access. Concise — only the must-haves for CNP scope.</p>
+
+<details open><summary><strong>1. GCP project</strong></summary>
+<p>One project per RSC cloud account. Document the project ID.</p>
+</details>
+
+<details><summary><strong>2. Service account</strong></summary>
+<p>Create a service account in the project. RSC authenticates as this SA via a generated key (or workload identity in advanced setups).</p>
+<p>Minimum IAM roles:</p>
+<ul>
+  <li><code>roles/compute.instanceAdmin.v1</code> — for GCE snapshots + restore</li>
+  <li><code>roles/compute.storageAdmin</code> — for Persistent Disk snapshots</li>
+  <li><code>roles/storage.admin</code> — for GCS archive bucket</li>
+  <li><code>roles/iam.serviceAccountUser</code> — for impersonating SA in jobs</li>
+</ul>
+<p>Custom role with narrower scope is supported; check RSC docs for the exact permission list.</p>
+</details>
+
+
+<h3>Complete IAM permission list (CCES service account)</h3>
+<details><summary><strong>Show all 19 permissions for the custom role</strong></summary>
+<p>From the CDM v9.4 Cloud Cluster Setup Guide — these permissions are required on the service account that deploys CCES nodes and copies the image. Build a custom role with ALL of these:</p>
+<table class="ref-table">
+<thead><tr><th>Permission</th><th>Purpose</th></tr></thead>
+<tbody>
+<tr><td><code>accessapproval.requests.dismiss</code></td><td>Dismiss access approval requests during deployment</td></tr>
+<tr><td><code>compute.disks.create</code></td><td>Create persistent disks for CCES nodes</td></tr>
+<tr><td><code>compute.globalOperations.get</code></td><td>Track long-running operations</td></tr>
+<tr><td><code>compute.images.create</code></td><td>Create the Rubrik CCES VM image in your project</td></tr>
+<tr><td><code>compute.images.get</code></td><td>Read image metadata</td></tr>
+<tr><td><code>compute.images.getIamPolicy</code></td><td>Read image IAM policy</td></tr>
+<tr><td><code>compute.images.useReadOnly</code></td><td>Use Rubrik-provided base image</td></tr>
+<tr><td><code>compute.instances.create</code></td><td>Launch CCES node instances</td></tr>
+<tr><td><code>compute.instances.get</code></td><td>Read instance state</td></tr>
+<tr><td><code>compute.instances.getSerialPortOutput</code></td><td>Read serial console output (deployment troubleshooting)</td></tr>
+<tr><td><code>compute.instances.setDeletionProtection</code></td><td>Protect production CCES nodes</td></tr>
+<tr><td><code>compute.instances.setMetadata</code></td><td>Configure instance metadata at launch</td></tr>
+<tr><td><code>compute.instances.setServiceAccount</code></td><td>Bind the SA to the launched instance</td></tr>
+<tr><td><code>compute.subnetworks.get</code></td><td>Read subnet configuration</td></tr>
+<tr><td><code>compute.subnetworks.use</code></td><td>Attach CCES nodes to the subnet</td></tr>
+<tr><td><code>storage.buckets.get</code></td><td>Read GCS bucket properties</td></tr>
+<tr><td><code>storage.buckets.list</code></td><td>List buckets in the project</td></tr>
+<tr><td><code>storage.objects.create</code></td><td>Write data to GCS</td></tr>
+<tr><td><code>storage.objects.delete</code></td><td>Manage retention lifecycle</td></tr>
+<tr><td><code>storage.objects.get</code></td><td>Read data from GCS</td></tr>
+<tr><td><code>storage.objects.getIamPolicy</code></td><td>Read object IAM policy</td></tr>
+<tr><td><code>storage.objects.list</code></td><td>List objects in buckets</td></tr>
+<tr><td><code>storage.objects.restore</code></td><td>Restore soft-deleted objects (if needed)</td></tr>
+<tr><td><code>storage.objects.setRetention</code></td><td>Set object retention for immutability</td></tr>
+<tr><td><code>storage.objects.update</code></td><td>Update object metadata</td></tr>
+</tbody>
+</table>
+<p><strong>Custom signing key:</strong> If using your own KMS signing key (instead of the Google-managed default), additionally grant the <strong>Cloud KMS CryptoKey Signer/Verifier</strong> role (<code>cloudkms.signerVerifier</code>) on the key resource.</p>
+</details>
+
+<details><summary><strong>Shared VPC — separate VPC role required</strong></summary>
+<p>If CCES nodes will run on a Shared VPC network (host project ≠ service project), create a SECOND custom role in the <em>host project</em> with these minimum permissions:</p>
+<ul>
+  <li><code>compute.subnetworks.get</code></li>
+  <li><code>compute.subnetworks.use</code></li>
+</ul>
+<p>Assign this role to the Cloud Cluster service account at the host project level.</p>
+</details>
+
+<h3>GCS bucket — exact settings</h3>
+<details><summary><strong>Required configuration for the data tier</strong></summary>
+<table class="ref-table">
+<thead><tr><th>Setting</th><th>Value</th></tr></thead>
+<tbody>
+<tr><td>Region</td><td>Same region as the cluster nodes</td></tr>
+<tr><td>Storage class</td><td>Standard</td></tr>
+<tr><td>Object versioning</td><td>Enabled</td></tr>
+<tr><td>Object retention</td><td>Enabled</td></tr>
+<tr><td>Soft delete policy</td><td><strong>Disabled</strong> (Rubrik uses versioning + retention)</td></tr>
+<tr><td>Default encryption</td><td>Google-managed key, OR Cloud KMS customer-managed key</td></tr>
+<tr><td>Uniform bucket-level access</td><td>Enabled (recommended)</td></tr>
+</tbody>
+</table>
+</details>
+
+<h3>Private Google Access — required for secure deployments</h3>
+<details><summary><strong>Why PGA matters</strong></summary>
+<p>For secure CCES deployments, Rubrik recommends CCES nodes have <strong>internal IP addresses only</strong> (no external IPs). With PGA enabled on the subnet, internal-IP-only VMs can still reach Google APIs (<code>storage.googleapis.com</code>, <code>compute.googleapis.com</code>, etc.) over Google's private network — no NAT, no public exposure.</p>
+<p>This is the GCP equivalent of AWS Gateway VPC Endpoints or Azure Service Endpoints.</p>
+</details>
+
+<details><summary><strong>PGA configuration checklist</strong></summary>
+<ul>
+  <li>Enable PGA on the specific subnet where CCES nodes deploy</li>
+  <li>Configure VPC DNS, routing, and firewall rules to allow access to Google APIs</li>
+  <li>Source IP can be the primary internal IP or an alias IP range</li>
+  <li>If a VM has an external IP, PGA has no effect — but Rubrik recommends keeping CCES internal-only</li>
+</ul>
+</details>
+
+<details><summary><strong>GCP cloud API access points (Private Service Connect / PGA)</strong></summary>
+<p>For Rubrik Cloud Cluster ES on GCP, only specific Google API access points are needed. Disable the rest at the instance template level to reduce attack surface:</p>
+<table class="ref-table">
+<thead><tr><th>Cloud API access point</th><th>Custom access</th></tr></thead>
+<tbody>
+<tr><td>Service Control</td><td>Enabled</td></tr>
+<tr><td>Service Management</td><td>Read only</td></tr>
+<tr><td>Stackdriver Logging API</td><td>Write only</td></tr>
+<tr><td>Stackdriver Monitoring API</td><td>Write only</td></tr>
+<tr><td>Stackdriver Trace</td><td>Write only</td></tr>
+<tr><td>Storage</td><td>Full</td></tr>
+<tr><td>BigQuery, Bigtable, Cloud SQL, Compute Engine, Cloud Datastore, Pub/Sub, etc.</td><td>Disabled</td></tr>
+</tbody>
+</table>
+</details>
+
+
+<details><summary><strong>3. VPC + subnet for Exocompute (if needed)</strong></summary>
+<p>For CNP-only on GCP, Exocompute is NOT strictly required — GCE snapshots are native to GCP. Exocompute on GCP runs on GKE when needed for file indexing.</p>
+<p>If Exocompute is in scope: VPC with a subnet, and Private Google Access enabled (next item).</p>
+</details>
+
+<details><summary><strong>4. Private Google Access (PGA)</strong></summary>
+<p>Allows internal-IP-only resources to reach Google APIs (storage.googleapis.com, etc.) without going via NAT. Equivalent of VPC Endpoints in AWS / Service Endpoints in Azure.</p>
+<p>Enable on the subnet that hosts Exocompute or CCES nodes. <strong>Free.</strong></p>
+</details>
+
+<details><summary><strong>5. GCS archive bucket</strong></summary>
+<p>For storage tiering. Standard storage class, versioning enabled, object retention enabled, soft delete <strong>disabled</strong> (RSC uses versioning + retention).</p>
+<p>Same region as the protected workloads to avoid cross-region egress.</p>
+</details>
+
+<div class="nav-buttons">
+  <a class="btn-prev" href="#/gcp/scope">← Decision tree</a>
+  <a class="btn-next" href="#/gcp/onboard">Next: Onboard →</a>
+</div>
+
+</article>
+<article class="page" data-route="/gcp/onboard" data-group="gcp">
+  <div class="breadcrumb"><a href="#/">Home</a><span class="sep">/</span><span>GCP</span><span class="sep">/</span><span>Onboard CNP</span></div>
+  <header class="page-head"><h1>Onboard CNP</h1><button class="print-btn" onclick="window.print()" title="Save this page as PDF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>Save as PDF</button></header>
+
+<p class="lede">Add the GCP project to RSC. Service account JSON key flow.</p>
+
+<ol class="numbered-steps">
+  <li>Generate a JSON key for the service account from Foundation step 2.</li>
+  <li>RSC → <strong>Add Cloud Accounts</strong> → <strong>GCP</strong> → <strong>Project</strong></li>
+  <li>Upload the service account JSON key</li>
+  <li>Select features in scope: GCE instances + Persistent Disks</li>
+  <li>Optionally enable archival (GCS bucket from Foundation step 5)</li>
+  <li>RSC validates the service account permissions and adds the project</li>
+</ol>
+
+<details><summary><strong>Key rotation</strong></summary>
+<p>Service account keys should be rotated periodically. Plan a quarterly rotation if your security policy mandates it.</p>
+</details>
+
+<div class="nav-buttons">
+  <a class="btn-prev" href="#/gcp/foundation">← Foundation</a>
+  <a class="btn-next" href="#/gcp/workloads/gce">Next: GCE workloads →</a>
+</div>
+
+</article>
+<article class="page" data-route="/gcp/workloads/gce" data-group="gcp">
+  <div class="breadcrumb"><a href="#/">Home</a><span class="sep">/</span><span>GCP</span><span class="sep">/</span><span>GCE + Persistent Disks</span></div>
+  <header class="page-head"><h1>GCE + Persistent Disks</h1><button class="print-btn" onclick="window.print()" title="Save this page as PDF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>Save as PDF</button></header>
+
+<p class="lede">The only CNP workload type on GCP. Image-level snapshots via the native Compute Engine snapshot API.</p>
+
+
+<h3>Backup data flow</h3>
+<div class="diagram-frame">
+<svg viewBox="0 0 900 460" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:900px;height:auto;border-radius:12px;">
+  <defs>
+    <marker id="gce-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <filter id="gce-shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.12"/>
+    </filter>
+    <linearGradient id="gce-bg" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#fafaf7"/>
+      <stop offset="100%" stop-color="#f3f3ee"/>
+    </linearGradient>
+  </defs>
+  <rect width="900" height="460" fill="url(#gce-bg)" rx="12"/>
+
+  <!-- RSC -->
+  <rect x="380" y="30" width="140" height="50" rx="8" fill="#dff5ee" stroke="#00533f" stroke-width="1.5" filter="url(#gce-shadow)"/>
+  <text x="450" y="50" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">RSC</text>
+  <text x="450" y="68" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">Orchestrator</text>
+
+  <!-- Source -->
+  <rect x="40" y="110" width="380" height="320" rx="12" fill="#dff5ee" stroke="#00b388" stroke-width="1.5" stroke-dasharray="6 3" opacity="0.6"/>
+  <text x="54" y="128" font-family="Geist Mono, monospace" font-size="11" font-weight="600" fill="#00b388" letter-spacing="1">GCP PROJECT — SOURCE</text>
+
+  <rect x="70" y="150" width="110" height="50" rx="8" fill="#fff" stroke="#00b388" stroke-width="1.5" filter="url(#gce-shadow)"/>
+  <text x="125" y="175" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">GCE instance</text>
+  <text x="125" y="188" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">running</text>
+
+  <rect x="210" y="150" width="130" height="50" rx="8" fill="#fff" stroke="#00b388" stroke-width="1.5" filter="url(#gce-shadow)"/>
+  <text x="275" y="175" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">Persistent Disk</text>
+  <text x="275" y="188" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">attached</text>
+
+  <rect x="70" y="240" width="270" height="50" rx="8" fill="#dff5ee" stroke="#00533f" stroke-width="1.5" filter="url(#gce-shadow)"/>
+  <text x="205" y="265" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">GCE disk snapshot</text>
+  <text x="205" y="278" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">incremental, Google-managed</text>
+
+  <rect x="70" y="330" width="270" height="50" rx="8" fill="#fff" stroke="#00b388" stroke-width="1.5" filter="url(#gce-shadow)"/>
+  <text x="205" y="355" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">Temp disk on GKE pod</text>
+  <text x="205" y="368" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">for indexing</text>
+
+  <!-- Target -->
+  <rect x="480" y="110" width="380" height="320" rx="12" fill="#dff5ee" stroke="#00b388" stroke-width="1.5" stroke-dasharray="6 3" opacity="0.6"/>
+  <text x="494" y="128" font-family="Geist Mono, monospace" font-size="11" font-weight="600" fill="#00b388" letter-spacing="1">GCP PROJECT — EXOCOMPUTE + STORAGE</text>
+
+  <rect x="510" y="150" width="200" height="50" rx="8" fill="#fff" stroke="#00533f" stroke-width="1.5" filter="url(#gce-shadow)"/>
+  <text x="610" y="175" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">Compute Engine API</text>
+  <text x="610" y="188" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">via service account</text>
+
+  <rect x="730" y="150" width="130" height="50" rx="8" fill="#fff" stroke="#00533f" stroke-width="1.5" filter="url(#gce-shadow)"/>
+  <text x="795" y="175" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">GKE</text>
+  <text x="795" y="188" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">Exocompute pod</text>
+
+  <rect x="510" y="240" width="350" height="50" rx="8" fill="#dff5ee" stroke="#00533f" stroke-width="1.5" filter="url(#gce-shadow)"/>
+  <text x="685" y="265" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">Exocompute (GKE pod)</text>
+  <text x="685" y="278" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">indexes filesystem metadata</text>
+
+  <rect x="510" y="330" width="200" height="50" rx="8" fill="#fff" stroke="#00533f" stroke-width="1.5" filter="url(#gce-shadow)"/>
+  <text x="610" y="355" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">Index → GCS</text>
+  <text x="610" y="368" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">storage.googleapis.com</text>
+
+  <rect x="730" y="330" width="130" height="50" rx="8" fill="#fff" stroke="#00533f" stroke-width="1.5" filter="url(#gce-shadow)"/>
+  <text x="795" y="355" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">GCS archive</text>
+  <text x="795" y="368" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">long-term tier</text>
+
+  <!-- Flow arrows -->
+  <path id="gce1" d="M 440 80 C 440 130, 580 130, 580 150" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#gce-arrow)"/>
+  <path id="gce2" d="M 580 200 C 580 220, 205 220, 205 240" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#gce-arrow)"/>
+  <path id="gce3" d="M 205 290 L 205 330" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#gce-arrow)"/>
+  <path id="gce4" d="M 340 355 C 400 355, 400 265, 510 265" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#gce-arrow)"/>
+  <path id="gce5" d="M 685 290 L 610 330" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#gce-arrow)"/>
+  <path id="gce6" d="M 340 265 C 400 265, 730 290, 790 330" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#gce-arrow)" stroke-dasharray="4 3"/>
+
+  <!-- Animated packets -->
+  <circle r="6" fill="#00b388" filter="url(#gce-shadow)"><animateMotion dur="3s" begin="0s" repeatCount="indefinite"><mpath href="#gce1"/></animateMotion></circle>
+  <circle r="6" fill="#00b388" filter="url(#gce-shadow)"><animateMotion dur="3s" begin="1s" repeatCount="indefinite"><mpath href="#gce2"/></animateMotion></circle>
+  <circle r="6" fill="#00b388" filter="url(#gce-shadow)"><animateMotion dur="2s" begin="2s" repeatCount="indefinite"><mpath href="#gce3"/></animateMotion></circle>
+  <circle r="6" fill="#00b388" filter="url(#gce-shadow)"><animateMotion dur="3s" begin="3s" repeatCount="indefinite"><mpath href="#gce4"/></animateMotion></circle>
+  <circle r="6" fill="#00b388" filter="url(#gce-shadow)"><animateMotion dur="2.5s" begin="4s" repeatCount="indefinite"><mpath href="#gce5"/></animateMotion></circle>
+  <circle r="6" fill="#00b388" filter="url(#gce-shadow)"><animateMotion dur="4s" begin="5s" repeatCount="indefinite"><mpath href="#gce6"/></animateMotion></circle>
+
+  <!-- Step labels -->
+  <text x="348" y="100" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">① compute.disks.createSnapshot</text>
+  <text x="370" y="215" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">② Snapshot saved</text>
+  <text x="80" y="320" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">③ compute.disks.create from snapshot</text>
+  <text x="415" y="248" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">④ Attach to GKE pod</text>
+  <text x="610" y="315" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">⑤ Index upload</text>
+  <text x="455" y="410" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#00533f">⑥ GCS archival (per SLA tiering)</text>
+</svg>
+</div>
+
+
+<h3>Backup model</h3>
+<ol class="numbered-steps">
+  <li>RSC orchestrates: calls Compute Engine API to create a disk snapshot.</li>
+  <li>GCP creates the snapshot — incremental, encrypted with Google-managed key (default) or CMEK if configured.</li>
+  <li>If indexing enabled: Exocompute on GKE attaches the snapshot to a pod, walks the filesystem, uploads index to RSC GCS metadata store.</li>
+  <li>If archival in SLA: snapshot data transitions to the GCS archive bucket per the tiering policy.</li>
+</ol>
+
+<details open><summary><strong>Restore options</strong></summary>
+<ul>
+  <li><strong>Restore in place:</strong> creates a new disk from snapshot, swaps with existing on the instance.</li>
+  <li><strong>Export to new instance:</strong> launch a new GCE from the snapshot.</li>
+  <li><strong>File-level recovery:</strong> Exocompute mounts the snapshot, copies files to a target GCS bucket.</li>
+</ul>
+</details>
+
+<details><summary><strong>What's NOT supported via CNP on GCP</strong></summary>
+<ul>
+  <li>Cloud SQL (use native PITR or move to CCES with self-managed DB)</li>
+  <li>GCS bucket protection (use GCS native versioning + object retention)</li>
+  <li>BigQuery, Firestore, Spanner — no Rubrik product covers these today</li>
+</ul>
+</details>
+
+<div class="nav-buttons">
+  <a class="btn-prev" href="#/gcp/onboard">← Onboard</a>
+  <a class="btn-next" href="#/gcp/cces-pointer">When you need more: CCES →</a>
+</div>
+
+</article>
+<article class="page" data-route="/gcp/cces-pointer" data-group="gcp">
+  <div class="breadcrumb"><a href="#/">Home</a><span class="sep">/</span><span>GCP</span><span class="sep">/</span><span>When to deploy CCES on GCP</span></div>
+  <header class="page-head"><h1>When to deploy CCES on GCP</h1><button class="print-btn" onclick="window.print()" title="Save this page as PDF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>Save as PDF</button></header>
+
+<p class="lede">If your customer's scope includes anything beyond GCE image-level snapshots, you need CCES.</p>
+
+<h3>CCES on GCP — what to expect</h3>
+<p>CCES is Rubrik CDM running on GCE virtual machines (n2-standard-8 / n2-standard-16 / n2-highmem-16 depending on density tier). Uses GCS bucket as the primary data tier.</p>
+
+<details open><summary><strong>Deployment outline</strong></summary>
+<ol class="numbered-steps">
+  <li>Download the Rubrik Cloud Cluster setup files from Rubrik Support (Python deploy scripts).</li>
+  <li>Create a service account with permissions to deploy GCE instances + GCS + IAM.</li>
+  <li>Create a custom VPC role with <code>compute.subnetworks.get</code> and <code>compute.subnetworks.use</code>.</li>
+  <li>Prepare a GCS bucket: Standard storage class, versioning ON, object retention ON, soft delete OFF, default Google-managed key (or CMEK).</li>
+  <li>Edit <code>gcp_customer_details.yml</code> with project, zone, VPC, subnet, node count.</li>
+  <li>Set <code>enable_cces=Yes</code>, <code>node_type=Dense</code>, <code>deletion_protection=Yes</code>.</li>
+  <li>Run <code>deploy_rubrik_cluster.py</code>. Deploys nodes + bootstraps the cluster.</li>
+  <li>Enable Private Google Access on the subnet for secure outbound to Google APIs.</li>
+</ol>
+</details>
+
+<details><summary><strong>Node sizing</strong></summary>
+<table class="ref-table">
+<thead><tr><th>Tier</th><th>Instance type</th><th>vCPU</th><th>Memory</th><th>Storage/node</th></tr></thead>
+<tbody>
+<tr><td>Standard</td><td>n2-standard-8</td><td>8</td><td>32 GB</td><td>16 TiB (max 5 nodes)</td></tr>
+<tr><td>Dense</td><td>n2-standard-16</td><td>16</td><td>64 GB</td><td>32 TiB</td></tr>
+<tr><td>Extra-Dense</td><td>n2-highmem-16</td><td>16</td><td>128 GB</td><td>64 TiB</td></tr>
+</tbody>
+</table>
+<p>All nodes require Intel Ice Lake minimum CPU platform for optimal performance. All nodes in same zone.</p>
+</details>
+
+<details><summary><strong>Workloads CCES on GCP protects</strong></summary>
+<ul>
+  <li>SQL Server / Oracle / SAP HANA / Db2 in GCE</li>
+  <li>Windows / Linux Filesets</li>
+  <li>Volume Groups + Managed Volumes</li>
+  <li>Google Cloud VMware Engine (GCVE) via HotAdd proxy</li>
+  <li>File-level backup of GCE instances (image-level is via CNP)</li>
+</ul>
+</details>
+
+<details><summary><strong>Network egress for CCES</strong></summary>
+<p>CCES nodes need TCP/443 outbound to:</p>
+<ul>
+  <li><code>&lt;subdomain&gt;.my.rubrik.com</code> — RSC tenant</li>
+  <li><code>proxy.rubrik.com</code> — Rubrik Support tunnel</li>
+  <li><code>storage.googleapis.com</code> — GCS bucket access (use Private Google Access)</li>
+  <li><code>apollo-ingest.s3.amazonaws.com</code>, <code>rubrikstats.s3.amazonaws.com</code> — support bundles</li>
+</ul>
+<p>Plus TCP/12800-12801 inbound from CCES to protected GCE hosts (Rubrik Backup Service).</p>
+</details>
+
+<div class="note">
+This page is a pointer, not a full CCES playbook. For a step-by-step CCES on GCP deployment, see the dedicated CDM v9.4 Cloud Cluster Setup Guide.
+</div>
+
+
+
+<h3>Single-node vs multi-node — when each applies</h3>
+<details><summary><strong>Single-node CCES on GCP</strong></summary>
+<p>CDM v9.2.2+ supports single-node CCES on GCP. Rubrik recommends single-node when:</p>
+<ul>
+  <li>Protecting ≤100 objects</li>
+  <li>Workload is small enough to fit on one Standard or Extra-Dense node</li>
+</ul>
+<p><strong>Single-node is NOT supported for these workloads (require Dense multi-node):</strong></p>
+<ul>
+  <li>NAS systems</li>
+  <li>VMware Cloud on AWS</li>
+  <li>Azure VMware Solution</li>
+</ul>
+<p><strong>Cluster sizing rules:</strong></p>
+<ul>
+  <li>Two-node configuration is NOT supported. Either single-node or 3+ nodes.</li>
+  <li>Multi-node clusters do NOT support mixing standard and dense nodes — pick one density and stick with it.</li>
+  <li>Standard nodes max at 5 nodes per cluster.</li>
+</ul>
+</details>
+
+<h3>CCES on GCP — required ports</h3>
+<details open><summary><strong>Inbound + outbound port table</strong></summary>
+<table class="ref-table">
+<thead><tr><th>Port / Protocol</th><th>Location</th><th>Source</th><th>Destination</th><th>Purpose</th></tr></thead>
+<tbody>
+<tr><td>22/TCP</td><td>Management gateway</td><td>Admin bastion</td><td>CCES nodes</td><td>SSH for bootstrap</td></tr>
+<tr><td>443/TCP</td><td>Management gateway</td><td>Admin browser</td><td>CCES nodes</td><td>CDM web UI</td></tr>
+<tr><td>All</td><td>Compute gateway</td><td>CCES nodes (self)</td><td>CCES nodes (self)</td><td>Inter-node cluster traffic</td></tr>
+<tr><td>902/TCP</td><td>Management gateway</td><td>CCES cluster + HotAdd Proxy</td><td>ESXi host</td><td>VM block location discovery (GCVE)</td></tr>
+<tr><td>8077/TCP</td><td>Compute gateway</td><td>CCES cluster</td><td>HotAdd Proxy</td><td>Diagnostics</td></tr>
+<tr><td>12800-12801/TCP</td><td>Compute gateway</td><td>CCES cluster</td><td>Workload VMs</td><td>Rubrik Backup Service (RBS)</td></tr>
+<tr><td>58000/TCP</td><td>Compute gateway</td><td>CCES cluster</td><td>HotAdd Proxy</td><td>Proxy command and control</td></tr>
+</tbody>
+</table>
+</details>
+
+<details><summary><strong>CCES outbound 443/TCP allowlist</strong></summary>
+<ul>
+  <li><code>&lt;subdomain&gt;.my.rubrik.com</code> — RSC tenant</li>
+  <li><code>storage.googleapis.com</code> — GCS bucket data tier (use PGA)</li>
+  <li><code>proxy.rubrik.com</code> — Rubrik support tunnel</li>
+  <li><code>cdn-rsc.rubrik.com</code> — CDN content</li>
+  <li><code>apollo-ingest.s3.amazonaws.com</code> — log ingestion</li>
+  <li><code>rubrikstats.s3.amazonaws.com</code> — usage stats</li>
+</ul>
+</details>
+
+<h3>Setup files — what to download from Rubrik Support</h3>
+<details><summary><strong>Required Python deploy scripts and YAML</strong></summary>
+<p>Download these from the Rubrik Support portal before starting CCES deployment:</p>
+<ul>
+  <li><code>deploy_client_base.py</code> — base deployment client class</li>
+  <li><code>deploy_gcp_client.py</code> — GCP-specific deployment client</li>
+  <li><code>deploy_rubrik_cluster.py</code> — orchestrates the cluster bootstrap</li>
+  <li><code>gcp_client_ext.py</code> — GCP API extension methods</li>
+  <li><code>cloud_platform_client.py</code> — abstraction layer for cloud APIs</li>
+  <li><code>gcp_customer_details.yml</code> — customer-specific values you edit</li>
+</ul>
+<p>Edit <code>gcp_customer_details.yml</code> with:</p>
+<ul>
+  <li><code>credentials_file</code> — path to the service account JSON key</li>
+  <li><code>project</code> — GCP project ID</li>
+  <li><code>zone</code> — zone where VM instances launch</li>
+  <li><code>vpc</code> — VPC network name</li>
+  <li><code>subnet</code> — subnet for CCES nodes</li>
+  <li><code>shared_vpc_project</code> — host project name (only if Shared VPC)</li>
+</ul>
+<p>Then run <code>python3 deploy_rubrik_cluster.py</code> with the YAML as argument.</p>
+</details>
+
+<h3>Node sizing — full spec</h3>
+<details><summary><strong>Standard / Dense / Extra-Dense node requirements</strong></summary>
+<table class="ref-table">
+<thead><tr><th>Resource</th><th>Standard</th><th>Dense</th><th>Extra-Dense</th></tr></thead>
+<tbody>
+<tr><td>GCE instance type</td><td><code>n2-standard-8</code></td><td><code>n2-standard-16</code></td><td><code>n2-highmem-16</code></td></tr>
+<tr><td>vCPU</td><td>8</td><td>16</td><td>16</td></tr>
+<tr><td>Memory</td><td>32 GB</td><td>64 GB</td><td>128 GB</td></tr>
+<tr><td>Storage per node</td><td>16 TiB (max 5 nodes)</td><td>32 TiB</td><td>64 TiB</td></tr>
+<tr><td>CPU platform</td><td colspan="3">Minimum: Intel Ice Lake</td></tr>
+<tr><td>Node placement</td><td colspan="3">All nodes in same GCP zone</td></tr>
+</tbody>
+</table>
+</details>
+
+<div class="nav-buttons">
+  <a class="btn-prev" href="#/gcp/workloads/gce">← GCE workloads</a>
+  <a class="btn-next" href="#/">Back to cloud picker →</a>
 </div>
 
 </article>
@@ -2179,6 +4531,13 @@ After Exocompute is created in Phase 2, the <code>Polaris-Exocompute-eks-worker-
 (function(){
   const pages = Array.from(document.querySelectorAll('.page'));
   const navLinks = Array.from(document.querySelectorAll('.nav-list a'));
+
+  function activeCloud(route){
+    // /aws/foundation/x -> aws; / -> home; /azure/onboard -> azure; /gcp/... -> gcp
+    if (!route || route === '/') return 'home';
+    const m = route.match(/^\/(aws|azure|gcp)(\/|$)/);
+    return m ? m[1] : 'home';
+  }
 
   function showRoute(route){
     if (!route || route === '#' || route === '#/' || route === '') route = '/';
@@ -2191,8 +4550,19 @@ After Exocompute is created in Phase 2, the <code>Polaris-Exocompute-eks-worker-
     navLinks.forEach(a => a.classList.toggle('active', a.dataset.route === target.dataset.route));
     window.scrollTo({top: 0, behavior: 'instant'});
 
-    const title = target.querySelector('h1')?.textContent || 'Rubrik AWS CNP POC Playbook';
-    document.title = title + ' — Rubrik POC Playbook';
+    // Update sidebar visibility based on active cloud
+    const cloud = activeCloud(target.dataset.route);
+    document.querySelectorAll('.nav-group').forEach(g => {
+      const gc = g.dataset.cloud;
+      // home group always visible, others only when their cloud is active
+      g.style.display = (gc === 'home' || gc === cloud) ? '' : 'none';
+    });
+    document.querySelectorAll('.cloud-tab').forEach(t => {
+      t.classList.toggle('active', t.dataset.cloud === cloud);
+    });
+
+    const title = target.querySelector('h1')?.textContent || 'Rubrik Cloud POC Playbook';
+    document.title = title + ' — Rubrik Cloud POC Playbook';
   }
   window.addEventListener('hashchange', () => showRoute(location.hash));
   showRoute(location.hash);
