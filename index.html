@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Rubrik Multi-Cloud POC Playbook</title>
+<title>Rubrik CNP POC Playbook</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
@@ -466,13 +466,10 @@ li > ul, li > ol{ margin: 4px 0 6px; }
   h1, h2, h3{ break-after: avoid; }
 
   /* Force all <details> open when printing so content is complete */
+  /* Cleanup print presentation. JS opens all details before print. */
   details{ display: block !important; }
-  details > summary{ list-style: none; }
+  details > summary{ list-style: none; cursor: default; }
   details > summary::after{ content: "" !important; }
-  details:not([open]) > *:not(summary){
-    display: block !important;
-    padding: 0 16px 14px !important;
-  }
 
   .page-head{
     border: 1px solid #999 !important;
@@ -525,7 +522,7 @@ li > ul, li > ol{ margin: 4px 0 6px; }
 
   <a class="brand" href="#/">
     <div class="logo">R</div>
-    <div class="name">Rubrik Cloud<small>POC Playbook</small></div>
+    <div class="name">Rubrik CNP<small>POC Playbook</small></div>
   </a>
   <div class="cloud-tabs">
     <a href="#/" class="cloud-tab cloud-tab-home" data-cloud="home">Home</a>
@@ -638,7 +635,7 @@ li > ul, li > ol{ margin: 4px 0 6px; }
 <main><div class="main-inner">
 <article class="page" data-route="/" data-group="home">
 <div class="hero">
-  <div class="eyebrow">Rubrik Cloud · POC Playbook</div>
+  <div class="eyebrow">Rubrik CNP · POC Playbook</div>
   <h1>Onboard Rubrik Security Cloud — <em>pick your cloud</em></h1>
   <p>The opinionated path for AWS, Azure, and GCP. Decisions, foundation, onboarding, workloads, and the operational reference for each. Pick the cloud you're working on below.</p>
 </div>
@@ -756,22 +753,22 @@ li > ul, li > ol{ margin: 4px 0 6px; }
 <h2 class="section-title">Architecture at a glance</h2>
 <div class="diagram-frame">
   
-<svg viewBox="0 0 900 460" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:900px;height:auto;background:url(#bgGrad);border-radius:12px;">
+<svg viewBox="0 0 900 460" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:900px;height:auto;background:url(#bgGrad_n50);border-radius:12px;">
   
 <defs>
-  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+  <marker id="arrow_n50" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
     <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
   </marker>
-  <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+  <filter id="shadow_n50" x="-20%" y="-20%" width="140%" height="140%">
     <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.12"/>
   </filter>
-  <linearGradient id="bgGrad" x1="0" x2="0" y1="0" y2="1">
+  <linearGradient id="bgGrad_n50" x1="0" x2="0" y1="0" y2="1">
     <stop offset="0%"  stop-color="#fafaf7"/>
     <stop offset="100%" stop-color="#f3f3ee"/>
   </linearGradient>
 </defs>
 
-  <rect width="900" height="460" fill="url(#bgGrad)" rx="12"/>
+  <rect width="900" height="460" fill="url(#bgGrad_n50)" rx="12"/>
 
   <!-- RSC cloud -->
   <g>
@@ -790,35 +787,35 @@ li > ul, li > ol{ margin: 4px 0 6px; }
     
   
     <g>
-      <rect x="70" y="170" width="140" height="56" rx="8" fill="#fff" stroke="#e87b35" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="70" y="170" width="140" height="56" rx="8" fill="#fff" stroke="#e87b35" stroke-width="1.5" filter="url(#shadow_n50)"/>
       <text x="140.0" y="194.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">EC2 + EBS</text>
       <text x="140.0" y="212.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">snapshots</text>
     </g>
     
   
     <g>
-      <rect x="230" y="170" width="160" height="56" rx="8" fill="#fff" stroke="#e87b35" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="230" y="170" width="160" height="56" rx="8" fill="#fff" stroke="#e87b35" stroke-width="1.5" filter="url(#shadow_n50)"/>
       <text x="310.0" y="194.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">RDS / Aurora</text>
       <text x="310.0" y="212.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">DB snapshots</text>
     </g>
     
   
     <g>
-      <rect x="70" y="250" width="140" height="56" rx="8" fill="#fff" stroke="#e87b35" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="70" y="250" width="140" height="56" rx="8" fill="#fff" stroke="#e87b35" stroke-width="1.5" filter="url(#shadow_n50)"/>
       <text x="140.0" y="274.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">DynamoDB</text>
       <text x="140.0" y="292.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">PITR + Export-to-S3</text>
     </g>
     
   
     <g>
-      <rect x="230" y="250" width="160" height="56" rx="8" fill="#fff" stroke="#e87b35" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="230" y="250" width="160" height="56" rx="8" fill="#fff" stroke="#e87b35" stroke-width="1.5" filter="url(#shadow_n50)"/>
       <text x="310.0" y="274.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">S3 buckets</text>
       <text x="310.0" y="292.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">versioning-based</text>
     </g>
     
   
     <g>
-      <rect x="70" y="340" width="320" height="50" rx="8" fill="#fdf0e3" stroke="#a84e10" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="70" y="340" width="320" height="50" rx="8" fill="#fdf0e3" stroke="#a84e10" stroke-width="1.5" filter="url(#shadow_n50)"/>
       <text x="230.0" y="361.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Rubrik cross-account IAM role</text>
       <text x="230.0" y="379.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">Account B assumes this</text>
     </g>
@@ -833,62 +830,62 @@ li > ul, li > ol{ margin: 4px 0 6px; }
     
   
     <g>
-      <rect x="510" y="170" width="180" height="56" rx="8" fill="#fff" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="510" y="170" width="180" height="56" rx="8" fill="#fff" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow_n50)"/>
       <text x="600.0" y="194.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">EKS — Exocompute</text>
       <text x="600.0" y="212.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">Polaris-Exocompute-*</text>
     </g>
     
   
     <g>
-      <rect x="710" y="170" width="130" height="56" rx="8" fill="#fff" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="710" y="170" width="130" height="56" rx="8" fill="#fff" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow_n50)"/>
       <text x="775.0" y="194.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">S3 archive</text>
       <text x="775.0" y="212.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">long-term tier</text>
     </g>
     
   
     <g>
-      <rect x="510" y="250" width="320" height="56" rx="8" fill="#e6f0fb" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="510" y="250" width="320" height="56" rx="8" fill="#e6f0fb" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow_n50)"/>
       <text x="670.0" y="274.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">VPC Endpoints</text>
       <text x="670.0" y="292.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">S3 GW + EC2/EBS/STS/ECR/EKS/KMS IFs</text>
     </g>
     
   
     <g>
-      <rect x="510" y="340" width="320" height="50" rx="8" fill="#e6f0fb" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="510" y="340" width="320" height="50" rx="8" fill="#e6f0fb" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow_n50)"/>
       <text x="670.0" y="361.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Cross-account IAM role + KMS key shares</text>
       <text x="670.0" y="379.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">Account B → Account A</text>
     </g>
     
 
   <!-- Connections -->
-  <path id="rsc-a" d="M 450 78 C 250 100, 250 130, 250 130" stroke="#9ca3af" stroke-width="1.5" fill="none" marker-end="url(#arrow)" stroke-dasharray="4 3"/>
-  <path id="rsc-b" d="M 450 78 C 670 100, 670 130, 670 130" stroke="#9ca3af" stroke-width="1.5" fill="none" marker-end="url(#arrow)" stroke-dasharray="4 3"/>
-  <path id="b-to-a" d="M 420 280 C 460 280, 470 280, 510 280" stroke="#00b388" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+  <path id="rsc-a" d="M 450 78 C 250 100, 250 130, 250 130" stroke="#9ca3af" stroke-width="1.5" fill="none" marker-end="url(#arrow_n50)" stroke-dasharray="4 3"/>
+  <path id="rsc-b" d="M 450 78 C 670 100, 670 130, 670 130" stroke="#9ca3af" stroke-width="1.5" fill="none" marker-end="url(#arrow_n50)" stroke-dasharray="4 3"/>
+  <path id="b-to-a" d="M 420 280 C 460 280, 470 280, 510 280" stroke="#00b388" stroke-width="2" fill="none" marker-end="url(#arrow_n50)"/>
 
   <!-- Animated packets -->
   
-    <circle r="6" fill="#00b388" filter="url(#shadow)">
+    <circle r="6" fill="#00b388" filter="url(#shadow_n50)">
       <animateMotion dur="3s" begin="0s" repeatCount="indefinite">
         <mpath href="#rsc-a"/>
       </animateMotion>
     </circle>
     
   
-    <circle r="6" fill="#00b388" filter="url(#shadow)">
+    <circle r="6" fill="#00b388" filter="url(#shadow_n50)">
       <animateMotion dur="3s" begin="1s" repeatCount="indefinite">
         <mpath href="#rsc-b"/>
       </animateMotion>
     </circle>
     
   
-    <circle r="6" fill="#e87b35" filter="url(#shadow)">
+    <circle r="6" fill="#e87b35" filter="url(#shadow_n50)">
       <animateMotion dur="2.5s" begin="0s" repeatCount="indefinite">
         <mpath href="#b-to-a"/>
       </animateMotion>
     </circle>
     
   
-    <circle r="6" fill="#e87b35" filter="url(#shadow)">
+    <circle r="6" fill="#e87b35" filter="url(#shadow_n50)">
       <animateMotion dur="2.5s" begin="1.2s" repeatCount="indefinite">
         <mpath href="#b-to-a"/>
       </animateMotion>
@@ -1462,27 +1459,27 @@ li > ul, li > ol{ margin: 4px 0 6px; }
 <h3>Backup data flow</h3>
 <div class="diagram-frame">
   
-<svg viewBox="0 0 900 460" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:900px;height:auto;background:url(#bgGrad);border-radius:12px;">
+<svg viewBox="0 0 900 460" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:900px;height:auto;background:url(#bgGrad_n39);border-radius:12px;">
   
 <defs>
-  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+  <marker id="arrow_n39" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
     <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
   </marker>
-  <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+  <filter id="shadow_n39" x="-20%" y="-20%" width="140%" height="140%">
     <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.12"/>
   </filter>
-  <linearGradient id="bgGrad" x1="0" x2="0" y1="0" y2="1">
+  <linearGradient id="bgGrad_n39" x1="0" x2="0" y1="0" y2="1">
     <stop offset="0%"  stop-color="#fafaf7"/>
     <stop offset="100%" stop-color="#f3f3ee"/>
   </linearGradient>
 </defs>
 
-  <rect width="900" height="460" fill="url(#bgGrad)" rx="12"/>
+  <rect width="900" height="460" fill="url(#bgGrad_n39)" rx="12"/>
 
   <!-- RSC -->
   
     <g>
-      <rect x="380" y="30" width="140" height="50" rx="8" fill="#dff5ee" stroke="#00533f" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="380" y="30" width="140" height="50" rx="8" fill="#dff5ee" stroke="#00533f" stroke-width="1.5" filter="url(#shadow_n39)"/>
       <text x="450.0" y="51.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">RSC</text>
       <text x="450.0" y="69.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">Orchestrator</text>
     </g>
@@ -1497,28 +1494,28 @@ li > ul, li > ol{ margin: 4px 0 6px; }
     
   
     <g>
-      <rect x="70" y="150" width="110" height="50" rx="8" fill="#fff" stroke="#e87b35" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="70" y="150" width="110" height="50" rx="8" fill="#fff" stroke="#e87b35" stroke-width="1.5" filter="url(#shadow_n39)"/>
       <text x="125.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">EC2 Instance</text>
       <text x="125.0" y="189.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">running</text>
     </g>
     
   
     <g>
-      <rect x="210" y="150" width="110" height="50" rx="8" fill="#fff" stroke="#e87b35" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="210" y="150" width="110" height="50" rx="8" fill="#fff" stroke="#e87b35" stroke-width="1.5" filter="url(#shadow_n39)"/>
       <text x="265.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">EBS Volume(s)</text>
       <text x="265.0" y="189.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">attached</text>
     </g>
     
   
     <g>
-      <rect x="70" y="240" width="250" height="50" rx="8" fill="#fdf0e3" stroke="#a84e10" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="70" y="240" width="250" height="50" rx="8" fill="#fdf0e3" stroke="#a84e10" stroke-width="1.5" filter="url(#shadow_n39)"/>
       <text x="195.0" y="261.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">EBS Snapshot</text>
       <text x="195.0" y="279.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">AWS-managed, encrypted</text>
     </g>
     
   
     <g id="tempvol">
-      <rect x="70" y="330" width="250" height="50" rx="8" fill="#fff" stroke="#e87b35" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="70" y="330" width="250" height="50" rx="8" fill="#fff" stroke="#e87b35" stroke-width="1.5" filter="url(#shadow_n39)"/>
       <text x="195.0" y="351.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Temp Volume</text>
       <text x="195.0" y="369.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">for indexing (FUSE-mount)</text>
     </g>
@@ -1533,35 +1530,35 @@ li > ul, li > ol{ margin: 4px 0 6px; }
     
   
     <g>
-      <rect x="510" y="150" width="200" height="50" rx="8" fill="#fff" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="510" y="150" width="200" height="50" rx="8" fill="#fff" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow_n39)"/>
       <text x="610.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">EC2 API endpoint</text>
       <text x="610.0" y="189.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">ec2.region.amazonaws.com</text>
     </g>
     
   
     <g>
-      <rect x="730" y="150" width="130" height="50" rx="8" fill="#fff" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="730" y="150" width="130" height="50" rx="8" fill="#fff" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow_n39)"/>
       <text x="795.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">EBS API</text>
       <text x="795.0" y="189.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">ebs.region....</text>
     </g>
     
   
     <g>
-      <rect x="510" y="240" width="350" height="50" rx="8" fill="#e6f0fb" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="510" y="240" width="350" height="50" rx="8" fill="#e6f0fb" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow_n39)"/>
       <text x="685.0" y="261.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Exocompute (EKS pod)</text>
       <text x="685.0" y="279.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">indexes filesystem metadata</text>
     </g>
     
   
     <g>
-      <rect x="510" y="330" width="200" height="50" rx="8" fill="#fff" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="510" y="330" width="200" height="50" rx="8" fill="#fff" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow_n39)"/>
       <text x="610.0" y="351.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Index file</text>
       <text x="610.0" y="369.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">.tar.gz to GCS</text>
     </g>
     
   
     <g>
-      <rect x="730" y="330" width="130" height="50" rx="8" fill="#fff" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="730" y="330" width="130" height="50" rx="8" fill="#fff" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow_n39)"/>
       <text x="795.0" y="351.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">S3 archive</text>
       <text x="795.0" y="369.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">long-term tier</text>
     </g>
@@ -1569,56 +1566,56 @@ li > ul, li > ol{ margin: 4px 0 6px; }
 
   <!-- Flow arrows -->
   <!-- 1: RSC → EC2 API to snapshot -->
-  <path id="ec1" d="M 440 80 C 440 130, 580 130, 580 150" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <path id="ec1" d="M 440 80 C 440 130, 580 130, 580 150" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow_n39)"/>
   <!-- 2: EC2 API → snapshot in account A -->
-  <path id="ec2" d="M 580 200 C 580 220, 195 220, 195 240" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <path id="ec2" d="M 580 200 C 580 220, 195 220, 195 240" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow_n39)"/>
   <!-- 3: Snapshot → Temp Volume -->
-  <path id="ec3" d="M 195 290 L 195 330" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <path id="ec3" d="M 195 290 L 195 330" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow_n39)"/>
   <!-- 4: Temp volume → Exocompute (cross-account read) -->
-  <path id="ec4" d="M 320 355 C 400 355, 400 265, 510 265" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <path id="ec4" d="M 320 355 C 400 355, 400 265, 510 265" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow_n39)"/>
   <!-- 5: Exocompute → GCS index -->
-  <path id="ec5" d="M 685 290 L 610 330" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <path id="ec5" d="M 685 290 L 610 330" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow_n39)"/>
   <!-- 6: Snapshot → S3 archive (storage tiering) -->
-  <path id="ec6" d="M 320 265 C 400 265, 730 290, 790 330" stroke="#e87b35" stroke-width="1.5" fill="none" marker-end="url(#arrow)" stroke-dasharray="4 3"/>
+  <path id="ec6" d="M 320 265 C 400 265, 730 290, 790 330" stroke="#e87b35" stroke-width="1.5" fill="none" marker-end="url(#arrow_n39)" stroke-dasharray="4 3"/>
 
   <!-- Animated packets -->
   
-    <circle r="6" fill="#00b388" filter="url(#shadow)">
+    <circle r="6" fill="#00b388" filter="url(#shadow_n39)">
       <animateMotion dur="3s" begin="0s" repeatCount="indefinite">
         <mpath href="#ec1"/>
       </animateMotion>
     </circle>
     
   
-    <circle r="6" fill="#00b388" filter="url(#shadow)">
+    <circle r="6" fill="#00b388" filter="url(#shadow_n39)">
       <animateMotion dur="3s" begin="1s" repeatCount="indefinite">
         <mpath href="#ec2"/>
       </animateMotion>
     </circle>
     
   
-    <circle r="6" fill="#00b388" filter="url(#shadow)">
+    <circle r="6" fill="#00b388" filter="url(#shadow_n39)">
       <animateMotion dur="2s" begin="2s" repeatCount="indefinite">
         <mpath href="#ec3"/>
       </animateMotion>
     </circle>
     
   
-    <circle r="6" fill="#00b388" filter="url(#shadow)">
+    <circle r="6" fill="#00b388" filter="url(#shadow_n39)">
       <animateMotion dur="3s" begin="3s" repeatCount="indefinite">
         <mpath href="#ec4"/>
       </animateMotion>
     </circle>
     
   
-    <circle r="6" fill="#00b388" filter="url(#shadow)">
+    <circle r="6" fill="#00b388" filter="url(#shadow_n39)">
       <animateMotion dur="2.5s" begin="4s" repeatCount="indefinite">
         <mpath href="#ec5"/>
       </animateMotion>
     </circle>
     
   
-    <circle r="6" fill="#e87b35" filter="url(#shadow)">
+    <circle r="6" fill="#e87b35" filter="url(#shadow_n39)">
       <animateMotion dur="4s" begin="5s" repeatCount="indefinite">
         <mpath href="#ec6"/>
       </animateMotion>
@@ -1641,7 +1638,7 @@ li > ul, li > ol{ margin: 4px 0 6px; }
   <li><strong>RSC orchestrates:</strong> calls EC2 API <code>CreateSnapshots</code> in the workload account (via cross-account role).</li>
   <li><strong>AWS creates the EBS snapshot:</strong> crash-consistent at instance level (uses <code>CreateSnapshots</code>, the multi-volume variant). Encryption inherited from source volume.</li>
   <li><strong>If indexing enabled:</strong> Exocompute spins up a pod in host account. Calls <code>CreateVolume</code> from snapshot.</li>
-  <li><strong>Volume mounted to Exocompute pod:</strong> via AttachVolume. Filesystem mounted read-only. Exocompute walks the FS metadata.</li>
+  <li><strong>Volume attached to Exocompute pod:</strong> via AttachVolume. Exocompute walks the filesystem and extracts metadata (paths, names, sizes, timestamps). Note: the attached volume is a NEW volume created from the snapshot — the source EBS volume is untouched.</li>
   <li><strong>Index file uploaded:</strong> filesystem metadata (paths, names, sizes — no data) compressed and uploaded to RSC's GCS-backed metadata store via <code>storage.googleapis.com</code>.</li>
   <li><strong>If archival in SLA:</strong> snapshot data is read via EBS direct API and uploaded to the archive S3 bucket — runs asynchronously per the SLA's tiering policy.</li>
   <li><strong>Cleanup:</strong> temp volume deleted. Exocompute pod terminated.</li>
@@ -1656,7 +1653,7 @@ li > ul, li > ol{ margin: 4px 0 6px; }
   <li>Snapshot taken</li>
   <li>Post-script runs (e.g. resume)</li>
 </ol>
-<p>Adds ~30s latency vs crash-consistent. Required for transactional databases running in EC2.</p>
+<p>Required for transactional databases running in EC2 (SQL Server, Oracle, etc.). Adds modest latency vs crash-consistent — exact overhead depends on the pre/post-script the customer configures.</p>
 </details>
 
 <details><summary><strong>Cross-region replication</strong></summary>
@@ -1672,26 +1669,26 @@ li > ul, li > ol{ margin: 4px 0 6px; }
 <h3>Restore flow</h3>
 <div class="diagram-frame">
   
-<svg viewBox="0 0 900 380" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:900px;height:auto;background:url(#bgGrad);border-radius:12px;">
+<svg viewBox="0 0 900 380" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:900px;height:auto;background:url(#bgGrad_n38);border-radius:12px;">
   
 <defs>
-  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+  <marker id="arrow_n38" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
     <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
   </marker>
-  <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+  <filter id="shadow_n38" x="-20%" y="-20%" width="140%" height="140%">
     <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.12"/>
   </filter>
-  <linearGradient id="bgGrad" x1="0" x2="0" y1="0" y2="1">
+  <linearGradient id="bgGrad_n38" x1="0" x2="0" y1="0" y2="1">
     <stop offset="0%"  stop-color="#fafaf7"/>
     <stop offset="100%" stop-color="#f3f3ee"/>
   </linearGradient>
 </defs>
 
-  <rect width="900" height="380" fill="url(#bgGrad)" rx="12"/>
+  <rect width="900" height="380" fill="url(#bgGrad_n38)" rx="12"/>
 
   
     <g>
-      <rect x="380" y="30" width="140" height="50" rx="8" fill="#dff5ee" stroke="#00533f" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="380" y="30" width="140" height="50" rx="8" fill="#dff5ee" stroke="#00533f" stroke-width="1.5" filter="url(#shadow_n38)"/>
       <text x="450.0" y="51.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">RSC</text>
       <text x="450.0" y="69.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">User initiates restore</text>
     </g>
@@ -1705,35 +1702,35 @@ li > ul, li > ol{ margin: 4px 0 6px; }
     
   
     <g>
-      <rect x="70" y="150" width="130" height="50" rx="8" fill="#fdf0e3" stroke="#a84e10" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="70" y="150" width="130" height="50" rx="8" fill="#fdf0e3" stroke="#a84e10" stroke-width="1.5" filter="url(#shadow_n38)"/>
       <text x="135.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">EBS Snapshot</text>
       <text x="135.0" y="189.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">selected version</text>
     </g>
     
   
     <g>
-      <rect x="230" y="150" width="130" height="50" rx="8" fill="#fff" stroke="#e87b35" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="230" y="150" width="130" height="50" rx="8" fill="#fff" stroke="#e87b35" stroke-width="1.5" filter="url(#shadow_n38)"/>
       <text x="295.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">CreateVolume</text>
       <text x="295.0" y="189.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">from snapshot</text>
     </g>
     
   
     <g>
-      <rect x="390" y="150" width="130" height="50" rx="8" fill="#fff" stroke="#e87b35" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="390" y="150" width="130" height="50" rx="8" fill="#fff" stroke="#e87b35" stroke-width="1.5" filter="url(#shadow_n38)"/>
       <text x="455.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Restored Volume</text>
       <text x="455.0" y="189.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">available state</text>
     </g>
     
   
     <g>
-      <rect x="550" y="150" width="130" height="50" rx="8" fill="#fff" stroke="#e87b35" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="550" y="150" width="130" height="50" rx="8" fill="#fff" stroke="#e87b35" stroke-width="1.5" filter="url(#shadow_n38)"/>
       <text x="615.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Detach old vol</text>
       <text x="615.0" y="189.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">Stop instance first</text>
     </g>
     
   
     <g>
-      <rect x="710" y="150" width="130" height="50" rx="8" fill="#fff" stroke="#e87b35" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="710" y="150" width="130" height="50" rx="8" fill="#fff" stroke="#e87b35" stroke-width="1.5" filter="url(#shadow_n38)"/>
       <text x="775.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Attach + Start</text>
       <text x="775.0" y="189.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">instance restored</text>
     </g>
@@ -1741,48 +1738,48 @@ li > ul, li > ol{ margin: 4px 0 6px; }
 
   
     <g>
-      <rect x="390" y="240" width="130" height="50" rx="8" fill="#fff" stroke="#a84e10" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="390" y="240" width="130" height="50" rx="8" fill="#fff" stroke="#a84e10" stroke-width="1.5" filter="url(#shadow_n38)"/>
       <text x="455.0" y="261.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">FLR alternative</text>
       <text x="455.0" y="279.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">File → S3 download</text>
     </g>
     
 
-  <path id="r1" d="M 450 80 C 450 120, 135 120, 135 150" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
-  <path id="r2" d="M 200 175 L 230 175" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
-  <path id="r3" d="M 360 175 L 390 175" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
-  <path id="r4" d="M 520 175 L 550 175" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
-  <path id="r5" d="M 680 175 L 710 175" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <path id="r1" d="M 450 80 C 450 120, 135 120, 135 150" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow_n38)"/>
+  <path id="r2" d="M 200 175 L 230 175" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow_n38)"/>
+  <path id="r3" d="M 360 175 L 390 175" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow_n38)"/>
+  <path id="r4" d="M 520 175 L 550 175" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow_n38)"/>
+  <path id="r5" d="M 680 175 L 710 175" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow_n38)"/>
 
   
-    <circle r="6" fill="#00b388" filter="url(#shadow)">
+    <circle r="6" fill="#00b388" filter="url(#shadow_n38)">
       <animateMotion dur="2s" begin="0s" repeatCount="indefinite">
         <mpath href="#r1"/>
       </animateMotion>
     </circle>
     
   
-    <circle r="6" fill="#00b388" filter="url(#shadow)">
+    <circle r="6" fill="#00b388" filter="url(#shadow_n38)">
       <animateMotion dur="1.5s" begin="1s" repeatCount="indefinite">
         <mpath href="#r2"/>
       </animateMotion>
     </circle>
     
   
-    <circle r="6" fill="#00b388" filter="url(#shadow)">
+    <circle r="6" fill="#00b388" filter="url(#shadow_n38)">
       <animateMotion dur="1.5s" begin="2s" repeatCount="indefinite">
         <mpath href="#r3"/>
       </animateMotion>
     </circle>
     
   
-    <circle r="6" fill="#00b388" filter="url(#shadow)">
+    <circle r="6" fill="#00b388" filter="url(#shadow_n38)">
       <animateMotion dur="1.5s" begin="3s" repeatCount="indefinite">
         <mpath href="#r4"/>
       </animateMotion>
     </circle>
     
   
-    <circle r="6" fill="#00b388" filter="url(#shadow)">
+    <circle r="6" fill="#00b388" filter="url(#shadow_n38)">
       <animateMotion dur="1.5s" begin="4s" repeatCount="indefinite">
         <mpath href="#r5"/>
       </animateMotion>
@@ -1798,7 +1795,13 @@ li > ul, li > ol{ margin: 4px 0 6px; }
 <ul>
   <li><strong>Restore in place:</strong> stops instance, detaches existing volumes, creates new volumes from snapshot, attaches, restarts. Preserves InstanceId + private IP.</li>
   <li><strong>Export to new instance:</strong> creates new EC2 with new InstanceId. Old instance untouched.</li>
-  <li><strong>File-level recovery:</strong> Exocompute mounts the snapshot, copies requested files to a target S3 bucket, generates a download URL.</li>
+  <li><strong>File-level recovery:</strong> behaviour differs by source:
+    <ul>
+      <li><strong>Local snapshot:</strong> Exocompute creates a volume from the snapshot (CreateVolume), attaches it, copies the requested files.</li>
+      <li><strong>Archived snapshot:</strong> Exocompute mounts the archive S3 bucket as a <strong>FUSE filesystem</strong> directly — no temp volume.</li>
+      <li>Files copied to a customer-specified S3 bucket; multiple files compressed into a .zip first. RSC provides a download URL.</li>
+    </ul>
+  </li>
 </ul>
 </details>
 
@@ -1819,146 +1822,115 @@ li > ul, li > ol{ margin: 4px 0 6px; }
 
 <p class="lede">Uses AWS-native RDS snapshots. No agent installed inside the database. Restore = always a new RDS instance (cannot in-place).</p>
 
+<details open><summary><strong>Two backup types — important to understand</strong></summary>
+<ul>
+  <li><strong>Continuous (log) backups:</strong> AWS automated backups take a daily snapshot and capture transaction logs every 5 minutes to S3. Enables point-in-time recovery. Rubrik sets retention via the SLA's "Log Backup for AWS RDS" parameter (max 35 days).</li>
+  <li><strong>Scheduled (snapshot) backups:</strong> Rubrik-orchestrated <code>CreateDBSnapshot</code> calls per SLA frequency. These are what enable cross-region replication and long-term archival — automated backups can't be copied across accounts or regions.</li>
+</ul>
+<p>Both types are stored in your AWS account. Rubrik orchestrates and tracks them; raw data stays in AWS-managed snapshot storage.</p>
+</details>
+
 <h3>Backup data flow</h3>
 <div class="diagram-frame">
   
-<svg viewBox="0 0 900 420" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:900px;height:auto;background:url(#bgGrad);border-radius:12px;">
-  
+<svg viewBox="0 0 900 420" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="width:100%;max-width:900px;height:auto;background:url(#bgGrad_rds);border-radius:12px;">
 <defs>
-  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-    <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
-  </marker>
-  <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
-    <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.12"/>
-  </filter>
-  <linearGradient id="bgGrad" x1="0" x2="0" y1="0" y2="1">
-    <stop offset="0%"  stop-color="#fafaf7"/>
-    <stop offset="100%" stop-color="#f3f3ee"/>
-  </linearGradient>
-</defs>
-
-  <rect width="900" height="420" fill="url(#bgGrad)" rx="12"/>
-
-  
-    <g>
-      <rect x="380" y="30" width="140" height="50" rx="8" fill="#dff5ee" stroke="#00533f" stroke-width="1.5" filter="url(#shadow)"/>
-      <text x="450.0" y="51.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">RSC</text>
-      <text x="450.0" y="69.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">Orchestrator</text>
+    <marker id="arrow_rds" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <filter id="shadow_rds" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.12"/>
+    </filter>
+    <linearGradient id="bgGrad_rds" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#fafaf7"/>
+      <stop offset="100%" stop-color="#f3f3ee"/>
+    </linearGradient>
+  </defs>
+<rect width="900" height="420" fill="url(#bgGrad_rds)" rx="12"/>
+<g>
+      <rect x="380" y="30" width="140" height="50" rx="8" fill="#dff5ee" stroke="#00533f" stroke-width="1.5" filter="url(#shadow_rds)"/>
+      <text x="450.0" y="51.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">RSC</text>
+      <text x="450.0" y="67.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">Orchestrator</text>
     </g>
-    
-
-  <!-- Source -->
-  
-    <g>
+<g>
       <rect x="40" y="110" width="380" height="280" rx="12" fill="#fdf0e3" stroke="#e87b35" stroke-width="1.5" stroke-dasharray="6 3" opacity="0.6"/>
       <text x="54" y="128" font-family="Geist Mono, monospace" font-size="11" font-weight="600" fill="#e87b35" letter-spacing="1">AWS ACCOUNT A — WORKLOADS</text>
     </g>
-    
-  
-    <g>
-      <rect x="70" y="150" width="130" height="50" rx="8" fill="#fff" stroke="#e87b35" stroke-width="1.5" filter="url(#shadow)"/>
-      <text x="135.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">RDS Instance</text>
-      <text x="135.0" y="189.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">MySQL/PG/SQL/Oracle</text>
+<g>
+      <rect x="70" y="150" width="130" height="50" rx="8" fill="#fff" stroke="#e87b35" stroke-width="1.5" filter="url(#shadow_rds)"/>
+      <text x="135.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">RDS Instance</text>
+      <text x="135.0" y="187.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">MySQL / PG / SQL / Oracle</text>
     </g>
-    
-  
-    <g>
-      <rect x="230" y="150" width="90" height="50" rx="8" fill="#fff" stroke="#a84e10" stroke-width="1.5" filter="url(#shadow)"/>
-      <text x="275.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">RDS API</text>
-      <text x="275.0" y="189.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">rds.region....</text>
+<g>
+      <rect x="230" y="150" width="90" height="50" rx="8" fill="#fff" stroke="#a84e10" stroke-width="1.5" filter="url(#shadow_rds)"/>
+      <text x="275.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">RDS API</text>
+      <text x="275.0" y="187.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">rds.region....</text>
     </g>
-    
-  
-    <g>
-      <rect x="70" y="230" width="250" height="50" rx="8" fill="#fdf0e3" stroke="#a84e10" stroke-width="1.5" filter="url(#shadow)"/>
-      <text x="195.0" y="251.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">RDS Snapshot</text>
-      <text x="195.0" y="269.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">AWS-managed</text>
+<g>
+      <rect x="70" y="230" width="250" height="50" rx="8" fill="#fdf0e3" stroke="#a84e10" stroke-width="1.5" filter="url(#shadow_rds)"/>
+      <text x="195.0" y="251.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">RDS Snapshot</text>
+      <text x="195.0" y="267.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">AWS-managed, encrypted</text>
     </g>
-    
-  
-    <g>
-      <rect x="70" y="320" width="250" height="50" rx="8" fill="#fff" stroke="#e87b35" stroke-width="1.5" filter="url(#shadow)"/>
-      <text x="195.0" y="341.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Cross-region copy</text>
-      <text x="195.0" y="359.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">(if replication SLA)</text>
+<g>
+      <rect x="70" y="320" width="250" height="50" rx="8" fill="#fff" stroke="#e87b35" stroke-width="1.5" filter="url(#shadow_rds)"/>
+      <text x="195.0" y="341.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">Cross-region copy (if SLA)</text>
+      <text x="195.0" y="357.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">for replication target</text>
     </g>
-    
-
-  <!-- Target / Archive -->
-  
-    <g>
-      <rect x="480" y="110" width="380" height="280" rx="12" fill="#fdf0e3" stroke="#e87b35" stroke-width="1.5" stroke-dasharray="6 3" opacity="0.6"/>
-      <text x="494" y="128" font-family="Geist Mono, monospace" font-size="11" font-weight="600" fill="#e87b35" letter-spacing="1">AWS ACCOUNT B — STORAGE</text>
+<g>
+      <rect x="480" y="110" width="380" height="280" rx="12" fill="#e6f0fb" stroke="#2272d6" stroke-width="1.5" stroke-dasharray="6 3" opacity="0.6"/>
+      <text x="494" y="128" font-family="Geist Mono, monospace" font-size="11" font-weight="600" fill="#2272d6" letter-spacing="1">AWS ACCOUNT B — STORAGE</text>
     </g>
-    
-  
-    <g>
-      <rect x="510" y="150" width="200" height="50" rx="8" fill="#fff" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
-      <text x="610.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Snapshot index meta</text>
-      <text x="610.0" y="189.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">to RSC GCS</text>
+<g>
+      <rect x="510" y="150" width="350" height="50" rx="8" fill="#fff" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow_rds)"/>
+      <text x="685.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">Snapshot metadata to RSC</text>
+      <text x="685.0" y="187.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">via cross-account role</text>
     </g>
-    
-  
-    <g>
-      <rect x="510" y="230" width="250" height="50" rx="8" fill="#e6f0fb" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
-      <text x="635.0" y="251.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">S3 Archive</text>
-      <text x="635.0" y="269.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">RDS snapshot archive tier</text>
+<g>
+      <rect x="510" y="230" width="350" height="50" rx="8" fill="#e6f0fb" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow_rds)"/>
+      <text x="685.0" y="251.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">S3 Archive</text>
+      <text x="685.0" y="267.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">RDS snapshot archive tier</text>
     </g>
-    
-  
-    <g>
-      <rect x="510" y="320" width="350" height="50" rx="8" fill="#fff" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
-      <text x="685.0" y="341.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Restore: RestoreDBInstanceFromDBSnapshot</text>
-      <text x="685.0" y="359.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">creates a NEW RDS instance</text>
+<g>
+      <rect x="510" y="320" width="350" height="50" rx="8" fill="#fff" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow_rds)"/>
+      <text x="685.0" y="341.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">Aurora note</text>
+      <text x="685.0" y="357.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">snapshots are ALWAYS FULL (not incremental)</text>
     </g>
-    
-
-  <!-- Flow -->
-  <path id="rds1" d="M 440 80 C 440 120, 275 120, 275 150" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
-  <path id="rds2" d="M 275 200 L 275 230" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
-  <path id="rds3" d="M 320 255 C 400 255, 400 255, 510 255" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
-  <path id="rds4" d="M 320 345 C 400 345, 400 345, 510 345" stroke="#9ca3af" stroke-width="1.5" fill="none" marker-end="url(#arrow)" stroke-dasharray="4 3"/>
-
-  
-    <circle r="6" fill="#00b388" filter="url(#shadow)">
+<path id="rdsB1" d="M 440 80 C 440 120, 275 120, 275 150" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow_rds)"/>
+<path id="rdsB2" d="M 275 200 L 275 230" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow_rds)"/>
+<path id="rdsB3" d="M 320 255 L 510 175" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow_rds)"/>
+<path id="rdsB4" d="M 320 345 C 400 345, 400 255, 510 255" stroke="#e87b35" stroke-dasharray="4 3" stroke-width="1.5" fill="none" marker-end="url(#arrow_rds)"/>
+<circle r="6" fill="#00b388" filter="url(#shadow_rds)">
       <animateMotion dur="3s" begin="0s" repeatCount="indefinite">
-        <mpath href="#rds1"/>
+        <mpath href="#rdsB1" xlink:href="#rdsB1"/>
       </animateMotion>
     </circle>
-    
-  
-    <circle r="6" fill="#00b388" filter="url(#shadow)">
+<circle r="6" fill="#00b388" filter="url(#shadow_rds)">
       <animateMotion dur="2s" begin="1s" repeatCount="indefinite">
-        <mpath href="#rds2"/>
+        <mpath href="#rdsB2" xlink:href="#rdsB2"/>
       </animateMotion>
     </circle>
-    
-  
-    <circle r="6" fill="#00b388" filter="url(#shadow)">
-      <animateMotion dur="3s" begin="2.5s" repeatCount="indefinite">
-        <mpath href="#rds3"/>
+<circle r="6" fill="#00b388" filter="url(#shadow_rds)">
+      <animateMotion dur="3s" begin="2s" repeatCount="indefinite">
+        <mpath href="#rdsB3" xlink:href="#rdsB3"/>
       </animateMotion>
     </circle>
-    
-  
-    <circle r="6" fill="#9ca3af" filter="url(#shadow)">
+<circle r="6" fill="#e87b35" filter="url(#shadow_rds)">
       <animateMotion dur="3s" begin="4s" repeatCount="indefinite">
-        <mpath href="#rds4"/>
+        <mpath href="#rdsB4" xlink:href="#rdsB4"/>
       </animateMotion>
     </circle>
-    
-
-  <text x="350" y="110" text-anchor="start" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">① CopyDBSnapshot</text>
-  <text x="285" y="220" text-anchor="start" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">② Snapshot</text>
-  <text x="415" y="245" text-anchor="start" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">③ Archive (S3)</text>
-  <text x="450" y="405" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#374151">Restore = brand-new RDS instance (cannot in-place)</text>
+<text x="350" y="110" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">① CreateDBSnapshot</text>
+<text x="285" y="220" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">② Snapshot</text>
+<text x="335" y="195" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">③ Metadata to RSC</text>
+<text x="450" y="405" text-anchor="middle" font-family="Geist Mono, monospace" font-size="11" font-weight="500" fill="#374151">Backup only. Restore is a separate flow (see Restore section below).</text>
 </svg>
 
 </div>
 
 <details open><summary><strong>How it works step by step</strong></summary>
 <ol class="numbered-steps">
-  <li><strong>RSC calls <code>CopyDBSnapshot</code> (non-Aurora) or <code>CopyDBClusterSnapshot</code> (Aurora):</strong> via the workload account's Rubrik role.</li>
-  <li><strong>AWS creates the snapshot:</strong> includes storage volume + log backups (if automated backups were enabled).</li>
+  <li><strong>RSC calls <code>CreateDBSnapshot</code> (non-Aurora) or <code>CreateDBClusterSnapshot</code> (Aurora):</strong> via the workload account's Rubrik role. Rubrik also configures the RDS automated-backup retention period to match the SLA's "Log Backup for AWS RDS" duration (max 35 days per AWS).</li>
+  <li><strong>AWS creates the snapshot:</strong> a storage-volume snapshot of the DB instance. Snapshots of encrypted instances are automatically encrypted. <strong>Non-Aurora:</strong> snapshots are incremental. <strong>Aurora:</strong> snapshots are always FULL — every snapshot is a complete copy of the cluster volume, which compounds cost quickly under frequent schedules.</li>
   <li><strong>Snapshot metadata to RSC:</strong> instance details, region, AZ, engine version, storage size, KMS key, port, VPC ID, parameter/option groups, backup retention — all indexed for inventory.</li>
   <li><strong>Cross-region copy (if SLA):</strong> <code>CopyDBSnapshot</code> with destination region for replication target.</li>
   <li><strong>Archive (if SLA):</strong> snapshot data copied to archive S3 bucket — uses the standard storage-tiering pipeline.</li>
@@ -2013,143 +1985,104 @@ li > ul, li > ol{ margin: 4px 0 6px; }
 
 <p class="lede">Different model from EBS/RDS — uses DynamoDB's native Export-to-S3 API. Backup doesn't need Exocompute (AWS does the work); restore does.</p>
 
+<div class="note warn">
+<strong>Two important limits to know upfront:</strong>
+<ul>
+  <li><strong>Cross-region / cross-account replication is NOT supported for DynamoDB</strong> at this time. If your SLA requires it, use archival to a multi-region S3 storage class instead.</li>
+  <li><strong>RCV is NOT supported for DynamoDB.</strong> Use a customer-managed S3 archival location.</li>
+</ul>
+</div>
+
 <h3>Backup data flow</h3>
 <div class="diagram-frame">
   
-<svg viewBox="0 0 900 420" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:900px;height:auto;background:url(#bgGrad);border-radius:12px;">
-  
+<svg viewBox="0 0 900 420" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="width:100%;max-width:900px;height:auto;background:url(#bgGrad_dd);border-radius:12px;">
 <defs>
-  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-    <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
-  </marker>
-  <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
-    <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.12"/>
-  </filter>
-  <linearGradient id="bgGrad" x1="0" x2="0" y1="0" y2="1">
-    <stop offset="0%"  stop-color="#fafaf7"/>
-    <stop offset="100%" stop-color="#f3f3ee"/>
-  </linearGradient>
-</defs>
-
-  <rect width="900" height="420" fill="url(#bgGrad)" rx="12"/>
-
-  
-    <g>
-      <rect x="380" y="30" width="140" height="50" rx="8" fill="#dff5ee" stroke="#00533f" stroke-width="1.5" filter="url(#shadow)"/>
-      <text x="450.0" y="51.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">RSC</text>
-      <text x="450.0" y="69.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">Orchestrator</text>
+    <marker id="arrow_dd" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <filter id="shadow_dd" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.12"/>
+    </filter>
+    <linearGradient id="bgGrad_dd" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#fafaf7"/>
+      <stop offset="100%" stop-color="#f3f3ee"/>
+    </linearGradient>
+  </defs>
+<rect width="900" height="420" fill="url(#bgGrad_dd)" rx="12"/>
+<g>
+      <rect x="380" y="30" width="140" height="50" rx="8" fill="#dff5ee" stroke="#00533f" stroke-width="1.5" filter="url(#shadow_dd)"/>
+      <text x="450.0" y="51.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">RSC</text>
+      <text x="450.0" y="67.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">Orchestrator</text>
     </g>
-    
-
-  
-    <g>
+<g>
       <rect x="40" y="110" width="380" height="280" rx="12" fill="#fdf0e3" stroke="#e87b35" stroke-width="1.5" stroke-dasharray="6 3" opacity="0.6"/>
       <text x="54" y="128" font-family="Geist Mono, monospace" font-size="11" font-weight="600" fill="#e87b35" letter-spacing="1">AWS ACCOUNT A — WORKLOADS</text>
     </g>
-    
-  
-    <g>
-      <rect x="70" y="150" width="130" height="50" rx="8" fill="#fff" stroke="#e87b35" stroke-width="1.5" filter="url(#shadow)"/>
-      <text x="135.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">DynamoDB Table</text>
-      <text x="135.0" y="189.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">PITR enabled</text>
+<g>
+      <rect x="70" y="150" width="130" height="50" rx="8" fill="#fff" stroke="#e87b35" stroke-width="1.5" filter="url(#shadow_dd)"/>
+      <text x="135.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">DynamoDB Table</text>
+      <text x="135.0" y="187.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">PITR enabled (35d)</text>
     </g>
-    
-  
-    <g>
-      <rect x="230" y="150" width="90" height="50" rx="8" fill="#fff" stroke="#a84e10" stroke-width="1.5" filter="url(#shadow)"/>
-      <text x="275.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">DDB API</text>
-      <text x="275.0" y="189.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">ExportTableToPointInTime</text>
+<g>
+      <rect x="230" y="150" width="90" height="50" rx="8" fill="#fff" stroke="#a84e10" stroke-width="1.5" filter="url(#shadow_dd)"/>
+      <text x="275.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">DDB API</text>
+      <text x="275.0" y="187.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">ExportToS3</text>
     </g>
-    
-  
-    <g>
-      <rect x="70" y="240" width="250" height="50" rx="8" fill="#fdf0e3" stroke="#a84e10" stroke-width="1.5" filter="url(#shadow)"/>
-      <text x="195.0" y="261.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Primary S3 bucket</text>
-      <text x="195.0" y="279.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">JSON exports (compressed)</text>
+<g>
+      <rect x="70" y="240" width="250" height="50" rx="8" fill="#fdf0e3" stroke="#a84e10" stroke-width="1.5" filter="url(#shadow_dd)"/>
+      <text x="195.0" y="261.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">Primary S3 bucket</text>
+      <text x="195.0" y="277.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">JSON exports (compressed)</text>
     </g>
-    
-
-  
-    <g>
-      <rect x="480" y="110" width="380" height="280" rx="12" fill="#fdf0e3" stroke="#e87b35" stroke-width="1.5" stroke-dasharray="6 3" opacity="0.6"/>
-      <text x="494" y="128" font-family="Geist Mono, monospace" font-size="11" font-weight="600" fill="#e87b35" letter-spacing="1">AWS ACCOUNT B — EXOCOMPUTE</text>
+<g>
+      <rect x="480" y="110" width="380" height="280" rx="12" fill="#e6f0fb" stroke="#2272d6" stroke-width="1.5" stroke-dasharray="6 3" opacity="0.6"/>
+      <text x="494" y="128" font-family="Geist Mono, monospace" font-size="11" font-weight="600" fill="#2272d6" letter-spacing="1">AWS ACCOUNT B — STORAGE</text>
     </g>
-    
-  
-    <g>
-      <rect x="510" y="150" width="350" height="50" rx="8" fill="#e6f0fb" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
-      <text x="685.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">S3 Archive (Standard-IA / Glacier)</text>
-      <text x="685.0" y="189.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">Object Lock for immutability</text>
+<g>
+      <rect x="510" y="150" width="350" height="50" rx="8" fill="#e6f0fb" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow_dd)"/>
+      <text x="685.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">S3 Archive (Standard-IA / Glacier)</text>
+      <text x="685.0" y="187.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">Object Lock for immutability</text>
     </g>
-    
-  
-    <g>
-      <rect x="510" y="240" width="200" height="50" rx="8" fill="#fff" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
-      <text x="610.0" y="261.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Exocompute (EKS)</text>
-      <text x="610.0" y="279.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">needed for restore only</text>
+<g>
+      <rect x="510" y="240" width="350" height="50" rx="8" fill="#fff" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow_dd)"/>
+      <text x="685.0" y="261.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">Lifecycle policy</text>
+      <text x="685.0" y="277.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">transitions per SLA tiering</text>
     </g>
-    
-  
-    <g>
-      <rect x="730" y="240" width="130" height="50" rx="8" fill="#fff" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
-      <text x="795.0" y="261.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Restored table</text>
-      <text x="795.0" y="279.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">(new DDB table)</text>
-    </g>
-    
-
-  <path id="dd1" d="M 440 80 C 440 120, 275 120, 275 150" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
-  <path id="dd2" d="M 275 200 L 195 240" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
-  <path id="dd3" d="M 320 265 C 400 265, 400 175, 510 175" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
-  <path id="dd4" d="M 610 200 L 610 240" stroke="#9ca3af" stroke-width="1.5" fill="none" marker-end="url(#arrow)" stroke-dasharray="4 3"/>
-  <path id="dd5" d="M 710 265 L 730 265" stroke="#9ca3af" stroke-width="1.5" fill="none" marker-end="url(#arrow)" stroke-dasharray="4 3"/>
-
-  
-    <circle r="6" fill="#00b388" filter="url(#shadow)">
+<path id="ddB1" d="M 440 80 C 440 120, 275 120, 275 150" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow_dd)"/>
+<path id="ddB2" d="M 275 200 L 195 240" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow_dd)"/>
+<path id="ddB3" d="M 320 265 C 400 265, 400 175, 510 175" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow_dd)"/>
+<path id="ddB4" d="M 685 200 L 685 240" stroke="#e87b35" stroke-dasharray="4 3" stroke-width="1.5" fill="none" marker-end="url(#arrow_dd)"/>
+<circle r="6" fill="#00b388" filter="url(#shadow_dd)">
       <animateMotion dur="3s" begin="0s" repeatCount="indefinite">
-        <mpath href="#dd1"/>
+        <mpath href="#ddB1" xlink:href="#ddB1"/>
       </animateMotion>
     </circle>
-    
-  
-    <circle r="6" fill="#00b388" filter="url(#shadow)">
+<circle r="6" fill="#00b388" filter="url(#shadow_dd)">
       <animateMotion dur="2s" begin="1s" repeatCount="indefinite">
-        <mpath href="#dd2"/>
+        <mpath href="#ddB2" xlink:href="#ddB2"/>
       </animateMotion>
     </circle>
-    
-  
-    <circle r="6" fill="#00b388" filter="url(#shadow)">
+<circle r="6" fill="#00b388" filter="url(#shadow_dd)">
       <animateMotion dur="3s" begin="2s" repeatCount="indefinite">
-        <mpath href="#dd3"/>
+        <mpath href="#ddB3" xlink:href="#ddB3"/>
       </animateMotion>
     </circle>
-    
-  
-    <circle r="6" fill="#9ca3af" filter="url(#shadow)">
+<circle r="6" fill="#e87b35" filter="url(#shadow_dd)">
       <animateMotion dur="3s" begin="4s" repeatCount="indefinite">
-        <mpath href="#dd4"/>
+        <mpath href="#ddB4" xlink:href="#ddB4"/>
       </animateMotion>
     </circle>
-    
-  
-    <circle r="6" fill="#9ca3af" filter="url(#shadow)">
-      <animateMotion dur="2s" begin="5s" repeatCount="indefinite">
-        <mpath href="#dd5"/>
-      </animateMotion>
-    </circle>
-    
-
-  <text x="350" y="110" text-anchor="start" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">① ExportTableToPointInTime</text>
-  <text x="180" y="230" text-anchor="start" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">② Native AWS export</text>
-  <text x="400" y="165" text-anchor="start" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">③ Lifecycle → archive</text>
-  <text x="450" y="405" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" font-weight="500" fill="#374151">Backup uses native DDB Export-to-S3 — no Exocompute needed for backup; only for restore (&gt;1 TB or with LSIs)</text>
+<text x="350" y="110" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">① ExportTableToPointInTime</text>
+<text x="180" y="230" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">② Native AWS export</text>
+<text x="400" y="165" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">③ Lifecycle → archive</text>
+<text x="450" y="405" text-anchor="middle" font-family="Geist Mono, monospace" font-size="11" font-weight="500" fill="#374151">Backup uses native DDB Export-to-S3 — no Exocompute touches data. Restore is a separate flow.</text>
 </svg>
 
 </div>
 
 <details open><summary><strong>How it works step by step</strong></summary>
 <ol class="numbered-steps">
-  <li><strong>Prerequisite:</strong> Point-in-Time Recovery (PITR) must be enabled on the table. RSC enables it automatically when you assign an SLA.</li>
+  <li><strong>Prerequisite:</strong> Point-in-Time Recovery (PITR) must be enabled on the table. RSC enables it automatically when you assign an SLA and sets <strong>Continuous Backup for DynamoDB (PITR) to 35 days</strong>. This cannot be reduced from RSC — it's required for incremental backups to work.</li>
   <li><strong>RSC calls <code>ExportTableToPointInTime</code>:</strong> AWS DynamoDB exports the table data to an S3 bucket as JSON files. Files are compressed and encrypted with default S3 encryption.</li>
   <li><strong>Primary location is S3:</strong> Rubrik provisions a Primary S3 bucket per protected table to hold these exports. Native AWS feature — no Exocompute touches the data.</li>
   <li><strong>Lifecycle to archive:</strong> S3 lifecycle policy transitions exports from Standard → Standard-IA → Glacier per SLA. Object Lock provides immutability.</li>
@@ -2161,7 +2094,7 @@ li > ul, li > ol{ margin: 4px 0 6px; }
 <p>Compared to EBS/RDS where Exocompute pulls block data:</p>
 <ul>
   <li>Backup is offloaded entirely to AWS DynamoDB service — fast, no impact on production.</li>
-  <li>JSON files are randomly re-ordered within and across files (DDB does this for parallel export).</li>
+  <li>The export <strong>reorders records randomly within and between JSON files</strong>. This is a DynamoDB feature, not a Rubrik one — it enables distributed parallel export from PITR with no impact on the source table.</li>
   <li>This makes restore more complex — see below.</li>
 </ul>
 </details>
@@ -2204,149 +2137,110 @@ li > ul, li > ol{ margin: 4px 0 6px; }
 <h3>Backup data flow</h3>
 <div class="diagram-frame">
   
-<svg viewBox="0 0 900 420" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:900px;height:auto;background:url(#bgGrad);border-radius:12px;">
-  
+<svg viewBox="0 0 900 420" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="width:100%;max-width:900px;height:auto;background:url(#bgGrad_s3);border-radius:12px;">
 <defs>
-  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-    <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
-  </marker>
-  <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
-    <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.12"/>
-  </filter>
-  <linearGradient id="bgGrad" x1="0" x2="0" y1="0" y2="1">
-    <stop offset="0%"  stop-color="#fafaf7"/>
-    <stop offset="100%" stop-color="#f3f3ee"/>
-  </linearGradient>
-</defs>
-
-  <rect width="900" height="420" fill="url(#bgGrad)" rx="12"/>
-
-  
-    <g>
-      <rect x="380" y="30" width="140" height="50" rx="8" fill="#dff5ee" stroke="#00533f" stroke-width="1.5" filter="url(#shadow)"/>
-      <text x="450.0" y="51.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">RSC</text>
-      <text x="450.0" y="69.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">Orchestrator</text>
+    <marker id="arrow_s3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <filter id="shadow_s3" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.12"/>
+    </filter>
+    <linearGradient id="bgGrad_s3" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#fafaf7"/>
+      <stop offset="100%" stop-color="#f3f3ee"/>
+    </linearGradient>
+  </defs>
+<rect width="900" height="420" fill="url(#bgGrad_s3)" rx="12"/>
+<g>
+      <rect x="380" y="30" width="140" height="50" rx="8" fill="#dff5ee" stroke="#00533f" stroke-width="1.5" filter="url(#shadow_s3)"/>
+      <text x="450.0" y="51.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">RSC</text>
+      <text x="450.0" y="67.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">Orchestrator</text>
     </g>
-    
-
-  
-    <g>
+<g>
       <rect x="40" y="110" width="380" height="280" rx="12" fill="#fdf0e3" stroke="#e87b35" stroke-width="1.5" stroke-dasharray="6 3" opacity="0.6"/>
       <text x="54" y="128" font-family="Geist Mono, monospace" font-size="11" font-weight="600" fill="#e87b35" letter-spacing="1">AWS ACCOUNT A — SOURCE</text>
     </g>
-    
-  
-    <g>
-      <rect x="70" y="150" width="250" height="50" rx="8" fill="#fff" stroke="#e87b35" stroke-width="1.5" filter="url(#shadow)"/>
-      <text x="195.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Source S3 bucket</text>
-      <text x="195.0" y="189.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">Versioning REQUIRED</text>
+<g>
+      <rect x="70" y="150" width="250" height="50" rx="8" fill="#fff" stroke="#e87b35" stroke-width="1.5" filter="url(#shadow_s3)"/>
+      <text x="195.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">Source S3 bucket</text>
+      <text x="195.0" y="187.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">Versioning REQUIRED</text>
     </g>
-    
-  
-    <g>
-      <rect x="70" y="230" width="250" height="50" rx="8" fill="#fdf0e3" stroke="#a84e10" stroke-width="1.5" filter="url(#shadow)"/>
-      <text x="195.0" y="251.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Object versions</text>
-      <text x="195.0" y="269.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">captured per change</text>
+<g>
+      <rect x="70" y="230" width="250" height="50" rx="8" fill="#fdf0e3" stroke="#a84e10" stroke-width="1.5" filter="url(#shadow_s3)"/>
+      <text x="195.0" y="251.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">Object versions</text>
+      <text x="195.0" y="267.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">captured per change</text>
     </g>
-    
-  
-    <g>
-      <rect x="70" y="320" width="250" height="50" rx="8" fill="#fff" stroke="#e87b35" stroke-width="1.5" filter="url(#shadow)"/>
-      <text x="195.0" y="341.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Workload Index bucket</text>
-      <text x="195.0" y="359.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">rubrik-s3-workload-index-*</text>
+<g>
+      <rect x="70" y="320" width="250" height="50" rx="8" fill="#fff" stroke="#e87b35" stroke-width="1.5" filter="url(#shadow_s3)"/>
+      <text x="195.0" y="341.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">Workload Index bucket</text>
+      <text x="195.0" y="357.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">rubrik-s3-workload-index-*</text>
     </g>
-    
-
-  
-    <g>
-      <rect x="480" y="110" width="380" height="280" rx="12" fill="#fdf0e3" stroke="#e87b35" stroke-width="1.5" stroke-dasharray="6 3" opacity="0.6"/>
-      <text x="494" y="128" font-family="Geist Mono, monospace" font-size="11" font-weight="600" fill="#e87b35" letter-spacing="1">AWS ACCOUNT B — EXOCOMPUTE</text>
+<g>
+      <rect x="480" y="110" width="380" height="280" rx="12" fill="#e6f0fb" stroke="#2272d6" stroke-width="1.5" stroke-dasharray="6 3" opacity="0.6"/>
+      <text x="494" y="128" font-family="Geist Mono, monospace" font-size="11" font-weight="600" fill="#2272d6" letter-spacing="1">AWS ACCOUNT B — EXOCOMPUTE + STORAGE</text>
     </g>
-    
-  
-    <g>
-      <rect x="510" y="150" width="200" height="50" rx="8" fill="#e6f0fb" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
-      <text x="610.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Exocompute (EKS)</text>
-      <text x="610.0" y="189.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">scans object versions</text>
+<g>
+      <rect x="510" y="150" width="200" height="50" rx="8" fill="#e6f0fb" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow_s3)"/>
+      <text x="610.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">Exocompute (EKS)</text>
+      <text x="610.0" y="187.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">scans object versions</text>
     </g>
-    
-  
-    <g>
-      <rect x="730" y="150" width="130" height="50" rx="8" fill="#dff5ee" stroke="#00533f" stroke-width="1.5" filter="url(#shadow)"/>
-      <text x="795.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Metadata Store</text>
-      <text x="795.0" y="189.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">cloudslab.rubrik.com</text>
+<g>
+      <rect x="730" y="150" width="130" height="50" rx="8" fill="#dff5ee" stroke="#00533f" stroke-width="1.5" filter="url(#shadow_s3)"/>
+      <text x="795.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">Metadata Store</text>
+      <text x="795.0" y="187.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">cloudslab.rubrik.com</text>
     </g>
-    
-  
-    <g>
-      <rect x="510" y="230" width="350" height="50" rx="8" fill="#fff" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
-      <text x="685.0" y="251.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Archival S3 bucket</text>
-      <text x="685.0" y="269.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">long-term tier (Standard-IA / Glacier)</text>
+<g>
+      <rect x="510" y="230" width="350" height="50" rx="8" fill="#fff" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow_s3)"/>
+      <text x="685.0" y="251.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">Archival S3 bucket</text>
+      <text x="685.0" y="267.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">long-term tier (Standard-IA / Glacier)</text>
     </g>
-    
-  
-    <g>
-      <rect x="510" y="320" width="350" height="50" rx="8" fill="#fff" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
-      <text x="685.0" y="341.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Recovery → original or new bucket</text>
-      <text x="685.0" y="359.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">in-place or out-of-place</text>
+<g>
+      <rect x="510" y="320" width="350" height="50" rx="8" fill="#fff" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow_s3)"/>
+      <text x="685.0" y="341.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">Both RCV tiers supported</text>
+      <text x="685.0" y="357.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">RCV Backup + Archive tiers (rare)</text>
     </g>
-    
-
-  <path id="s31" d="M 440 80 C 440 120, 195 120, 195 150" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
-  <path id="s32" d="M 195 200 L 195 230" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
-  <path id="s33" d="M 320 255 C 400 255, 400 175, 510 175" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
-  <path id="s34" d="M 710 175 L 730 175" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
-  <path id="s35" d="M 610 200 L 610 230" stroke="#e87b35" stroke-width="1.5" fill="none" marker-end="url(#arrow)" stroke-dasharray="4 3"/>
-  <path id="s36" d="M 195 370 C 400 370, 400 345, 510 345" stroke="#9ca3af" stroke-width="1.5" fill="none" marker-end="url(#arrow)" stroke-dasharray="4 3"/>
-
-  
-    <circle r="6" fill="#00b388" filter="url(#shadow)">
+<path id="s3B1" d="M 440 80 C 440 120, 195 120, 195 150" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow_s3)"/>
+<path id="s3B2" d="M 195 200 L 195 230" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow_s3)"/>
+<path id="s3B3" d="M 320 255 L 510 175" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow_s3)"/>
+<path id="s3B4" d="M 710 175 L 730 175" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow_s3)"/>
+<path id="s3B5" d="M 610 200 L 610 230" stroke="#e87b35" stroke-dasharray="4 3" stroke-width="1.5" fill="none" marker-end="url(#arrow_s3)"/>
+<path id="s3B6" d="M 195 320 C 195 305, 400 295, 510 265" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow_s3)"/>
+<circle r="6" fill="#00b388" filter="url(#shadow_s3)">
       <animateMotion dur="3s" begin="0s" repeatCount="indefinite">
-        <mpath href="#s31"/>
+        <mpath href="#s3B1" xlink:href="#s3B1"/>
       </animateMotion>
     </circle>
-    
-  
-    <circle r="6" fill="#00b388" filter="url(#shadow)">
+<circle r="6" fill="#00b388" filter="url(#shadow_s3)">
       <animateMotion dur="2s" begin="1s" repeatCount="indefinite">
-        <mpath href="#s32"/>
+        <mpath href="#s3B2" xlink:href="#s3B2"/>
       </animateMotion>
     </circle>
-    
-  
-    <circle r="6" fill="#00b388" filter="url(#shadow)">
+<circle r="6" fill="#00b388" filter="url(#shadow_s3)">
       <animateMotion dur="3s" begin="2s" repeatCount="indefinite">
-        <mpath href="#s33"/>
+        <mpath href="#s3B3" xlink:href="#s3B3"/>
       </animateMotion>
     </circle>
-    
-  
-    <circle r="6" fill="#00b388" filter="url(#shadow)">
+<circle r="6" fill="#00b388" filter="url(#shadow_s3)">
       <animateMotion dur="2s" begin="3s" repeatCount="indefinite">
-        <mpath href="#s34"/>
+        <mpath href="#s3B4" xlink:href="#s3B4"/>
       </animateMotion>
     </circle>
-    
-  
-    <circle r="6" fill="#e87b35" filter="url(#shadow)">
+<circle r="6" fill="#e87b35" filter="url(#shadow_s3)">
       <animateMotion dur="3s" begin="4s" repeatCount="indefinite">
-        <mpath href="#s35"/>
+        <mpath href="#s3B5" xlink:href="#s3B5"/>
       </animateMotion>
     </circle>
-    
-  
-    <circle r="6" fill="#9ca3af" filter="url(#shadow)">
-      <animateMotion dur="4s" begin="5s" repeatCount="indefinite">
-        <mpath href="#s36"/>
+<circle r="6" fill="#00b388" filter="url(#shadow_s3)">
+      <animateMotion dur="3s" begin="5s" repeatCount="indefinite">
+        <mpath href="#s3B6" xlink:href="#s3B6"/>
       </animateMotion>
     </circle>
-    
-
-  <text x="350" y="110" text-anchor="start" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">① Enable versioning</text>
-  <text x="220" y="220" text-anchor="start" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">② Versions captured</text>
-  <text x="400" y="165" text-anchor="start" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">③ Exo scans + indexes</text>
-  <text x="610" y="220" text-anchor="start" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">④ Archive tier</text>
-  <text x="450" y="405" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" font-weight="500" fill="#374151">Workload-index bucket holds the index manifest; archive bucket holds backed-up data</text>
+<text x="350" y="110" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">① Versioning enabled</text>
+<text x="220" y="220" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">② Versions captured</text>
+<text x="350" y="195" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">③ Exo scans</text>
+<text x="715" y="140" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">④ Index → Metadata Store</text>
+<text x="620" y="220" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">⑤ Archive tier</text>
+<text x="450" y="405" text-anchor="middle" font-family="Geist Mono, monospace" font-size="11" font-weight="500" fill="#374151">Backup only. Restore (in-place or out-of-place) is a separate flow.</text>
 </svg>
 
 </div>
@@ -2625,22 +2519,34 @@ After Exocompute is created in Phase 2, the <code>Polaris-Exocompute-eks-worker-
 <h2 class="section-title">Architecture at a glance</h2>
 <div class="diagram-frame">
   
-<svg viewBox="0 0 900 460" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:900px;height:auto;background:url(#bgGrad);border-radius:12px;">
+<svg viewBox="0 0 900 460" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:900px;height:auto;background:url(#azarchGrad);border-radius:12px;">
+  <defs>
+    <marker id="azarchArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <filter id="azarchShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.12"/>
+    </filter>
+    <linearGradient id="azarchGrad" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#fafaf7"/>
+      <stop offset="100%" stop-color="#f3f3ee"/>
+    </linearGradient>
+  </defs>
   
 <defs>
-  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+  <marker id="arrow_n27" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
     <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
   </marker>
-  <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+  <filter id="shadow_n27" x="-20%" y="-20%" width="140%" height="140%">
     <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.12"/>
   </filter>
-  <linearGradient id="bgGrad" x1="0" x2="0" y1="0" y2="1">
+  <linearGradient id="bgGrad_n27" x1="0" x2="0" y1="0" y2="1">
     <stop offset="0%"  stop-color="#fafaf7"/>
     <stop offset="100%" stop-color="#f3f3ee"/>
   </linearGradient>
 </defs>
 
-  <rect width="900" height="460" fill="url(#bgGrad)" rx="12"/>
+  <rect width="900" height="460" fill="url(#azarchGrad)" rx="12"/>
 
   <g>
     <ellipse cx="450" cy="50" rx="80" ry="28" fill="#00b388" opacity="0.15"/>
@@ -2657,35 +2563,35 @@ After Exocompute is created in Phase 2, the <code>Polaris-Exocompute-eks-worker-
     
   
     <g>
-      <rect x="70" y="170" width="140" height="56" rx="8" fill="#fff" stroke="#2272d6" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="70" y="170" width="140" height="56" rx="8" fill="#fff" stroke="#2272d6" stroke-width="1.5" filter="url(#azarchShadow)"/>
       <text x="140.0" y="194.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Azure VMs</text>
       <text x="140.0" y="212.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">managed disks</text>
     </g>
     
   
     <g>
-      <rect x="230" y="170" width="160" height="56" rx="8" fill="#fff" stroke="#2272d6" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="230" y="170" width="160" height="56" rx="8" fill="#fff" stroke="#2272d6" stroke-width="1.5" filter="url(#azarchShadow)"/>
       <text x="310.0" y="194.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Azure SQL DB / MI</text>
       <text x="310.0" y="212.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">PaaS databases</text>
     </g>
     
   
     <g>
-      <rect x="70" y="250" width="140" height="56" rx="8" fill="#fff" stroke="#2272d6" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="70" y="250" width="140" height="56" rx="8" fill="#fff" stroke="#2272d6" stroke-width="1.5" filter="url(#azarchShadow)"/>
       <text x="140.0" y="274.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Azure Blob</text>
       <text x="140.0" y="292.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">storage accounts</text>
     </g>
     
   
     <g>
-      <rect x="230" y="250" width="160" height="56" rx="8" fill="#fff" stroke="#2272d6" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="230" y="250" width="160" height="56" rx="8" fill="#fff" stroke="#2272d6" stroke-width="1.5" filter="url(#azarchShadow)"/>
       <text x="310.0" y="274.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">ADLS Gen2</text>
       <text x="310.0" y="292.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">(if in scope)</text>
     </g>
     
   
     <g>
-      <rect x="70" y="340" width="320" height="50" rx="8" fill="#e6f0fb" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="70" y="340" width="320" height="50" rx="8" fill="#e6f0fb" stroke="#0a4a9c" stroke-width="1.5" filter="url(#azarchShadow)"/>
       <text x="230.0" y="361.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Microsoft Entra ID — RSCAzure app</text>
       <text x="230.0" y="379.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">OAuth + custom RBAC role</text>
     </g>
@@ -2699,60 +2605,60 @@ After Exocompute is created in Phase 2, the <code>Polaris-Exocompute-eks-worker-
     
   
     <g>
-      <rect x="510" y="170" width="180" height="56" rx="8" fill="#fff" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="510" y="170" width="180" height="56" rx="8" fill="#fff" stroke="#0a4a9c" stroke-width="1.5" filter="url(#azarchShadow)"/>
       <text x="600.0" y="194.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">AKS — Exocompute</text>
       <text x="600.0" y="212.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">CNI Overlay /25 + /18</text>
     </g>
     
   
     <g>
-      <rect x="710" y="170" width="130" height="56" rx="8" fill="#fff" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="710" y="170" width="130" height="56" rx="8" fill="#fff" stroke="#0a4a9c" stroke-width="1.5" filter="url(#azarchShadow)"/>
       <text x="775.0" y="194.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Storage Account</text>
       <text x="775.0" y="212.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">archive blob</text>
     </g>
     
   
     <g>
-      <rect x="510" y="250" width="320" height="56" rx="8" fill="#e6f0fb" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="510" y="250" width="320" height="56" rx="8" fill="#e6f0fb" stroke="#0a4a9c" stroke-width="1.5" filter="url(#azarchShadow)"/>
       <text x="670.0" y="274.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Service Endpoints / Private Endpoints</text>
       <text x="670.0" y="292.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">Microsoft.Storage on AKS subnet</text>
     </g>
     
   
     <g>
-      <rect x="510" y="340" width="320" height="50" rx="8" fill="#e6f0fb" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="510" y="340" width="320" height="50" rx="8" fill="#e6f0fb" stroke="#0a4a9c" stroke-width="1.5" filter="url(#azarchShadow)"/>
       <text x="670.0" y="361.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">User-assigned Managed Identity + Key Vault</text>
       <text x="670.0" y="379.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">for SSE-CMK on archival</text>
     </g>
     
 
-  <path id="az-rsc-a" d="M 450 78 C 250 100, 250 130, 250 130" stroke="#9ca3af" stroke-width="1.5" fill="none" marker-end="url(#arrow)" stroke-dasharray="4 3"/>
-  <path id="az-rsc-b" d="M 450 78 C 670 100, 670 130, 670 130" stroke="#9ca3af" stroke-width="1.5" fill="none" marker-end="url(#arrow)" stroke-dasharray="4 3"/>
-  <path id="az-b-to-a" d="M 420 280 C 460 280, 470 280, 510 280" stroke="#00b388" stroke-width="2" fill="none" marker-end="url(#arrow)"/>
+  <path id="az-rsc-a" d="M 450 78 C 250 100, 250 130, 250 130" stroke="#9ca3af" stroke-width="1.5" fill="none" marker-end="url(#azarchArrow)" stroke-dasharray="4 3"/>
+  <path id="az-rsc-b" d="M 450 78 C 670 100, 670 130, 670 130" stroke="#9ca3af" stroke-width="1.5" fill="none" marker-end="url(#azarchArrow)" stroke-dasharray="4 3"/>
+  <path id="az-b-to-a" d="M 420 280 C 460 280, 470 280, 510 280" stroke="#00b388" stroke-width="2" fill="none" marker-end="url(#azarchArrow)"/>
 
   
-    <circle r="6" fill="#00b388" filter="url(#shadow)">
+    <circle r="6" fill="#00b388" filter="url(#azarchShadow)">
       <animateMotion dur="3s" begin="0s" repeatCount="indefinite">
         <mpath href="#az-rsc-a"/>
       </animateMotion>
     </circle>
     
   
-    <circle r="6" fill="#00b388" filter="url(#shadow)">
+    <circle r="6" fill="#00b388" filter="url(#azarchShadow)">
       <animateMotion dur="3s" begin="1s" repeatCount="indefinite">
         <mpath href="#az-rsc-b"/>
       </animateMotion>
     </circle>
     
   
-    <circle r="6" fill="#2272d6" filter="url(#shadow)">
+    <circle r="6" fill="#2272d6" filter="url(#azarchShadow)">
       <animateMotion dur="2.5s" begin="0s" repeatCount="indefinite">
         <mpath href="#az-b-to-a"/>
       </animateMotion>
     </circle>
     
   
-    <circle r="6" fill="#2272d6" filter="url(#shadow)">
+    <circle r="6" fill="#2272d6" filter="url(#azarchShadow)">
       <animateMotion dur="2.5s" begin="1.2s" repeatCount="indefinite">
         <mpath href="#az-b-to-a"/>
       </animateMotion>
@@ -3214,26 +3120,38 @@ After Exocompute is created in Phase 2, the <code>Polaris-Exocompute-eks-worker-
 <h3>Backup data flow</h3>
 <div class="diagram-frame">
   
-<svg viewBox="0 0 900 460" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:900px;height:auto;background:url(#bgGrad);border-radius:12px;">
+<svg viewBox="0 0 900 460" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:900px;height:auto;background:url(#azvmGrad);border-radius:12px;">
+  <defs>
+    <marker id="azvmArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <filter id="azvmShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.12"/>
+    </filter>
+    <linearGradient id="azvmGrad" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#fafaf7"/>
+      <stop offset="100%" stop-color="#f3f3ee"/>
+    </linearGradient>
+  </defs>
   
 <defs>
-  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+  <marker id="arrow_n16" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
     <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
   </marker>
-  <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+  <filter id="shadow_n16" x="-20%" y="-20%" width="140%" height="140%">
     <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.12"/>
   </filter>
-  <linearGradient id="bgGrad" x1="0" x2="0" y1="0" y2="1">
+  <linearGradient id="bgGrad_n16" x1="0" x2="0" y1="0" y2="1">
     <stop offset="0%"  stop-color="#fafaf7"/>
     <stop offset="100%" stop-color="#f3f3ee"/>
   </linearGradient>
 </defs>
 
-  <rect width="900" height="460" fill="url(#bgGrad)" rx="12"/>
+  <rect width="900" height="460" fill="url(#azvmGrad)" rx="12"/>
 
   
     <g>
-      <rect x="380" y="30" width="140" height="50" rx="8" fill="#dff5ee" stroke="#00533f" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="380" y="30" width="140" height="50" rx="8" fill="#dff5ee" stroke="#00533f" stroke-width="1.5" filter="url(#azvmShadow)"/>
       <text x="450.0" y="51.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">RSC</text>
       <text x="450.0" y="69.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">Orchestrator</text>
     </g>
@@ -3247,28 +3165,28 @@ After Exocompute is created in Phase 2, the <code>Polaris-Exocompute-eks-worker-
     
   
     <g>
-      <rect x="70" y="150" width="110" height="50" rx="8" fill="#fff" stroke="#2272d6" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="70" y="150" width="110" height="50" rx="8" fill="#fff" stroke="#2272d6" stroke-width="1.5" filter="url(#azvmShadow)"/>
       <text x="125.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Azure VM</text>
       <text x="125.0" y="189.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">running</text>
     </g>
     
   
     <g>
-      <rect x="210" y="150" width="110" height="50" rx="8" fill="#fff" stroke="#2272d6" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="210" y="150" width="110" height="50" rx="8" fill="#fff" stroke="#2272d6" stroke-width="1.5" filter="url(#azvmShadow)"/>
       <text x="265.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Managed Disk(s)</text>
       <text x="265.0" y="189.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">OS + data</text>
     </g>
     
   
     <g>
-      <rect x="70" y="240" width="250" height="50" rx="8" fill="#e6f0fb" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="70" y="240" width="250" height="50" rx="8" fill="#e6f0fb" stroke="#0a4a9c" stroke-width="1.5" filter="url(#azvmShadow)"/>
       <text x="195.0" y="261.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Managed Disk Snapshot</text>
       <text x="195.0" y="279.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">Azure-managed, encrypted</text>
     </g>
     
   
     <g>
-      <rect x="70" y="330" width="250" height="50" rx="8" fill="#fff" stroke="#2272d6" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="70" y="330" width="250" height="50" rx="8" fill="#fff" stroke="#2272d6" stroke-width="1.5" filter="url(#azvmShadow)"/>
       <text x="195.0" y="351.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Disk attached to AKS pod</text>
       <text x="195.0" y="369.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">for FLR indexing</text>
     </g>
@@ -3282,84 +3200,84 @@ After Exocompute is created in Phase 2, the <code>Polaris-Exocompute-eks-worker-
     
   
     <g>
-      <rect x="510" y="150" width="200" height="50" rx="8" fill="#fff" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="510" y="150" width="200" height="50" rx="8" fill="#fff" stroke="#0a4a9c" stroke-width="1.5" filter="url(#azvmShadow)"/>
       <text x="610.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Compute API</text>
       <text x="610.0" y="189.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">management.azure.com</text>
     </g>
     
   
     <g>
-      <rect x="730" y="150" width="130" height="50" rx="8" fill="#fff" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="730" y="150" width="130" height="50" rx="8" fill="#fff" stroke="#0a4a9c" stroke-width="1.5" filter="url(#azvmShadow)"/>
       <text x="795.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">ARM Resource</text>
       <text x="795.0" y="189.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">Provider</text>
     </g>
     
   
     <g>
-      <rect x="510" y="240" width="350" height="50" rx="8" fill="#e6f0fb" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="510" y="240" width="350" height="50" rx="8" fill="#e6f0fb" stroke="#0a4a9c" stroke-width="1.5" filter="url(#azvmShadow)"/>
       <text x="685.0" y="261.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Exocompute (AKS pod)</text>
       <text x="685.0" y="279.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">indexes filesystem metadata</text>
     </g>
     
   
     <g>
-      <rect x="510" y="330" width="200" height="50" rx="8" fill="#fff" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="510" y="330" width="200" height="50" rx="8" fill="#fff" stroke="#0a4a9c" stroke-width="1.5" filter="url(#azvmShadow)"/>
       <text x="610.0" y="351.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Index → GCS</text>
       <text x="610.0" y="369.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">storage.googleapis.com</text>
     </g>
     
   
     <g>
-      <rect x="730" y="330" width="130" height="50" rx="8" fill="#fff" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="730" y="330" width="130" height="50" rx="8" fill="#fff" stroke="#0a4a9c" stroke-width="1.5" filter="url(#azvmShadow)"/>
       <text x="795.0" y="351.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Blob archive</text>
       <text x="795.0" y="369.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">Hot/Cool/Archive</text>
     </g>
     
 
-  <path id="azvm1" d="M 440 80 C 440 130, 580 130, 580 150" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
-  <path id="azvm2" d="M 580 200 C 580 220, 195 220, 195 240" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
-  <path id="azvm3" d="M 195 290 L 195 330" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
-  <path id="azvm4" d="M 320 355 C 400 355, 400 265, 510 265" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
-  <path id="azvm5" d="M 685 290 L 610 330" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
-  <path id="azvm6" d="M 320 265 C 400 265, 730 290, 790 330" stroke="#2272d6" stroke-width="1.5" fill="none" marker-end="url(#arrow)" stroke-dasharray="4 3"/>
+  <path id="azvm1" d="M 440 80 C 440 130, 580 130, 580 150" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#azvmArrow)"/>
+  <path id="azvm2" d="M 580 200 C 580 220, 195 220, 195 240" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#azvmArrow)"/>
+  <path id="azvm3" d="M 195 290 L 195 330" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#azvmArrow)"/>
+  <path id="azvm4" d="M 320 355 C 400 355, 400 265, 510 265" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#azvmArrow)"/>
+  <path id="azvm5" d="M 685 290 L 610 330" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#azvmArrow)"/>
+  <path id="azvm6" d="M 320 265 C 400 265, 730 290, 790 330" stroke="#2272d6" stroke-width="1.5" fill="none" marker-end="url(#azvmArrow)" stroke-dasharray="4 3"/>
 
   
-    <circle r="6" fill="#00b388" filter="url(#shadow)">
+    <circle r="6" fill="#00b388" filter="url(#azvmShadow)">
       <animateMotion dur="3s" begin="0s" repeatCount="indefinite">
         <mpath href="#azvm1"/>
       </animateMotion>
     </circle>
     
   
-    <circle r="6" fill="#00b388" filter="url(#shadow)">
+    <circle r="6" fill="#00b388" filter="url(#azvmShadow)">
       <animateMotion dur="3s" begin="1s" repeatCount="indefinite">
         <mpath href="#azvm2"/>
       </animateMotion>
     </circle>
     
   
-    <circle r="6" fill="#00b388" filter="url(#shadow)">
+    <circle r="6" fill="#00b388" filter="url(#azvmShadow)">
       <animateMotion dur="2s" begin="2s" repeatCount="indefinite">
         <mpath href="#azvm3"/>
       </animateMotion>
     </circle>
     
   
-    <circle r="6" fill="#00b388" filter="url(#shadow)">
+    <circle r="6" fill="#00b388" filter="url(#azvmShadow)">
       <animateMotion dur="3s" begin="3s" repeatCount="indefinite">
         <mpath href="#azvm4"/>
       </animateMotion>
     </circle>
     
   
-    <circle r="6" fill="#00b388" filter="url(#shadow)">
+    <circle r="6" fill="#00b388" filter="url(#azvmShadow)">
       <animateMotion dur="2.5s" begin="4s" repeatCount="indefinite">
         <mpath href="#azvm5"/>
       </animateMotion>
     </circle>
     
   
-    <circle r="6" fill="#2272d6" filter="url(#shadow)">
+    <circle r="6" fill="#2272d6" filter="url(#azvmShadow)">
       <animateMotion dur="4s" begin="5s" repeatCount="indefinite">
         <mpath href="#azvm6"/>
       </animateMotion>
@@ -3424,26 +3342,38 @@ After Exocompute is created in Phase 2, the <code>Polaris-Exocompute-eks-worker-
 <h3>Backup data flow</h3>
 <div class="diagram-frame">
   
-<svg viewBox="0 0 900 420" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:900px;height:auto;background:url(#bgGrad);border-radius:12px;">
+<svg viewBox="0 0 900 420" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:900px;height:auto;background:url(#azsqlGrad);border-radius:12px;">
+  <defs>
+    <marker id="azsqlArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <filter id="azsqlShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.12"/>
+    </filter>
+    <linearGradient id="azsqlGrad" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#fafaf7"/>
+      <stop offset="100%" stop-color="#f3f3ee"/>
+    </linearGradient>
+  </defs>
   
 <defs>
-  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+  <marker id="arrow_n14" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
     <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
   </marker>
-  <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+  <filter id="shadow_n14" x="-20%" y="-20%" width="140%" height="140%">
     <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.12"/>
   </filter>
-  <linearGradient id="bgGrad" x1="0" x2="0" y1="0" y2="1">
+  <linearGradient id="bgGrad_n14" x1="0" x2="0" y1="0" y2="1">
     <stop offset="0%"  stop-color="#fafaf7"/>
     <stop offset="100%" stop-color="#f3f3ee"/>
   </linearGradient>
 </defs>
 
-  <rect width="900" height="420" fill="url(#bgGrad)" rx="12"/>
+  <rect width="900" height="420" fill="url(#azsqlGrad)" rx="12"/>
 
   
     <g>
-      <rect x="380" y="30" width="140" height="50" rx="8" fill="#dff5ee" stroke="#00533f" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="380" y="30" width="140" height="50" rx="8" fill="#dff5ee" stroke="#00533f" stroke-width="1.5" filter="url(#azsqlShadow)"/>
       <text x="450.0" y="51.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">RSC</text>
       <text x="450.0" y="69.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">Orchestrator</text>
     </g>
@@ -3457,21 +3387,21 @@ After Exocompute is created in Phase 2, the <code>Polaris-Exocompute-eks-worker-
     
   
     <g>
-      <rect x="70" y="150" width="150" height="50" rx="8" fill="#fff" stroke="#2272d6" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="70" y="150" width="150" height="50" rx="8" fill="#fff" stroke="#2272d6" stroke-width="1.5" filter="url(#azsqlShadow)"/>
       <text x="145.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Azure SQL DB or MI</text>
       <text x="145.0" y="189.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">PaaS database</text>
     </g>
     
   
     <g>
-      <rect x="250" y="150" width="130" height="50" rx="8" fill="#fff" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="250" y="150" width="130" height="50" rx="8" fill="#fff" stroke="#0a4a9c" stroke-width="1.5" filter="url(#azsqlShadow)"/>
       <text x="315.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">VNet of SQL</text>
       <text x="315.0" y="189.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">(needs TCP/1433)</text>
     </g>
     
   
     <g>
-      <rect x="70" y="240" width="250" height="50" rx="8" fill="#e6f0fb" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="70" y="240" width="250" height="50" rx="8" fill="#e6f0fb" stroke="#0a4a9c" stroke-width="1.5" filter="url(#azsqlShadow)"/>
       <text x="195.0" y="261.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Export BACPAC / native dump</text>
       <text x="195.0" y="279.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">via Exocompute connection</text>
     </g>
@@ -3485,55 +3415,55 @@ After Exocompute is created in Phase 2, the <code>Polaris-Exocompute-eks-worker-
     
   
     <g>
-      <rect x="510" y="150" width="200" height="50" rx="8" fill="#fff" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="510" y="150" width="200" height="50" rx="8" fill="#fff" stroke="#0a4a9c" stroke-width="1.5" filter="url(#azsqlShadow)"/>
       <text x="610.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Exocompute (AKS)</text>
       <text x="610.0" y="189.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">connects on TCP/1433</text>
     </g>
     
   
     <g>
-      <rect x="730" y="150" width="130" height="50" rx="8" fill="#e6f0fb" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="730" y="150" width="130" height="50" rx="8" fill="#e6f0fb" stroke="#0a4a9c" stroke-width="1.5" filter="url(#azsqlShadow)"/>
       <text x="795.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">VNet peering / PE</text>
       <text x="795.0" y="189.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">to SQL VNet</text>
     </g>
     
   
     <g>
-      <rect x="510" y="240" width="350" height="50" rx="8" fill="#fff" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
+      <rect x="510" y="240" width="350" height="50" rx="8" fill="#fff" stroke="#0a4a9c" stroke-width="1.5" filter="url(#azsqlShadow)"/>
       <text x="685.0" y="261.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Blob archive (Hot or Cool only)</text>
       <text x="685.0" y="279.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">Archive tier NOT supported for Azure SQL</text>
     </g>
     
 
-  <path id="azsql1" d="M 440 80 C 440 120, 610 130, 610 150" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
-  <path id="azsql2" d="M 710 175 L 730 175" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
-  <path id="azsql3" d="M 730 200 C 730 230, 320 200, 280 200" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
-  <path id="azsql4" d="M 280 250 C 280 280, 195 270, 195 240" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow)" stroke-dasharray="4 3"/>
-  <path id="azsql5" d="M 320 265 C 400 265, 400 265, 510 265" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+  <path id="azsql1" d="M 440 80 C 440 120, 610 130, 610 150" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#azsqlArrow)"/>
+  <path id="azsql2" d="M 710 175 L 730 175" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#azsqlArrow)"/>
+  <path id="azsql3" d="M 730 200 C 730 230, 320 200, 280 200" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#azsqlArrow)"/>
+  <path id="azsql4" d="M 280 250 C 280 280, 195 270, 195 240" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#azsqlArrow)" stroke-dasharray="4 3"/>
+  <path id="azsql5" d="M 320 265 C 400 265, 400 265, 510 265" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#azsqlArrow)"/>
 
   
-    <circle r="6" fill="#00b388" filter="url(#shadow)">
+    <circle r="6" fill="#00b388" filter="url(#azsqlShadow)">
       <animateMotion dur="3s" begin="0s" repeatCount="indefinite">
         <mpath href="#azsql1"/>
       </animateMotion>
     </circle>
     
   
-    <circle r="6" fill="#00b388" filter="url(#shadow)">
+    <circle r="6" fill="#00b388" filter="url(#azsqlShadow)">
       <animateMotion dur="2s" begin="1s" repeatCount="indefinite">
         <mpath href="#azsql2"/>
       </animateMotion>
     </circle>
     
   
-    <circle r="6" fill="#00b388" filter="url(#shadow)">
+    <circle r="6" fill="#00b388" filter="url(#azsqlShadow)">
       <animateMotion dur="3s" begin="2s" repeatCount="indefinite">
         <mpath href="#azsql3"/>
       </animateMotion>
     </circle>
     
   
-    <circle r="6" fill="#00b388" filter="url(#shadow)">
+    <circle r="6" fill="#00b388" filter="url(#azsqlShadow)">
       <animateMotion dur="3s" begin="3.5s" repeatCount="indefinite">
         <mpath href="#azsql5"/>
       </animateMotion>
@@ -3585,141 +3515,104 @@ After Exocompute is created in Phase 2, the <code>Polaris-Exocompute-eks-worker-
 <h3>Backup data flow</h3>
 <div class="diagram-frame">
   
-<svg viewBox="0 0 900 420" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:900px;height:auto;background:url(#bgGrad);border-radius:12px;">
-  
+<svg viewBox="0 0 900 420" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="width:100%;max-width:900px;height:auto;background:url(#bgGrad_azb);border-radius:12px;">
 <defs>
-  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-    <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
-  </marker>
-  <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
-    <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.12"/>
-  </filter>
-  <linearGradient id="bgGrad" x1="0" x2="0" y1="0" y2="1">
-    <stop offset="0%"  stop-color="#fafaf7"/>
-    <stop offset="100%" stop-color="#f3f3ee"/>
-  </linearGradient>
-</defs>
-
-  <rect width="900" height="420" fill="url(#bgGrad)" rx="12"/>
-
-  
-    <g>
-      <rect x="380" y="30" width="140" height="50" rx="8" fill="#dff5ee" stroke="#00533f" stroke-width="1.5" filter="url(#shadow)"/>
-      <text x="450.0" y="51.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">RSC</text>
-      <text x="450.0" y="69.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">Orchestrator</text>
+    <marker id="arrow_azb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <filter id="shadow_azb" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.12"/>
+    </filter>
+    <linearGradient id="bgGrad_azb" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#fafaf7"/>
+      <stop offset="100%" stop-color="#f3f3ee"/>
+    </linearGradient>
+  </defs>
+<rect width="900" height="420" fill="url(#bgGrad_azb)" rx="12"/>
+<g>
+      <rect x="380" y="30" width="140" height="50" rx="8" fill="#dff5ee" stroke="#00533f" stroke-width="1.5" filter="url(#shadow_azb)"/>
+      <text x="450.0" y="51.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">RSC</text>
+      <text x="450.0" y="67.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">Orchestrator</text>
     </g>
-    
-
-  
-    <g>
+<g>
       <rect x="40" y="110" width="380" height="280" rx="12" fill="#e6f0fb" stroke="#2272d6" stroke-width="1.5" stroke-dasharray="6 3" opacity="0.6"/>
       <text x="54" y="128" font-family="Geist Mono, monospace" font-size="11" font-weight="600" fill="#2272d6" letter-spacing="1">AZURE SUBSCRIPTION — SOURCE</text>
     </g>
-    
-  
-    <g>
-      <rect x="70" y="150" width="250" height="50" rx="8" fill="#fff" stroke="#2272d6" stroke-width="1.5" filter="url(#shadow)"/>
-      <text x="195.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Source Blob container</text>
-      <text x="195.0" y="189.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">Versioning + immutability</text>
+<g>
+      <rect x="70" y="150" width="250" height="50" rx="8" fill="#fff" stroke="#2272d6" stroke-width="1.5" filter="url(#shadow_azb)"/>
+      <text x="195.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">Source Blob container</text>
+      <text x="195.0" y="187.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">Versioning + immutability</text>
     </g>
-    
-  
-    <g>
-      <rect x="70" y="230" width="250" height="50" rx="8" fill="#e6f0fb" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
-      <text x="195.0" y="251.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Blob versions</text>
-      <text x="195.0" y="269.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">captured per change</text>
+<g>
+      <rect x="70" y="230" width="250" height="50" rx="8" fill="#e6f0fb" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow_azb)"/>
+      <text x="195.0" y="251.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">Blob versions</text>
+      <text x="195.0" y="267.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">captured per change</text>
     </g>
-    
-  
-    <g>
-      <rect x="70" y="320" width="250" height="50" rx="8" fill="#fff" stroke="#2272d6" stroke-width="1.5" filter="url(#shadow)"/>
-      <text x="195.0" y="341.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Workload Index container</text>
-      <text x="195.0" y="359.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">rubrik-blob-index-*</text>
+<g>
+      <rect x="70" y="320" width="250" height="50" rx="8" fill="#fff" stroke="#2272d6" stroke-width="1.5" filter="url(#shadow_azb)"/>
+      <text x="195.0" y="341.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">Workload Index container</text>
+      <text x="195.0" y="357.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">rubrik-blob-index-*</text>
     </g>
-    
-
-  
-    <g>
+<g>
       <rect x="480" y="110" width="380" height="280" rx="12" fill="#e6f0fb" stroke="#2272d6" stroke-width="1.5" stroke-dasharray="6 3" opacity="0.6"/>
-      <text x="494" y="128" font-family="Geist Mono, monospace" font-size="11" font-weight="600" fill="#2272d6" letter-spacing="1">AZURE SUBSCRIPTION — EXOCOMPUTE</text>
+      <text x="494" y="128" font-family="Geist Mono, monospace" font-size="11" font-weight="600" fill="#2272d6" letter-spacing="1">AZURE SUBSCRIPTION — EXOCOMPUTE + STORAGE</text>
     </g>
-    
-  
-    <g>
-      <rect x="510" y="150" width="200" height="50" rx="8" fill="#e6f0fb" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
-      <text x="610.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Exocompute (AKS)</text>
-      <text x="610.0" y="189.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">scans blob versions</text>
+<g>
+      <rect x="510" y="150" width="200" height="50" rx="8" fill="#e6f0fb" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow_azb)"/>
+      <text x="610.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">Exocompute (AKS)</text>
+      <text x="610.0" y="187.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">scans blob versions</text>
     </g>
-    
-  
-    <g>
-      <rect x="730" y="150" width="130" height="50" rx="8" fill="#dff5ee" stroke="#00533f" stroke-width="1.5" filter="url(#shadow)"/>
-      <text x="795.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Metadata Store</text>
-      <text x="795.0" y="189.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">cloudslab.rubrik.com</text>
+<g>
+      <rect x="730" y="150" width="130" height="50" rx="8" fill="#dff5ee" stroke="#00533f" stroke-width="1.5" filter="url(#shadow_azb)"/>
+      <text x="795.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">Metadata Store</text>
+      <text x="795.0" y="187.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">cloudslab.rubrik.com</text>
     </g>
-    
-  
-    <g>
-      <rect x="510" y="230" width="350" height="50" rx="8" fill="#fff" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
-      <text x="685.0" y="251.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Archive Storage Account</text>
-      <text x="685.0" y="269.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">Hot / Cool / Cold / Archive tiers</text>
+<g>
+      <rect x="510" y="230" width="350" height="50" rx="8" fill="#fff" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow_azb)"/>
+      <text x="685.0" y="251.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">Archive Storage Account</text>
+      <text x="685.0" y="267.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">Hot / Cool / Cold / Archive tiers</text>
     </g>
-    
-  
-    <g>
-      <rect x="510" y="320" width="350" height="50" rx="8" fill="#fff" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow)"/>
-      <text x="685.0" y="341.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#1f2937">Recovery → original or new container</text>
-      <text x="685.0" y="359.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">in-place or out-of-place</text>
+<g>
+      <rect x="510" y="320" width="350" height="50" rx="8" fill="#fff" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow_azb)"/>
+      <text x="685.0" y="341.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">Full RCV support (rare)</text>
+      <text x="685.0" y="357.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">RCV Backup + Archive tier both supported</text>
     </g>
-    
-
-  <path id="azb1" d="M 440 80 C 440 120, 195 120, 195 150" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
-  <path id="azb2" d="M 195 200 L 195 230" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
-  <path id="azb3" d="M 320 255 C 400 255, 400 175, 510 175" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
-  <path id="azb4" d="M 710 175 L 730 175" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
-  <path id="azb5" d="M 610 200 L 610 230" stroke="#2272d6" stroke-width="1.5" fill="none" marker-end="url(#arrow)" stroke-dasharray="4 3"/>
-
-  
-    <circle r="6" fill="#00b388" filter="url(#shadow)">
+<path id="azBb1" d="M 440 80 C 440 120, 195 120, 195 150" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow_azb)"/>
+<path id="azBb2" d="M 195 200 L 195 230" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow_azb)"/>
+<path id="azBb3" d="M 320 255 L 510 175" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow_azb)"/>
+<path id="azBb4" d="M 710 175 L 730 175" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow_azb)"/>
+<path id="azBb5" d="M 610 200 L 610 230" stroke="#2272d6" stroke-dasharray="4 3" stroke-width="1.5" fill="none" marker-end="url(#arrow_azb)"/>
+<circle r="6" fill="#00b388" filter="url(#shadow_azb)">
       <animateMotion dur="3s" begin="0s" repeatCount="indefinite">
-        <mpath href="#azb1"/>
+        <mpath href="#azBb1" xlink:href="#azBb1"/>
       </animateMotion>
     </circle>
-    
-  
-    <circle r="6" fill="#00b388" filter="url(#shadow)">
+<circle r="6" fill="#00b388" filter="url(#shadow_azb)">
       <animateMotion dur="2s" begin="1s" repeatCount="indefinite">
-        <mpath href="#azb2"/>
+        <mpath href="#azBb2" xlink:href="#azBb2"/>
       </animateMotion>
     </circle>
-    
-  
-    <circle r="6" fill="#00b388" filter="url(#shadow)">
+<circle r="6" fill="#00b388" filter="url(#shadow_azb)">
       <animateMotion dur="3s" begin="2s" repeatCount="indefinite">
-        <mpath href="#azb3"/>
+        <mpath href="#azBb3" xlink:href="#azBb3"/>
       </animateMotion>
     </circle>
-    
-  
-    <circle r="6" fill="#00b388" filter="url(#shadow)">
+<circle r="6" fill="#00b388" filter="url(#shadow_azb)">
       <animateMotion dur="2s" begin="3s" repeatCount="indefinite">
-        <mpath href="#azb4"/>
+        <mpath href="#azBb4" xlink:href="#azBb4"/>
       </animateMotion>
     </circle>
-    
-  
-    <circle r="6" fill="#2272d6" filter="url(#shadow)">
+<circle r="6" fill="#2272d6" filter="url(#shadow_azb)">
       <animateMotion dur="3s" begin="4s" repeatCount="indefinite">
-        <mpath href="#azb5"/>
+        <mpath href="#azBb5" xlink:href="#azBb5"/>
       </animateMotion>
     </circle>
-    
-
-  <text x="350" y="110" text-anchor="start" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">① Enable versioning</text>
-  <text x="220" y="220" text-anchor="start" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">② Versions captured</text>
-  <text x="400" y="165" text-anchor="start" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">③ Exo scans + indexes</text>
-  <text x="610" y="220" text-anchor="start" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">④ Archive tier</text>
-  <text x="450" y="405" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" font-weight="500" fill="#374151">Metadata Store FQDN: get from RSC &gt; Inventory &gt; Azure Blob &gt; Subscriptions tab &gt; Metadata Store DNS column</text>
+<text x="350" y="110" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">① Versioning enabled</text>
+<text x="220" y="220" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">② Versions captured</text>
+<text x="400" y="165" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">③ Exo scans + indexes</text>
+<text x="715" y="140" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">④ Metadata to cloudslab</text>
+<text x="620" y="220" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">⑤ Archive tier</text>
+<text x="450" y="405" text-anchor="middle" font-family="Geist Mono, monospace" font-size="11" font-weight="500" fill="#374151">Backup only. Restore goes back to original or new container in source subscription (separate flow).</text>
 </svg>
 
 </div>
@@ -3754,6 +3647,109 @@ After Exocompute is created in Phase 2, the <code>Polaris-Exocompute-eks-worker-
   <header class="page-head"><h1>ADLS Gen2</h1><button class="print-btn" onclick="window.print()" title="Save this page as PDF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>Save as PDF</button></header>
 
 <p class="lede">Hierarchical namespace on top of Blob. Different DNS suffix, otherwise similar pattern to Blob.</p>
+<h3>Backup data flow</h3>
+<div class="diagram-frame">
+<svg viewBox="0 0 900 420" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="width:100%;max-width:900px;height:auto;background:url(#bgGrad_adls);border-radius:12px;">
+<defs>
+    <marker id="arrow_adls" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
+    </marker>
+    <filter id="shadow_adls" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.12"/>
+    </filter>
+    <linearGradient id="bgGrad_adls" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#fafaf7"/>
+      <stop offset="100%" stop-color="#f3f3ee"/>
+    </linearGradient>
+  </defs>
+<rect width="900" height="420" fill="url(#bgGrad_adls)" rx="12"/>
+<g>
+      <rect x="380" y="30" width="140" height="50" rx="8" fill="#dff5ee" stroke="#00533f" stroke-width="1.5" filter="url(#shadow_adls)"/>
+      <text x="450.0" y="51.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">RSC</text>
+      <text x="450.0" y="67.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">Orchestrator</text>
+    </g>
+<g>
+      <rect x="40" y="110" width="380" height="280" rx="12" fill="#e6f0fb" stroke="#2272d6" stroke-width="1.5" stroke-dasharray="6 3" opacity="0.6"/>
+      <text x="54" y="128" font-family="Geist Mono, monospace" font-size="11" font-weight="600" fill="#2272d6" letter-spacing="1">AZURE SUBSCRIPTION — SOURCE</text>
+    </g>
+<g>
+      <rect x="70" y="150" width="250" height="50" rx="8" fill="#fff" stroke="#2272d6" stroke-width="1.5" filter="url(#shadow_adls)"/>
+      <text x="195.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">ADLS Gen2 container</text>
+      <text x="195.0" y="187.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">*.dfs.core.windows.net</text>
+    </g>
+<g>
+      <rect x="70" y="230" width="250" height="50" rx="8" fill="#e6f0fb" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow_adls)"/>
+      <text x="195.0" y="251.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">Blob versions (HNS)</text>
+      <text x="195.0" y="267.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">hierarchical namespace</text>
+    </g>
+<g>
+      <rect x="70" y="320" width="250" height="50" rx="8" fill="#fff" stroke="#2272d6" stroke-width="1.5" filter="url(#shadow_adls)"/>
+      <text x="195.0" y="341.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">Workload Index container</text>
+      <text x="195.0" y="357.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">rubrik-adls-index-*</text>
+    </g>
+<g>
+      <rect x="480" y="110" width="380" height="280" rx="12" fill="#e6f0fb" stroke="#2272d6" stroke-width="1.5" stroke-dasharray="6 3" opacity="0.6"/>
+      <text x="494" y="128" font-family="Geist Mono, monospace" font-size="11" font-weight="600" fill="#2272d6" letter-spacing="1">AZURE SUBSCRIPTION — EXOCOMPUTE</text>
+    </g>
+<g>
+      <rect x="510" y="150" width="200" height="50" rx="8" fill="#e6f0fb" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow_adls)"/>
+      <text x="610.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">Exocompute (AKS)</text>
+      <text x="610.0" y="187.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">scans ADLS versions</text>
+    </g>
+<g>
+      <rect x="730" y="150" width="130" height="50" rx="8" fill="#dff5ee" stroke="#00533f" stroke-width="1.5" filter="url(#shadow_adls)"/>
+      <text x="795.0" y="171.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">Metadata Store</text>
+      <text x="795.0" y="187.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">cloudslab.rubrik.com</text>
+    </g>
+<g>
+      <rect x="510" y="230" width="350" height="50" rx="8" fill="#fff" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow_adls)"/>
+      <text x="685.0" y="251.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">Archive Storage Account</text>
+      <text x="685.0" y="267.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">Hot / Cool / Cold / Archive</text>
+    </g>
+<g>
+      <rect x="510" y="320" width="350" height="50" rx="8" fill="#fff" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow_adls)"/>
+      <text x="685.0" y="341.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">Same versioning model as Blob</text>
+      <text x="685.0" y="357.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">only the data-plane FQDN differs (dfs vs blob)</text>
+    </g>
+<path id="adlsB1" d="M 440 80 C 440 120, 195 120, 195 150" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow_adls)"/>
+<path id="adlsB2" d="M 195 200 L 195 230" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow_adls)"/>
+<path id="adlsB3" d="M 320 255 L 510 175" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow_adls)"/>
+<path id="adlsB4" d="M 710 175 L 730 175" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow_adls)"/>
+<path id="adlsB5" d="M 610 200 L 610 230" stroke="#2272d6" stroke-dasharray="4 3" stroke-width="1.5" fill="none" marker-end="url(#arrow_adls)"/>
+<circle r="6" fill="#00b388" filter="url(#shadow_adls)">
+      <animateMotion dur="3s" begin="0s" repeatCount="indefinite">
+        <mpath href="#adlsB1" xlink:href="#adlsB1"/>
+      </animateMotion>
+    </circle>
+<circle r="6" fill="#00b388" filter="url(#shadow_adls)">
+      <animateMotion dur="2s" begin="1s" repeatCount="indefinite">
+        <mpath href="#adlsB2" xlink:href="#adlsB2"/>
+      </animateMotion>
+    </circle>
+<circle r="6" fill="#00b388" filter="url(#shadow_adls)">
+      <animateMotion dur="3s" begin="2s" repeatCount="indefinite">
+        <mpath href="#adlsB3" xlink:href="#adlsB3"/>
+      </animateMotion>
+    </circle>
+<circle r="6" fill="#00b388" filter="url(#shadow_adls)">
+      <animateMotion dur="2s" begin="3s" repeatCount="indefinite">
+        <mpath href="#adlsB4" xlink:href="#adlsB4"/>
+      </animateMotion>
+    </circle>
+<circle r="6" fill="#2272d6" filter="url(#shadow_adls)">
+      <animateMotion dur="3s" begin="4s" repeatCount="indefinite">
+        <mpath href="#adlsB5" xlink:href="#adlsB5"/>
+      </animateMotion>
+    </circle>
+<text x="350" y="110" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">① List blob versions (HNS-aware)</text>
+<text x="220" y="220" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">② Versions captured</text>
+<text x="400" y="165" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">③ Exo scans + indexes</text>
+<text x="715" y="140" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">④ Metadata to cloudslab</text>
+<text x="620" y="220" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">⑤ Archive tier</text>
+<text x="450" y="405" text-anchor="middle" font-family="Geist Mono, monospace" font-size="11" font-weight="500" fill="#374151">Same flow as Azure Blob — different data-plane FQDN. Restore lands back in source subscription.</text>
+</svg>
+</div>
+
 
 <details open><summary><strong>What's different from Blob</strong></summary>
 <ul>
@@ -4569,5 +4565,46 @@ This page is a pointer, not a full CCES playbook. For a step-by-step CCES on GCP
 })();
 
 </script>
+
+<script>
+// PDF print expansion — open all <details> when printing, restore after
+(function(){
+  const stash = new WeakMap();
+
+  function openAll(){
+    document.querySelectorAll('details').forEach(d => {
+      stash.set(d, d.open);  // remember prior state
+      d.open = true;
+    });
+  }
+
+  function restoreAll(){
+    document.querySelectorAll('details').forEach(d => {
+      if (stash.has(d)) {
+        d.open = stash.get(d);
+      }
+    });
+  }
+
+  // beforeprint / afterprint events (Chrome, Edge, Safari, Firefox)
+  window.addEventListener('beforeprint', openAll);
+  window.addEventListener('afterprint',  restoreAll);
+
+  // Belt-and-braces for some Safari versions that don't fire beforeprint reliably
+  if (window.matchMedia) {
+    const mq = window.matchMedia('print');
+    if (mq.addEventListener) {
+      mq.addEventListener('change', e => {
+        if (e.matches) openAll(); else restoreAll();
+      });
+    } else if (mq.addListener) {
+      mq.addListener(e => {
+        if (e.matches) openAll(); else restoreAll();
+      });
+    }
+  }
+})();
+</script>
+
 </body>
 </html>
