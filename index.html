@@ -1792,58 +1792,149 @@ li > ul, li > ol{ margin: 4px 0 6px; }
 <h3>Backup data flow</h3>
 <div class="diagram-frame">
   
-<svg viewBox="0 0 900 480" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="width:100%;max-width:900px;height:auto;background:url(#bgGrad_rdsZ);border-radius:12px;">
+<svg viewBox="0 0 900 540" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="width:100%;max-width:900px;height:auto;background:url(#bgGrad_rdsR);border-radius:12px;">
 <defs>
-    <marker id="arrow_rdsZ" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <marker id="arrow_rdsR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
       <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
     </marker>
-    <filter id="shadow_rdsZ" x="-20%" y="-20%" width="140%" height="140%">
+    <filter id="shadow_rdsR" x="-20%" y="-20%" width="140%" height="140%">
       <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.12"/>
     </filter>
-    <linearGradient id="bgGrad_rdsZ" x1="0" x2="0" y1="0" y2="1">
+    <linearGradient id="bgGrad_rdsR" x1="0" x2="0" y1="0" y2="1">
       <stop offset="0%" stop-color="#fafaf7"/>
       <stop offset="100%" stop-color="#f3f3ee"/>
     </linearGradient>
   </defs>
-<rect width="900" height="480" fill="url(#bgGrad_rdsZ)" rx="12"/>
-<g><rect x="350" y="30" width="200" height="60" rx="8" fill="#dff5ee" stroke="#00533f" stroke-width="1.5" filter="url(#shadow_rdsZ)"/>
-<text x="450" y="55" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">Rubrik Security Cloud (SaaS)</text>
-<text x="450" y="73" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">orchestrator + metadata store</text></g>
-<text x="450" y="108" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">via STS:AssumeRole role-chaining into customer account</text>
-<g><rect x="40" y="130" width="820" height="280" rx="12" fill="#fdf0e3" stroke="#e87b35" stroke-width="1.5" stroke-dasharray="6 3" opacity="0.6"/>
-<text x="60" y="150" font-family="Geist Mono, monospace" font-size="12" font-weight="600" fill="#e87b35" letter-spacing="1">CUSTOMER AWS ACCOUNT</text></g>
-<g><rect x="80" y="180" width="180" height="60" rx="8" fill="#fff" stroke="#e87b35" stroke-width="1.5" filter="url(#shadow_rdsZ)"/>
-<text x="170" y="205" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">RDS Instance</text>
-<text x="170" y="222" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">MySQL / PG / SQL / Oracle</text></g>
-<g><rect x="300" y="180" width="180" height="60" rx="8" fill="#fdf0e3" stroke="#a84e10" stroke-width="1.5" filter="url(#shadow_rdsZ)"/>
-<text x="390" y="205" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">RDS API endpoint</text>
-<text x="390" y="222" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">rds.region.amazonaws.com</text></g>
-<g><rect x="80" y="280" width="400" height="60" rx="8" fill="#fdf0e3" stroke="#a84e10" stroke-width="1.5" filter="url(#shadow_rdsZ)"/>
-<text x="280" y="305" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">RDS Snapshot (AWS-managed storage)</text>
-<text x="280" y="322" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">stored in customer account; encrypted</text></g>
-<g><rect x="520" y="180" width="320" height="60" rx="8" fill="#fff" stroke="#e87b35" stroke-width="1.5" filter="url(#shadow_rdsZ)"/>
-<text x="680" y="205" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">Customer-owned archival S3 bucket</text>
-<text x="680" y="222" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">Storage Tiering (per SLA) — Standard-IA / Glacier</text></g>
-<g><rect x="520" y="280" width="320" height="60" rx="8" fill="#fff" stroke="#e87b35" stroke-width="1.5" filter="url(#shadow_rdsZ)"/>
-<text x="680" y="305" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">Cross-region copy (if SLA)</text>
-<text x="680" y="322" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">CopyDBSnapshot to replication-target region</text></g>
-<path id="rdsZ1" d="M 450 90 C 450 130, 390 150, 390 180" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow_rdsZ)"/>
-<path id="rdsZ2" d="M 280 240 L 280 280" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow_rdsZ)"/>
-<path id="rdsZ3" d="M 480 305 L 520 220" stroke="#e87b35" stroke-dasharray="4 3" stroke-width="1.5" fill="none" marker-end="url(#arrow_rdsZ)"/>
-<path id="rdsZ4" d="M 480 310 L 520 310" stroke="#e87b35" stroke-dasharray="4 3" stroke-width="1.5" fill="none" marker-end="url(#arrow_rdsZ)"/>
-<path id="rdsZ5" d="M 470 180 C 470 130, 510 110, 510 90" stroke="#7c3aed" stroke-width="1.5" fill="none" marker-end="url(#arrow_rdsZ)"/>
-<circle r="6" fill="#00b388" filter="url(#shadow_rdsZ)"><animateMotion dur="3s" begin="0s" repeatCount="indefinite"><mpath href="#rdsZ1" xlink:href="#rdsZ1"/></animateMotion></circle>
-<circle r="6" fill="#00b388" filter="url(#shadow_rdsZ)"><animateMotion dur="2s" begin="1.5s" repeatCount="indefinite"><mpath href="#rdsZ2" xlink:href="#rdsZ2"/></animateMotion></circle>
-<circle r="6" fill="#e87b35" filter="url(#shadow_rdsZ)"><animateMotion dur="3s" begin="3s" repeatCount="indefinite"><mpath href="#rdsZ3" xlink:href="#rdsZ3"/></animateMotion></circle>
-<circle r="6" fill="#e87b35" filter="url(#shadow_rdsZ)"><animateMotion dur="3s" begin="4s" repeatCount="indefinite"><mpath href="#rdsZ4" xlink:href="#rdsZ4"/></animateMotion></circle>
-<circle r="6" fill="#7c3aed" filter="url(#shadow_rdsZ)"><animateMotion dur="2.5s" begin="2.5s" repeatCount="indefinite"><mpath href="#rdsZ5" xlink:href="#rdsZ5"/></animateMotion></circle>
-<text x="400" y="135" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">① CreateDBSnapshot (direct to customer account)</text>
-<text x="290" y="265" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">② Snapshot in AWS-managed storage</text>
-<text x="500" y="265" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#e87b35">③ Archive (per SLA)</text>
-<text x="500" y="360" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#e87b35">④ Cross-region copy (per SLA)</text>
-<text x="525" y="125" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#7c3aed">⑤ Metadata to RSC SaaS</text>
-<text x="450" y="440" text-anchor="middle" font-family="Geist Mono, monospace" font-size="11" font-weight="600" fill="#a84e10">Aurora-specific: snapshots are ALWAYS FULL (not incremental) — daily 30-day retention = 30× DB size</text>
-<text x="450" y="460" text-anchor="middle" font-family="Geist Mono, monospace" font-size="11" font-weight="500" fill="#374151">RDS doesn't use Exocompute or two-account model. All in customer account. Metadata to RSC SaaS.</text>
+<rect width="900" height="540" fill="url(#bgGrad_rdsR)" rx="12"/>
+<text x="450" y="20" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="700" fill="#a84e10">Archival flow (RDS SQL Server + PostgreSQL only — GA Feb 2026)</text>
+<g>
+      <rect x="370" y="35" width="160" height="50" rx="8" fill="#dff5ee" stroke="#00533f" stroke-width="1.5" filter="url(#shadow_rdsR)"/>
+      <text x="450.0" y="57.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="12" font-weight="600" fill="#0d1117">Rubrik Security Cloud</text>
+      <text x="450.0" y="72.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="9" fill="#6b7280">SaaS orchestrator</text>
+    </g>
+<text x="450" y="105" text-anchor="middle" font-family="Geist Mono, monospace" font-size="9" fill="#6b7280">via STS:AssumeRole into customer cross-account role</text>
+<g>
+      <rect x="40" y="120" width="820" height="380" rx="12" fill="#fdf0e3" stroke="#e87b35" stroke-width="1.5" stroke-dasharray="6 3" opacity="0.6"/>
+      <text x="54" y="138" font-family="Geist Mono, monospace" font-size="11" font-weight="600" fill="#e87b35" letter-spacing="1">CUSTOMER AWS ACCOUNT</text>
+    </g>
+<g>
+      <rect x="70" y="160" width="180" height="50" rx="8" fill="#fff" stroke="#e87b35" stroke-width="1.5" filter="url(#shadow_rdsR)"/>
+      <text x="160.0" y="182.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="12" font-weight="600" fill="#0d1117">Source RDS instance</text>
+      <text x="160.0" y="197.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="9" fill="#6b7280">SQL Server / PostgreSQL</text>
+    </g>
+<g>
+      <rect x="70" y="240" width="180" height="50" rx="8" fill="#fdf0e3" stroke="#a84e10" stroke-width="1.5" filter="url(#shadow_rdsR)"/>
+      <text x="160.0" y="262.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="12" font-weight="600" fill="#0d1117">Manual RDS snapshot</text>
+      <text x="160.0" y="277.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="9" fill="#6b7280">trigger for archival</text>
+    </g>
+<g>
+      <rect x="290" y="200" width="200" height="60" rx="8" fill="#fff8eb" stroke="#a84e10" stroke-width="1.5" filter="url(#shadow_rdsR)"/>
+      <text x="390.0" y="227.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="12" font-weight="600" fill="#0d1117">Temporary Exported RDS</text>
+      <text x="390.0" y="242.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="9" fill="#6b7280">rbrk-managed; auto-deleted after</text>
+    </g>
+<text x="390" y="280" text-anchor="middle" font-family="Geist Mono, monospace" font-size="9" fill="#a84e10">deleted at end of job</text>
+<g>
+      <rect x="530" y="160" width="180" height="50" rx="8" fill="#e6f0fb" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow_rdsR)"/>
+      <text x="620.0" y="182.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="12" font-weight="600" fill="#0d1117">Exocompute (EKS)</text>
+      <text x="620.0" y="197.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="9" fill="#6b7280">exotask: SQLPackage + BCP</text>
+    </g>
+<g>
+      <rect x="530" y="230" width="180" height="50" rx="8" fill="#e6f0fb" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow_rdsR)"/>
+      <text x="620.0" y="252.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="12" font-weight="600" fill="#0d1117">AF2 container</text>
+      <text x="620.0" y="267.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="9" fill="#6b7280">streams dump output</text>
+    </g>
+<g>
+      <rect x="530" y="300" width="180" height="50" rx="8" fill="#e6f0fb" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow_rdsR)"/>
+      <text x="620.0" y="322.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="12" font-weight="600" fill="#0d1117">Goofys (S3 virtual mount)</text>
+      <text x="620.0" y="337.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="9" fill="#6b7280">writes to S3 archive</text>
+    </g>
+<g>
+      <rect x="740" y="230" width="110" height="50" rx="8" fill="#fff" stroke="#e87b35" stroke-width="1.5" filter="url(#shadow_rdsR)"/>
+      <text x="795.0" y="252.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="12" font-weight="600" fill="#0d1117">Archive S3</text>
+      <text x="795.0" y="267.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="9" fill="#6b7280">customer-owned</text>
+    </g>
+<text x="795" y="295" text-anchor="middle" font-family="Geist Mono, monospace" font-size="9" fill="#a84e10">immutable;</text>
+<text x="795" y="307" text-anchor="middle" font-family="Geist Mono, monospace" font-size="9" fill="#a84e10">RCV-eligible</text>
+<line x1="60" y1="380" x2="840" y2="380" stroke="#9ca3af" stroke-dasharray="2 4" stroke-width="1"/>
+<text x="70" y="400" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#6b7280">NATIVE FLOW (existing, all engines):</text>
+<g>
+      <rect x="70" y="415" width="250" height="50" rx="8" fill="#fff" stroke="#e87b35" stroke-width="1.5" filter="url(#shadow_rdsR)"/>
+      <text x="195.0" y="437.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="12" font-weight="600" fill="#0d1117">CreateDBSnapshot / CopyDBSnapshot</text>
+      <text x="195.0" y="452.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="9" fill="#6b7280">RSC orchestrates AWS-native snapshots</text>
+    </g>
+<g>
+      <rect x="360" y="415" width="220" height="50" rx="8" fill="#fdf0e3" stroke="#a84e10" stroke-width="1.5" filter="url(#shadow_rdsR)"/>
+      <text x="470.0" y="437.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="12" font-weight="600" fill="#0d1117">Automated backups + PiTR</text>
+      <text x="470.0" y="452.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="9" fill="#6b7280">AWS-managed, retained per SLA</text>
+    </g>
+<g>
+      <rect x="620" y="415" width="220" height="50" rx="8" fill="#fff" stroke="#e87b35" stroke-width="1.5" filter="url(#shadow_rdsR)"/>
+      <text x="730.0" y="437.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="12" font-weight="600" fill="#0d1117">Cross-region / cross-account replication</text>
+      <text x="730.0" y="452.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="9" fill="#6b7280">via CopyDBSnapshot</text>
+    </g>
+<path id="rdsR1" d="M 440 85 C 440 130, 160 145, 160 160" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow_rdsR)"/>
+<path id="rdsR2" d="M 160 210 L 160 240" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow_rdsR)"/>
+<path id="rdsR3" d="M 250 265 L 290 230" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow_rdsR)"/>
+<path id="rdsR4" d="M 480 85 C 530 130, 600 145, 620 160" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow_rdsR)"/>
+<path id="rdsR5" d="M 490 220 L 530 185" stroke="#0a4a9c" stroke-width="1.5" fill="none" marker-end="url(#arrow_rdsR)"/>
+<path id="rdsR6" d="M 620 210 L 620 230" stroke="#0a4a9c" stroke-width="1.5" fill="none" marker-end="url(#arrow_rdsR)"/>
+<path id="rdsR7" d="M 620 280 L 620 300" stroke="#0a4a9c" stroke-width="1.5" fill="none" marker-end="url(#arrow_rdsR)"/>
+<path id="rdsR8" d="M 710 320 C 740 320, 740 280, 740 260" stroke="#0a4a9c" stroke-width="1.5" fill="none" marker-end="url(#arrow_rdsR)"/>
+<path id="rdsR9" d="M 380 200 C 380 130, 430 105, 460 85" stroke="#7c3aed" stroke-width="1.5" fill="none" marker-end="url(#arrow_rdsR)"/>
+<circle r="6" fill="#00b388" filter="url(#shadow_rdsR)">
+      <animateMotion dur="3s" begin="0s" repeatCount="indefinite">
+        <mpath href="#rdsR1" xlink:href="#rdsR1"/>
+      </animateMotion>
+    </circle>
+<circle r="6" fill="#00b388" filter="url(#shadow_rdsR)">
+      <animateMotion dur="1.5s" begin="1s" repeatCount="indefinite">
+        <mpath href="#rdsR2" xlink:href="#rdsR2"/>
+      </animateMotion>
+    </circle>
+<circle r="6" fill="#00b388" filter="url(#shadow_rdsR)">
+      <animateMotion dur="2s" begin="2s" repeatCount="indefinite">
+        <mpath href="#rdsR3" xlink:href="#rdsR3"/>
+      </animateMotion>
+    </circle>
+<circle r="6" fill="#00b388" filter="url(#shadow_rdsR)">
+      <animateMotion dur="3s" begin="0.5s" repeatCount="indefinite">
+        <mpath href="#rdsR4" xlink:href="#rdsR4"/>
+      </animateMotion>
+    </circle>
+<circle r="6" fill="#0a4a9c" filter="url(#shadow_rdsR)">
+      <animateMotion dur="2s" begin="3s" repeatCount="indefinite">
+        <mpath href="#rdsR5" xlink:href="#rdsR5"/>
+      </animateMotion>
+    </circle>
+<circle r="6" fill="#0a4a9c" filter="url(#shadow_rdsR)">
+      <animateMotion dur="1.5s" begin="4s" repeatCount="indefinite">
+        <mpath href="#rdsR6" xlink:href="#rdsR6"/>
+      </animateMotion>
+    </circle>
+<circle r="6" fill="#0a4a9c" filter="url(#shadow_rdsR)">
+      <animateMotion dur="1.5s" begin="5s" repeatCount="indefinite">
+        <mpath href="#rdsR7" xlink:href="#rdsR7"/>
+      </animateMotion>
+    </circle>
+<circle r="6" fill="#0a4a9c" filter="url(#shadow_rdsR)">
+      <animateMotion dur="2s" begin="5.5s" repeatCount="indefinite">
+        <mpath href="#rdsR8" xlink:href="#rdsR8"/>
+      </animateMotion>
+    </circle>
+<circle r="6" fill="#7c3aed" filter="url(#shadow_rdsR)">
+      <animateMotion dur="2.5s" begin="6s" repeatCount="indefinite">
+        <mpath href="#rdsR9" xlink:href="#rdsR9"/>
+      </animateMotion>
+    </circle>
+<text x="265" y="145" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">① CreateDBSnapshot</text>
+<text x="170" y="230" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">② Manual snapshot</text>
+<text x="255" y="200" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">③ Restore to temp</text>
+<text x="510" y="145" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">④ Spin Exocompute</text>
+<text x="500" y="195" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">⑤ Dump</text>
+<text x="630" y="295" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">⑥⑦ Stream</text>
+<text x="720" y="220" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">⑧ Write to S3</text>
+<text x="350" y="155" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#7c3aed">⑨ Metadata to RSC</text>
+<text x="450" y="525" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" font-weight="500" fill="#374151">Source: RDS SQL Server Archival TOI (Feb 2026). Native flow shown for context. Archival uses Exocompute; native flow does not.</text>
 </svg>
 
 </div>
@@ -1917,52 +2008,101 @@ li > ul, li > ol{ margin: 4px 0 6px; }
 <h3>Backup data flow</h3>
 <div class="diagram-frame">
   
-<svg viewBox="0 0 900 480" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="width:100%;max-width:900px;height:auto;background:url(#bgGrad_ddbZ);border-radius:12px;">
+<svg viewBox="0 0 900 460" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="width:100%;max-width:900px;height:auto;background:url(#bgGrad_ddR);border-radius:12px;">
 <defs>
-    <marker id="arrow_ddbZ" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <marker id="arrow_ddR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
       <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
     </marker>
-    <filter id="shadow_ddbZ" x="-20%" y="-20%" width="140%" height="140%">
+    <filter id="shadow_ddR" x="-20%" y="-20%" width="140%" height="140%">
       <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.12"/>
     </filter>
-    <linearGradient id="bgGrad_ddbZ" x1="0" x2="0" y1="0" y2="1">
+    <linearGradient id="bgGrad_ddR" x1="0" x2="0" y1="0" y2="1">
       <stop offset="0%" stop-color="#fafaf7"/>
       <stop offset="100%" stop-color="#f3f3ee"/>
     </linearGradient>
   </defs>
-<rect width="900" height="480" fill="url(#bgGrad_ddbZ)" rx="12"/>
-<g><rect x="350" y="30" width="200" height="60" rx="8" fill="#dff5ee" stroke="#00533f" stroke-width="1.5" filter="url(#shadow_ddbZ)"/>
-<text x="450" y="55" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">Rubrik Security Cloud (SaaS)</text>
-<text x="450" y="73" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">orchestrator + metadata store</text></g>
-<text x="450" y="108" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">via STS:AssumeRole role-chaining into customer account</text>
-<g><rect x="40" y="130" width="820" height="280" rx="12" fill="#fdf0e3" stroke="#e87b35" stroke-width="1.5" stroke-dasharray="6 3" opacity="0.6"/>
-<text x="60" y="150" font-family="Geist Mono, monospace" font-size="12" font-weight="600" fill="#e87b35" letter-spacing="1">CUSTOMER AWS ACCOUNT</text></g>
-<g><rect x="80" y="180" width="180" height="60" rx="8" fill="#fff" stroke="#e87b35" stroke-width="1.5" filter="url(#shadow_ddbZ)"/>
-<text x="170" y="205" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">DynamoDB Table</text>
-<text x="170" y="222" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">PITR enabled (35d)</text></g>
-<g><rect x="300" y="180" width="180" height="60" rx="8" fill="#fdf0e3" stroke="#a84e10" stroke-width="1.5" filter="url(#shadow_ddbZ)"/>
-<text x="390" y="205" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">DDB API endpoint</text>
-<text x="390" y="222" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">ExportTableToPointInTime</text></g>
-<g><rect x="80" y="280" width="400" height="60" rx="8" fill="#fdf0e3" stroke="#a84e10" stroke-width="1.5" filter="url(#shadow_ddbZ)"/>
-<text x="280" y="305" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">Primary S3 bucket (per protected table)</text>
-<text x="280" y="322" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">JSON exports, compressed, SSE-S3</text></g>
-<g><rect x="520" y="280" width="320" height="60" rx="8" fill="#fff" stroke="#e87b35" stroke-width="1.5" filter="url(#shadow_ddbZ)"/>
-<text x="680" y="305" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">Archival S3 bucket (customer-owned)</text>
-<text x="680" y="322" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">lifecycle → Standard-IA / Glacier + Object Lock</text></g>
-<path id="ddbZ1" d="M 450 90 C 450 130, 390 150, 390 180" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow_ddbZ)"/>
-<path id="ddbZ2" d="M 280 240 L 280 280" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow_ddbZ)"/>
-<path id="ddbZ3" d="M 480 310 L 520 310" stroke="#e87b35" stroke-dasharray="4 3" stroke-width="1.5" fill="none" marker-end="url(#arrow_ddbZ)"/>
-<path id="ddbZ4" d="M 470 180 C 470 130, 510 110, 510 90" stroke="#7c3aed" stroke-width="1.5" fill="none" marker-end="url(#arrow_ddbZ)"/>
-<circle r="6" fill="#00b388" filter="url(#shadow_ddbZ)"><animateMotion dur="3s" begin="0s" repeatCount="indefinite"><mpath href="#ddbZ1" xlink:href="#ddbZ1"/></animateMotion></circle>
-<circle r="6" fill="#00b388" filter="url(#shadow_ddbZ)"><animateMotion dur="2s" begin="1.5s" repeatCount="indefinite"><mpath href="#ddbZ2" xlink:href="#ddbZ2"/></animateMotion></circle>
-<circle r="6" fill="#e87b35" filter="url(#shadow_ddbZ)"><animateMotion dur="3s" begin="3s" repeatCount="indefinite"><mpath href="#ddbZ3" xlink:href="#ddbZ3"/></animateMotion></circle>
-<circle r="6" fill="#7c3aed" filter="url(#shadow_ddbZ)"><animateMotion dur="2.5s" begin="2.5s" repeatCount="indefinite"><mpath href="#ddbZ4" xlink:href="#ddbZ4"/></animateMotion></circle>
-<text x="400" y="135" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">① ExportTableToPointInTime (direct to customer account)</text>
-<text x="290" y="265" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">② AWS-native export to S3</text>
-<text x="500" y="360" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#e87b35">③ Lifecycle → archive (per SLA)</text>
-<text x="525" y="125" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#7c3aed">④ Metadata to RSC SaaS</text>
-<text x="450" y="440" text-anchor="middle" font-family="Geist Mono, monospace" font-size="11" font-weight="600" fill="#a84e10">Restore is a separate flow (uses Exocompute) — not shown here</text>
-<text x="450" y="460" text-anchor="middle" font-family="Geist Mono, monospace" font-size="11" font-weight="500" fill="#374151">DDB backup uses native AWS Export-to-S3 — no Exocompute. Replication NOT supported.</text>
+<rect width="900" height="460" fill="url(#bgGrad_ddR)" rx="12"/>
+<g>
+      <rect x="370" y="30" width="160" height="50" rx="8" fill="#dff5ee" stroke="#00533f" stroke-width="1.5" filter="url(#shadow_ddR)"/>
+      <text x="450.0" y="52.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="12" font-weight="600" fill="#0d1117">Rubrik Security Cloud</text>
+      <text x="450.0" y="67.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="9" fill="#6b7280">SaaS orchestrator + catalog</text>
+    </g>
+<text x="450" y="100" text-anchor="middle" font-family="Geist Mono, monospace" font-size="9" fill="#6b7280">Token-based cloud access workflow • Least-privileged access</text>
+<g>
+      <rect x="40" y="120" width="820" height="290" rx="12" fill="#fdf0e3" stroke="#e87b35" stroke-width="1.5" stroke-dasharray="6 3" opacity="0.6"/>
+      <text x="54" y="138" font-family="Geist Mono, monospace" font-size="11" font-weight="600" fill="#e87b35" letter-spacing="1">CUSTOMER AWS ACCOUNT</text>
+    </g>
+<g>
+      <rect x="70" y="160" width="380" height="230" rx="12" fill="#fff8eb" stroke="#a84e10" stroke-width="1.5" stroke-dasharray="4 2" opacity="0.6"/>
+      <text x="84" y="178" font-family="Geist Mono, monospace" font-size="11" font-weight="600" fill="#a84e10" letter-spacing="1">AWS MANAGED</text>
+    </g>
+<g>
+      <rect x="110" y="200" width="130" height="50" rx="8" fill="#fff" stroke="#e87b35" stroke-width="1.5" filter="url(#shadow_ddR)"/>
+      <text x="175.0" y="222.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="12" font-weight="600" fill="#0d1117">DynamoDB Table</text>
+      <text x="175.0" y="237.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="9" fill="#6b7280">live table</text>
+    </g>
+<g>
+      <rect x="270" y="200" width="150" height="50" rx="8" fill="#fdf0e3" stroke="#a84e10" stroke-width="1.5" filter="url(#shadow_ddR)"/>
+      <text x="345.0" y="222.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="12" font-weight="600" fill="#0d1117">PITR Backups</text>
+      <text x="345.0" y="237.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="9" fill="#6b7280">AWS automated, 35 days</text>
+    </g>
+<text x="260" y="320" font-family="Geist Mono, monospace" font-size="9" fill="#6b7280">• Auto-protect via SLA</text>
+<text x="260" y="335" font-family="Geist Mono, monospace" font-size="9" fill="#6b7280">• PITR auto-enabled (35d, non-configurable)</text>
+<text x="260" y="350" font-family="Geist Mono, monospace" font-size="9" fill="#6b7280">• ExportTableToPointInTime API</text>
+<g>
+      <rect x="480" y="160" width="350" height="230" rx="12" fill="#ede9fe" stroke="#7c3aed" stroke-width="1.5" stroke-dasharray="4 2" opacity="0.6"/>
+      <text x="494" y="178" font-family="Geist Mono, monospace" font-size="11" font-weight="600" fill="#7c3aed" letter-spacing="1">RUBRIK MANAGED</text>
+    </g>
+<g>
+      <rect x="510" y="200" width="140" height="50" rx="8" fill="#fff" stroke="#7c3aed" stroke-width="1.5" filter="url(#shadow_ddR)"/>
+      <text x="580.0" y="222.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="12" font-weight="600" fill="#0d1117">S3 Standard</text>
+      <text x="580.0" y="237.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="9" fill="#6b7280">Primary snapshot (per table)</text>
+    </g>
+<g>
+      <rect x="680" y="200" width="140" height="50" rx="8" fill="#ede9fe" stroke="#7c3aed" stroke-width="1.5" filter="url(#shadow_ddR)"/>
+      <text x="750.0" y="222.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="12" font-weight="600" fill="#0d1117">S3 Archived Snapshot</text>
+      <text x="750.0" y="237.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="9" fill="#6b7280">IA / Glacier; Object Lock</text>
+    </g>
+<text x="655" y="285" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#7c3aed">🔒 Access blocked by IAM Role to anyone other than RSC</text>
+<text x="655" y="320" font-family="Geist Mono, monospace" font-size="9" fill="#6b7280" text-anchor="middle">• Optimised storage (incremental after first full)</text>
+<text x="655" y="335" font-family="Geist Mono, monospace" font-size="9" fill="#6b7280" text-anchor="middle">• JSON files in random order (faster recovery)</text>
+<text x="655" y="350" font-family="Geist Mono, monospace" font-size="9" fill="#6b7280" text-anchor="middle">• Cost benefits with S3 IA / Glacier tiers</text>
+<path id="ddR1" d="M 430 80 C 430 130, 175 175, 175 200" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow_ddR)"/>
+<path id="ddR2" d="M 240 225 L 270 225" stroke="#a84e10" stroke-width="1.5" fill="none" marker-end="url(#arrow_ddR)"/>
+<path id="ddR3" d="M 420 225 L 510 225" stroke="#e87b35" stroke-width="1.5" fill="none" marker-end="url(#arrow_ddR)"/>
+<path id="ddR4" d="M 650 225 L 680 225" stroke="#7c3aed" stroke-width="1.5" fill="none" marker-end="url(#arrow_ddR)"/>
+<path id="ddR5" d="M 580 200 C 580 130, 470 105, 470 80" stroke="#7c3aed" stroke-width="1.5" fill="none" marker-end="url(#arrow_ddR)"/>
+<circle r="6" fill="#00b388" filter="url(#shadow_ddR)">
+      <animateMotion dur="3s" begin="0s" repeatCount="indefinite">
+        <mpath href="#ddR1" xlink:href="#ddR1"/>
+      </animateMotion>
+    </circle>
+<circle r="6" fill="#a84e10" filter="url(#shadow_ddR)">
+      <animateMotion dur="2s" begin="1.5s" repeatCount="indefinite">
+        <mpath href="#ddR2" xlink:href="#ddR2"/>
+      </animateMotion>
+    </circle>
+<circle r="6" fill="#e87b35" filter="url(#shadow_ddR)">
+      <animateMotion dur="2.5s" begin="2.5s" repeatCount="indefinite">
+        <mpath href="#ddR3" xlink:href="#ddR3"/>
+      </animateMotion>
+    </circle>
+<circle r="6" fill="#7c3aed" filter="url(#shadow_ddR)">
+      <animateMotion dur="2s" begin="4s" repeatCount="indefinite">
+        <mpath href="#ddR4" xlink:href="#ddR4"/>
+      </animateMotion>
+    </circle>
+<circle r="6" fill="#7c3aed" filter="url(#shadow_ddR)">
+      <animateMotion dur="2.5s" begin="3s" repeatCount="indefinite">
+        <mpath href="#ddR5" xlink:href="#ddR5"/>
+      </animateMotion>
+    </circle>
+<text x="200" y="150" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">① Assign SLA → enable PITR</text>
+<text x="245" y="222" font-family="Geist Mono, monospace" font-size="9" font-weight="600" fill="#a84e10">②</text>
+<text x="425" y="218" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#e87b35">③ Export to S3</text>
+<text x="650" y="218" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#7c3aed">④ SLA archive</text>
+<text x="465" y="148" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#7c3aed">⑤ Metadata to RSC catalog</text>
+<text x="450" y="445" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" font-weight="500" fill="#374151">Source: RWP-0671 HiW Figure. Two zones inside customer account — Rubrik-managed S3 is IAM-isolated from customer console.</text>
 </svg>
 
 </div>
@@ -3210,97 +3350,194 @@ After Exocompute is created in Phase 2, the <code>Polaris-Exocompute-eks-worker-
   <div class="breadcrumb"><a href="#/">Home</a><span class="sep">/</span><span>3 · Workloads</span><span class="sep">/</span><span>Azure SQL DB/MI</span></div>
   <header class="page-head"><h1>Azure SQL DB/MI</h1><button class="print-btn" onclick="window.print()" title="Save this page as PDF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>Save as PDF</button></header>
 
-<p class="lede">Persistent backup via Exocompute connecting on TCP/1433. Different model from VMs — Exocompute reads the live DB.</p>
+<p class="lede">Two protection modes: <strong>Native orchestration</strong> (RSC drives Azure PiTR/LTR via ARM API, backups stay in Microsoft tenant) and <strong>Immutable Backups</strong> (Exocompute exports BACPAC to customer Azure Storage Account). The flow below shows Immutable Backups — the more interesting one.</p>
 
 <h3>Backup data flow</h3>
 <div class="diagram-frame">
   
-<svg viewBox="0 0 900 480" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="width:100%;max-width:900px;height:auto;background:url(#bgGrad_azsqly);border-radius:12px;">
+<svg viewBox="0 0 900 560" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="width:100%;max-width:900px;height:auto;background:url(#bgGrad_azsR);border-radius:12px;">
 <defs>
-    <marker id="arrow_azsqly" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <marker id="arrow_azsR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
       <path d="M0,0 L10,5 L0,10 z" fill="#9ca3af"/>
     </marker>
-    <filter id="shadow_azsqly" x="-20%" y="-20%" width="140%" height="140%">
+    <filter id="shadow_azsR" x="-20%" y="-20%" width="140%" height="140%">
       <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.12"/>
     </filter>
-    <linearGradient id="bgGrad_azsqly" x1="0" x2="0" y1="0" y2="1">
+    <linearGradient id="bgGrad_azsR" x1="0" x2="0" y1="0" y2="1">
       <stop offset="0%" stop-color="#fafaf7"/>
       <stop offset="100%" stop-color="#f3f3ee"/>
     </linearGradient>
   </defs>
-<rect width="900" height="480" fill="url(#bgGrad_azsqly)" rx="12"/>
-<g><rect x="380" y="30" width="140" height="50" rx="8" fill="#dff5ee" stroke="#00533f" stroke-width="1.5" filter="url(#shadow_azsqly)"/>
-<text x="450" y="51" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">RSC</text>
-<text x="450" y="68" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">Orchestrator</text></g>
-<text x="450" y="100" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">orchestrates BOTH subscriptions via Entra ID OAuth + RSCAzure SP</text>
-<g><rect x="40" y="120" width="380" height="320" rx="12" fill="#e6f0fb" stroke="#2272d6" stroke-width="1.5" stroke-dasharray="6 3" opacity="0.6"/>
-<text x="54" y="138" font-family="Geist Mono, monospace" font-size="11" font-weight="600" fill="#2272d6" letter-spacing="1">AZURE SUBSCRIPTION — WORKLOAD</text></g>
-<g><rect x="70" y="160" width="320" height="50" rx="8" fill="#fff" stroke="#2272d6" stroke-width="1.5" filter="url(#shadow_azsqly)"/>
-<text x="230" y="181" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">Azure SQL DB / MI</text>
-<text x="230" y="198" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">PaaS database</text></g>
-<g><rect x="70" y="230" width="320" height="50" rx="8" fill="#e6f0fb" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow_azsqly)"/>
-<text x="230" y="251" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">VNet (with TCP/1433 inbound)</text>
-<text x="230" y="268" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">peered to Exocompute VNet or via Private Endpoint</text></g>
-<g><rect x="70" y="300" width="320" height="50" rx="8" fill="#fff" stroke="#2272d6" stroke-width="1.5" filter="url(#shadow_azsqly)"/>
-<text x="230" y="321" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">Native BACPAC / dump</text>
-<text x="230" y="338" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">read by Exocompute via 1433</text></g>
-<g><rect x="480" y="120" width="380" height="320" rx="12" fill="#dff5ee" stroke="#00533f" stroke-width="1.5" stroke-dasharray="6 3" opacity="0.6"/>
-<text x="494" y="138" font-family="Geist Mono, monospace" font-size="11" font-weight="600" fill="#00533f" letter-spacing="1">AZURE SUBSCRIPTION — EXOCOMPUTE + STORAGE</text></g>
-<g><rect x="510" y="160" width="340" height="50" rx="8" fill="#dff5ee" stroke="#00533f" stroke-width="1.5" filter="url(#shadow_azsqly)"/>
-<text x="680" y="181" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">Exocompute (AKS)</text>
-<text x="680" y="198" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">connects to SQL on TCP/1433 cross-sub</text></g>
-<g><rect x="510" y="230" width="340" height="50" rx="8" fill="#fff" stroke="#00533f" stroke-width="1.5" filter="url(#shadow_azsqly)"/>
-<text x="680" y="251" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">Archive blob (Hot or Cool tier ONLY)</text>
-<text x="680" y="268" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">Archive tier NOT supported for Azure SQL</text></g>
-<g><rect x="510" y="300" width="340" height="50" rx="8" fill="#dff5ee" stroke="#00533f" stroke-width="1.5" filter="url(#shadow_azsqly)"/>
-<text x="680" y="321" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">Index Upload (storage.googleapis.com)</text>
-<text x="680" y="338" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#7c3aed">backup operation metadata to RSC</text></g>
-<g><rect x="510" y="370" width="340" height="50" rx="8" fill="#fff" stroke="#00533f" stroke-width="1.5" filter="url(#shadow_azsqly)"/>
-<text x="680" y="391" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="600" fill="#0d1117">RCV support</text>
-<text x="680" y="408" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" fill="#6b7280">SQL DB: RCV Backup tier only. SQL MI: NOT supported.</text></g>
-<path id="azsqly1" d="M 440 80 C 440 120, 230 130, 230 160" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow_azsqly)"/>
-<path id="azsqly2" d="M 460 80 C 460 120, 680 130, 680 160" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow_azsqly)"/>
-<path id="azsqly3" d="M 510 195 C 450 200, 400 230, 390 250" stroke="#0a4a9c" stroke-width="1.5" fill="none" marker-end="url(#arrow_azsqly)"/>
-<path id="azsqly4" d="M 230 280 L 230 300" stroke="#0a4a9c" stroke-width="1.5" fill="none" marker-end="url(#arrow_azsqly)"/>
-<path id="azsqly5" d="M 390 325 C 450 300, 460 250, 510 250" stroke="#0a4a9c" stroke-width="1.5" fill="none" marker-end="url(#arrow_azsqly)"/>
-<path id="azsqly6" d="M 680 210 L 680 300" stroke="#7c3aed" stroke-width="1.5" fill="none" marker-end="url(#arrow_azsqly)"/>
-<circle r="6" fill="#00b388" filter="url(#shadow_azsqly)"><animateMotion dur="3s" begin="0s" repeatCount="indefinite"><mpath href="#azsqly1" xlink:href="#azsqly1"/></animateMotion></circle>
-<circle r="6" fill="#00b388" filter="url(#shadow_azsqly)"><animateMotion dur="3s" begin="0.5s" repeatCount="indefinite"><mpath href="#azsqly2" xlink:href="#azsqly2"/></animateMotion></circle>
-<circle r="6" fill="#0a4a9c" filter="url(#shadow_azsqly)"><animateMotion dur="3s" begin="1.5s" repeatCount="indefinite"><mpath href="#azsqly3" xlink:href="#azsqly3"/></animateMotion></circle>
-<circle r="6" fill="#0a4a9c" filter="url(#shadow_azsqly)"><animateMotion dur="2s" begin="3s" repeatCount="indefinite"><mpath href="#azsqly4" xlink:href="#azsqly4"/></animateMotion></circle>
-<circle r="6" fill="#0a4a9c" filter="url(#shadow_azsqly)"><animateMotion dur="3s" begin="4s" repeatCount="indefinite"><mpath href="#azsqly5" xlink:href="#azsqly5"/></animateMotion></circle>
-<circle r="6" fill="#7c3aed" filter="url(#shadow_azsqly)"><animateMotion dur="2.5s" begin="5s" repeatCount="indefinite"><mpath href="#azsqly6" xlink:href="#azsqly6"/></animateMotion></circle>
-<text x="240" y="115" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">① Manage SLA / SP permissions</text>
-<text x="520" y="115" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">① Orchestrate Exocompute</text>
-<text x="400" y="220" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">② Exo connects on TCP/1433</text>
-<text x="240" y="296" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">③ Read DB</text>
-<text x="400" y="285" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">④ Write to archive</text>
-<text x="685" y="295" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#7c3aed">⑤ Index file</text>
-<text x="450" y="465" text-anchor="middle" font-family="Geist Mono, monospace" font-size="11" font-weight="500" fill="#374151">Azure SQL persistent backup: requires Exocompute → SQL VNet on 1433/TCP. Archive tier NOT supported.</text>
+<rect width="900" height="560" fill="url(#bgGrad_azsR)" rx="12"/>
+<text x="450" y="20" text-anchor="middle" font-family="Geist, sans-serif" font-size="13" font-weight="700" fill="#0a4a9c">Rubrik Immutable Backup flow (Persistent backup via Exocompute)</text>
+<g>
+      <rect x="370" y="35" width="160" height="50" rx="8" fill="#dff5ee" stroke="#00533f" stroke-width="1.5" filter="url(#shadow_azsR)"/>
+      <text x="450.0" y="57.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="12" font-weight="600" fill="#0d1117">Rubrik Security Cloud</text>
+      <text x="450.0" y="72.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="9" fill="#6b7280">SaaS orchestrator</text>
+    </g>
+<text x="450" y="105" text-anchor="middle" font-family="Geist Mono, monospace" font-size="9" fill="#6b7280">via Service Principal + ARM API</text>
+<g>
+      <rect x="40" y="120" width="820" height="320" rx="12" fill="#e6f0fb" stroke="#2272d6" stroke-width="1.5" stroke-dasharray="6 3" opacity="0.6"/>
+      <text x="54" y="138" font-family="Geist Mono, monospace" font-size="11" font-weight="600" fill="#2272d6" letter-spacing="1">CUSTOMER AZURE SUBSCRIPTION (AZURE REGION)</text>
+    </g>
+<g>
+      <rect x="70" y="160" width="200" height="50" rx="8" fill="#fff" stroke="#2272d6" stroke-width="1.5" filter="url(#shadow_azsR)"/>
+      <text x="170.0" y="182.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="12" font-weight="600" fill="#0d1117">Azure SQL DB / MI</text>
+      <text x="170.0" y="197.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="9" fill="#6b7280">live PaaS database</text>
+    </g>
+<g>
+      <rect x="70" y="240" width="200" height="60" rx="8" fill="#fdf0e3" stroke="#a84e10" stroke-width="1.5" filter="url(#shadow_azsR)"/>
+      <text x="170.0" y="267.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="12" font-weight="600" fill="#0d1117">Rubrik-managed SQL Server</text>
+      <text x="170.0" y="282.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="9" fill="#6b7280">rbrk-<sub_id>-<rand></text>
+    </g>
+<text x="170" y="320" text-anchor="middle" font-family="Geist Mono, monospace" font-size="9" fill="#a84e10">SQL DB only: DB copy here</text>
+<text x="170" y="332" text-anchor="middle" font-family="Geist Mono, monospace" font-size="9" fill="#a84e10">(in customer-specified RG)</text>
+<g>
+      <rect x="320" y="155" width="530" height="200" rx="12" fill="#dff5ee" stroke="#00533f" stroke-width="1.5" stroke-dasharray="4 2" opacity="0.6"/>
+      <text x="334" y="173" font-family="Geist Mono, monospace" font-size="11" font-weight="600" fill="#00533f" letter-spacing="1">RUBRIK EXOCOMPUTE (AKS)</text>
+    </g>
+<g>
+      <rect x="340" y="195" width="140" height="50" rx="8" fill="#fff" stroke="#00533f" stroke-width="1.5" filter="url(#shadow_azsR)"/>
+      <text x="410.0" y="217.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="12" font-weight="600" fill="#0d1117">SQLPackage binary</text>
+      <text x="410.0" y="232.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="9" fill="#6b7280">BACPAC export</text>
+    </g>
+<g>
+      <rect x="500" y="195" width="140" height="50" rx="8" fill="#fff" stroke="#00533f" stroke-width="1.5" filter="url(#shadow_azsR)"/>
+      <text x="570.0" y="217.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="12" font-weight="600" fill="#0d1117">bacpac processor</text>
+      <text x="570.0" y="232.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="9" fill="#6b7280">MI: combine bacpac + CDC</text>
+    </g>
+<g>
+      <rect x="660" y="195" width="170" height="50" rx="8" fill="#dff5ee" stroke="#00533f" stroke-width="1.5" filter="url(#shadow_azsR)"/>
+      <text x="745.0" y="217.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="12" font-weight="600" fill="#0d1117">Backup ingestor (CSL)</text>
+      <text x="745.0" y="232.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="9" fill="#6b7280">uncompress + file-level dedupe</text>
+    </g>
+<g>
+      <rect x="440" y="275" width="200" height="50" rx="8" fill="#fff" stroke="#00533f" stroke-width="1.5" filter="url(#shadow_azsR)"/>
+      <text x="540.0" y="297.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="12" font-weight="600" fill="#0d1117">Local Disk</text>
+      <text x="540.0" y="312.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="9" fill="#6b7280">temp BACPAC file storage</text>
+    </g>
+<g>
+      <rect x="280" y="370" width="340" height="50" rx="8" fill="#e6f0fb" stroke="#0a4a9c" stroke-width="1.5" filter="url(#shadow_azsR)"/>
+      <text x="450.0" y="392.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="12" font-weight="600" fill="#0d1117">Customer Azure Storage Account (Blob)</text>
+      <text x="450.0" y="407.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="9" fill="#6b7280">immutable; versioning on; per SLA tiers</text>
+    </g>
+<path id="azsR1" d="M 430 85 C 430 130, 170 145, 170 160" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow_azsR)"/>
+<path id="azsR2" d="M 170 210 L 170 240" stroke="#0a4a9c" stroke-width="1.5" fill="none" marker-end="url(#arrow_azsR)"/>
+<path id="azsR3" d="M 270 240 L 340 220" stroke="#0a4a9c" stroke-width="1.5" fill="none" marker-end="url(#arrow_azsR)"/>
+<path id="azsR3b" d="M 270 185 L 340 215" stroke="#0a4a9c" stroke-width="1.5" stroke-dasharray="4 3" fill="none" marker-end="url(#arrow_azsR)"/>
+<path id="azsR4" d="M 480 220 L 500 220" stroke="#00533f" stroke-width="1.5" fill="none" marker-end="url(#arrow_azsR)"/>
+<path id="azsR5" d="M 570 245 L 540 275" stroke="#00533f" stroke-width="1.5" fill="none" marker-end="url(#arrow_azsR)"/>
+<path id="azsR6" d="M 640 290 C 700 290, 740 245, 745 245" stroke="#00533f" stroke-width="1.5" fill="none" marker-end="url(#arrow_azsR)"/>
+<path id="azsR7" d="M 745 245 C 745 370, 600 370, 600 370" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow_azsR)"/>
+<path id="azsR8" d="M 680 195 C 680 130, 510 105, 510 85" stroke="#7c3aed" stroke-width="1.5" fill="none" marker-end="url(#arrow_azsR)"/>
+<circle r="6" fill="#00b388" filter="url(#shadow_azsR)">
+      <animateMotion dur="3s" begin="0s" repeatCount="indefinite">
+        <mpath href="#azsR1" xlink:href="#azsR1"/>
+      </animateMotion>
+    </circle>
+<circle r="6" fill="#0a4a9c" filter="url(#shadow_azsR)">
+      <animateMotion dur="2s" begin="1.5s" repeatCount="indefinite">
+        <mpath href="#azsR2" xlink:href="#azsR2"/>
+      </animateMotion>
+    </circle>
+<circle r="6" fill="#0a4a9c" filter="url(#shadow_azsR)">
+      <animateMotion dur="2s" begin="2.5s" repeatCount="indefinite">
+        <mpath href="#azsR3" xlink:href="#azsR3"/>
+      </animateMotion>
+    </circle>
+<circle r="6" fill="#0a4a9c" filter="url(#shadow_azsR)">
+      <animateMotion dur="2s" begin="2.5s" repeatCount="indefinite">
+        <mpath href="#azsR3b" xlink:href="#azsR3b"/>
+      </animateMotion>
+    </circle>
+<circle r="6" fill="#00533f" filter="url(#shadow_azsR)">
+      <animateMotion dur="1.5s" begin="4s" repeatCount="indefinite">
+        <mpath href="#azsR4" xlink:href="#azsR4"/>
+      </animateMotion>
+    </circle>
+<circle r="6" fill="#00533f" filter="url(#shadow_azsR)">
+      <animateMotion dur="1.5s" begin="4.5s" repeatCount="indefinite">
+        <mpath href="#azsR5" xlink:href="#azsR5"/>
+      </animateMotion>
+    </circle>
+<circle r="6" fill="#00533f" filter="url(#shadow_azsR)">
+      <animateMotion dur="2s" begin="5s" repeatCount="indefinite">
+        <mpath href="#azsR6" xlink:href="#azsR6"/>
+      </animateMotion>
+    </circle>
+<circle r="6" fill="#00b388" filter="url(#shadow_azsR)">
+      <animateMotion dur="2.5s" begin="5.5s" repeatCount="indefinite">
+        <mpath href="#azsR7" xlink:href="#azsR7"/>
+      </animateMotion>
+    </circle>
+<circle r="6" fill="#7c3aed" filter="url(#shadow_azsR)">
+      <animateMotion dur="2.5s" begin="6s" repeatCount="indefinite">
+        <mpath href="#azsR8" xlink:href="#azsR8"/>
+      </animateMotion>
+    </circle>
+<text x="220" y="148" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">① Trigger via SLA</text>
+<text x="180" y="230" font-family="Geist Mono, monospace" font-size="9" font-weight="600" fill="#a84e10">② Azure DB Copy</text>
+<text x="280" y="200" font-family="Geist Mono, monospace" font-size="9" font-weight="600" fill="#a84e10">③ MI: T-SQL export (direct)</text>
+<text x="280" y="265" font-family="Geist Mono, monospace" font-size="9" font-weight="600" fill="#a84e10">③ DB: Export from copy</text>
+<text x="450" y="320" font-family="Geist Mono, monospace" font-size="9" font-weight="600" fill="#00533f">④⑤ BACPAC to local disk</text>
+<text x="640" y="270" font-family="Geist Mono, monospace" font-size="9" font-weight="600" fill="#00533f">⑥ Ingest</text>
+<text x="660" y="370" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#00533f">⑦ Write immutable to Azure Blob</text>
+<text x="520" y="158" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#7c3aed">⑧ Metadata to RSC</text>
+<text x="450" y="475" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#0d1117">Two modes (SQL DB vs MI):</text>
+<text x="450" y="492" text-anchor="middle" font-family="Geist Mono, monospace" font-size="9" fill="#374151">• SQL DB: Azure Database Copy → rbrk-managed temp SQL Server → SQLPackage export → ingest → drop temp DB</text>
+<text x="450" y="506" text-anchor="middle" font-family="Geist Mono, monospace" font-size="9" fill="#374151">• SQL MI: T-SQL export direct → CDC fetched during export → combine BACPAC + CDC → ingest</text>
+<text x="450" y="525" text-anchor="middle" font-family="Geist Mono, monospace" font-size="9" fill="#6b7280">Source: RWP-0618 Figures 9, 10, 11. Native PiTR/LTR orchestration via ARM API is a separate, non-Exo flow (not shown).</text>
+<text x="450" y="540" text-anchor="middle" font-family="Geist Mono, monospace" font-size="9" fill="#6b7280">CSL = Cloud Storage Layer (Rubrik's file-level dedupe layer). PiTR backups for protected DBs still rely on Azure-native.</text>
 </svg>
 
 </div>
 
-<details open><summary><strong>Network requirement — critical</strong></summary>
-<p>Exocompute's AKS subnet must have outbound TCP/1433 reachability to the VNet hosting the protected Azure SQL workload. Options:</p>
+<details open><summary><strong>Network model — what the HiW actually says</strong></summary>
+<p>Rubrik does <strong>not</strong> require VNet peering, Private Endpoint, or Service Endpoint to make persistent backups work. Per RWP-0618:</p>
 <ul>
-  <li><strong>VNet peering</strong> between Exocompute VNet and SQL VNet</li>
-  <li><strong>Private Endpoint</strong> from SQL into Exocompute VNet</li>
-  <li><strong>Service Endpoint Microsoft.Sql</strong> on AKS subnet (if SQL allows public access from selected VNets)</li>
+  <li>For <strong>SQL DB</strong>: Rubrik creates a Rubrik-managed SQL Server (named <code>rbrk-&lt;sub_id&gt;-&lt;random&gt;</code>) in a customer-specified resource group. By default, Rubrik whitelists IP <code>0.0.0.0</code> on this server's firewall via <code>Microsoft.Sql/servers/firewallRules/write</code> — enabling all Azure services to connect.</li>
+  <li>For <strong>SQL MI</strong>: Exocompute connects directly to the Managed Instance using a local DB user (<code>rubrik_login_&lt;random&gt;</code>) created via OAuth, DB admin creds, or a manual prerequisite script.</li>
 </ul>
-<p>Without this, persistent SQL backup jobs fail with connection timeouts.</p>
+<p><strong>Optional hardening</strong>: customers may add a Service Endpoint or Private Endpoint to the Rubrik-managed SQL server <em>after</em> it's created on first backup. Note: Private Endpoint adds Azure data transfer costs.</p>
+<p><strong>CDC requirement (SQL MI only)</strong>: Change Data Capture must be enabled on every database protected with Immutable Backups, to ensure transactional consistency. CDC restricts certain schema operations.</p>
 </details>
 
-<details><summary><strong>Azure SQL Managed Instance</strong></summary>
-<p>For Managed Instance, the storage instance is Rubrik-hosted but Exocompute MUST run in your tenant. RCV does not support Azure SQL Managed Instance.</p>
+<details><summary><strong>Azure SQL Managed Instance — additional differences</strong></summary>
+<ul>
+  <li><strong>Backup method</strong>: T-SQL export via SQLPackage; CDC commits fetched in parallel during export; BACPAC + CDC are merged afterwards</li>
+  <li><strong>CDC mandatory</strong>: must be enabled per database (not required for SQL DB)</li>
+  <li><strong>Local DB user required</strong>: Rubrik creates <code>rubrik_login_&lt;random&gt;</code> via OAuth / DB admin / manual script — credentials encrypted in Cloud KMS</li>
+  <li><strong>RCV NOT supported</strong> for SQL MI (SQL DB supports RCV Backup tier; Archive tier not supported)</li>
+  <li><strong>Backup transit time</strong>: ~24h for 1 TB DB per RSC compatibility matrix</li>
+  <li><strong>Tier limits (RSC-Gov)</strong>: Basic, S0, S1, S2 tiers ineligible because Azure doesn't support CDC there</li>
+</ul>
 </details>
 
-<details><summary><strong>Archival tier restrictions</strong></summary>
-<p>Azure SQL supports only <strong>Hot and Cool</strong> archival tiers — NOT Archive tier. (Archive tier rehydration latency is incompatible with DB backup access patterns.)</p>
+<details><summary><strong>Storage and immutability</strong></summary>
+<ul>
+  <li><strong>Where</strong>: Customer-owned Azure Storage Account in the same Azure region as the protected DB. Rubrik creates one via the wizard or you can supply an existing one</li>
+  <li><strong>Immutability</strong>: Version-level immutability is enabled by default on the storage container (<code>Set Blob Service Properties</code> + <code>Blob Containers - Create</code> APIs). Periodic job re-checks immutability when using an existing storage account</li>
+  <li><strong>Tiers</strong>: Hot and Cool only — Archive tier is not supported (rehydration latency incompatible with DB backup access patterns)</li>
+  <li><strong>Multiple archival locations</strong>: NOT supported for Azure SQL (per compatibility matrix)</li>
+  <li><strong>CSL (Cloud Storage Layer)</strong>: After BACPAC creation, Exocompute uncompresses it and writes individual files to Azure Blob — maximises dedupe and cost savings</li>
+</ul>
 </details>
 
-<details><summary><strong>RCV support</strong></summary>
-<p>RCV Backup tier only. RCV Archive tier not supported for Azure SQL DB; SQL MI not supported at all.</p>
+<details><summary><strong>RCV (Rubrik Cloud Vault) support</strong></summary>
+<ul>
+  <li><strong>SQL DB</strong>: RCV Backup tier supported. RCV Archive tier NOT supported.</li>
+  <li><strong>SQL MI</strong>: RCV NOT supported at all — use customer-managed storage account.</li>
+  <li><strong>Exocompute</strong>: For both SQL DB and SQL MI, Exocompute MUST run in your Azure tenant. Rubrik-hosted Exocompute is not an option (per RCV compatibility matrix).</li>
+</ul>
+</details>
+
+<details><summary><strong>Source documentation</strong></summary>
+<p>This page reflects RWP-0618 "How It Works: Cloud-Native Protection for Microsoft Azure SQL" (May 2025). Specifically:</p>
+<ul>
+  <li>Figures 9, 10, 11 — Immutable Backup high-level + backup layer steps (SQL DB and SQL MI)</li>
+  <li>Components section — Rubrik Exocompute, Azure Database Copy, CDC + Local DB User, CSL</li>
+  <li>Compatibility matrix (April 2026) — RCV/archival/feature support</li>
+</ul>
 </details>
 
 <div class="nav-buttons">
