@@ -532,9 +532,10 @@ li > ul, li > ol{ margin: 4px 0 6px; }
   </div>
 
 <div class="nav-group" data-group="home" data-cloud="home">
-  <div class="nav-group-title"><span class="dot" style="background:var(--ink)"></span>Pick your cloud</div>
+  <div class="nav-group-title"><span class="dot" style="background:var(--ink)"></span>Start here</div>
   <ul class="nav-list">
     <li><a href="#/" data-route="/">Pick your cloud</a></li>
+    <li><a href="#/how-to-use" data-route="/how-to-use">How to use this playbook</a></li>
   </ul>
 </div>
 <div class="nav-group" data-group="aws" data-cloud="aws">
@@ -631,6 +632,13 @@ li > ul, li > ol{ margin: 4px 0 6px; }
     <li><a href="#/gcp/cces-pointer" data-route="/gcp/cces-pointer">When to deploy CCES on GCP</a></li>
   </ul>
 </div>
+  <div class="sidebar-foot" style="margin-top:20px; padding:14px 4px 4px; border-top:1px solid var(--rule); font-family:var(--mono); font-size:11px; color:var(--muted); line-height:1.5;">
+    <div style="display:flex; align-items:center; gap:7px;">
+      <span style="width:7px;height:7px;border-radius:50%;background:var(--cc);display:inline-block;flex:none;"></span>
+      Last updated: <strong style="color:var(--ink-3);font-weight:600;">01 Jun 2026</strong>
+    </div>
+    <div style="margin-top:4px; color:var(--muted-2);">Multi-Cloud POC Playbook &middot; v1.1</div>
+  </div>
 </aside>
 <main><div class="main-inner">
 <article class="page" data-route="/" data-group="home">
@@ -707,7 +715,42 @@ li > ul, li > ol{ margin: 4px 0 6px; }
     <p>All clouds upload filesystem metadata to RSC's GCS-backed metadata store via <code>storage.googleapis.com</code>. Same outbound FQDN whether you're AWS, Azure, or GCP.</p>
   </div>
 </div>
+
 </article>
+<article class="page" data-route="/how-to-use" data-group="home">
+  <div class="breadcrumb"><a href="#/">Home</a><span class="sep">/</span><span>How to use this playbook</span></div>
+  <header class="page-head"><h1>How to use this playbook</h1><button class="print-btn" onclick="window.print()" title="Save this page as PDF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>Save as PDF</button></header>
+<h2 class="section-title">How to use this playbook</h2>
+<p style="color:var(--muted); max-width:72ch; margin:-2px 0 18px;">A guided build sequence, not a reference dump. Each cloud is self-contained &mdash; pick one and work top to bottom. <strong style="color:var(--ink-3);">Last updated: 01 Jun 2026.</strong></p>
+<div class="cross-cloud-grid">
+  <div class="cross-cloud-card">
+    <h4>1 &middot; Pick your cloud</h4>
+    <p>Use the AWS / Azure / GCP tabs (top-left) or the cards above. Navigation, diagrams, and FQDNs are scoped to the cloud you're in.</p>
+  </div>
+  <div class="cross-cloud-card">
+    <h4>2 &middot; Follow the phases</h4>
+    <p>Work the sidebar in order: <strong>Foundation &rarr; Onboard &rarr; Workloads &rarr; Reference</strong>. Foundation gates everything downstream.</p>
+  </div>
+  <div class="cross-cloud-card">
+    <h4>3 &middot; Read the diagrams</h4>
+    <p>Solid arrow = primary snapshot path (RSC direct to the workload account). Dashed arrow = Exocompute, used only for indexing / FLR / tiering. Moving dots show API + data direction.</p>
+  </div>
+  <div class="cross-cloud-card">
+    <h4>4 &middot; Expand the detail</h4>
+    <p>Click the &#9660; blocks for how-it-works depth. Open-by-default blocks are the &ldquo;what to do&rdquo;; collapsed blocks are the &ldquo;why / under the hood&rdquo;.</p>
+  </div>
+  <div class="cross-cloud-card">
+    <h4>5 &middot; Save as PDF</h4>
+    <p>Every page has a <strong>Save as PDF</strong> button (top-right). It prints the current page only &mdash; hand a customer one clean page, not the whole site.</p>
+  </div>
+  <div class="cross-cloud-card">
+    <h4>6 &middot; Source of truth</h4>
+    <p>Grounded in the RSC User Guide, Compatibility Matrix, and HIW papers. Treat version-specific limits as check-items &mdash; verify against the RSC guide before quoting a customer.</p>
+  </div>
+</div>
+
+</article>
+
 <article class="page" data-route="/aws/" data-group="aws">
   <div class="breadcrumb"><a href="#/">Home</a><span class="sep">/</span><span>AWS — Overview</span><span class="sep">/</span><span>AWS Overview</span></div>
   <header class="page-head"><h1>AWS Overview</h1><button class="print-btn" onclick="window.print()" title="Save this page as PDF"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>Save as PDF</button></header>
@@ -1569,25 +1612,11 @@ li > ul, li > ol{ margin: 4px 0 6px; }
         <mpath href="#ec2x7" xlink:href="#ec2x7"/>
       </animateMotion>
     </circle>
-<text x="280" y="115" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">① CreateSnapshots (direct to Account A)</text>
+<text x="120" y="115" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">① CreateSnapshots (direct to Account A)</text>
 <text x="200" y="230" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">② Snapshot created in Account A</text>
 <text x="80" y="312" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">③ Rubrik creates temp volume in Account A</text>
 <text x="540" y="115" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#00533f">④ ONLY if indexing / FLR / tiering needed</text>
 <text x="450" y="465" text-anchor="middle" font-family="Geist Mono, monospace" font-size="11" font-weight="500" fill="#374151">Snapshot path: RSC → Account A. Exocompute is a separate path, only when indexing/tiering needed.</text>
-
-  <!-- Index Upload destination -->
-  <g>
-    <rect x="510" y="395" width="340" height="40" rx="8" fill="#dff5ee" stroke="#00533f" stroke-width="1.5" filter="url(#shadow_ec2x)"/>
-    <text x="680" y="412" text-anchor="middle" font-family="Geist, sans-serif" font-size="12" font-weight="600" fill="#0d1117">Index Upload</text>
-    <text x="680" y="427" text-anchor="middle" font-family="Geist Mono, monospace" font-size="9" fill="#7c3aed">storage.googleapis.com (filesystem index file)</text>
-  </g>
-  <path id="ec2x8" d="M 680 290 L 680 395" stroke="#7c3aed" stroke-width="1.5" fill="none" marker-end="url(#arrow_ec2x)"/>
-  <circle r="6" fill="#7c3aed" filter="url(#shadow_ec2x)">
-    <animateMotion dur="2.5s" begin="5.5s" repeatCount="indefinite">
-      <mpath href="#ec2x8" xlink:href="#ec2x8"/>
-    </animateMotion>
-  </circle>
-  <text x="685" y="345" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#7c3aed">⑧ Index file</text>
 </svg>
 
 </div>
@@ -2059,9 +2088,9 @@ li > ul, li > ol{ margin: 4px 0 6px; }
       <text x="580.0" y="237.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="9" fill="#6b7280">Primary snapshot (per table)</text>
     </g>
 <g>
-      <rect x="680" y="200" width="140" height="50" rx="8" fill="#ede9fe" stroke="#7c3aed" stroke-width="1.5" filter="url(#shadow_ddR)"/>
-      <text x="750.0" y="222.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="12" font-weight="600" fill="#0d1117">S3 Archived Snapshot</text>
-      <text x="750.0" y="237.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="9" fill="#6b7280">IA / Glacier; Object Lock</text>
+      <rect x="675" y="200" width="160" height="50" rx="8" fill="#ede9fe" stroke="#7c3aed" stroke-width="1.5" filter="url(#shadow_ddR)"/>
+      <text x="755.0" y="222.0" text-anchor="middle" font-family="Geist, sans-serif" font-size="11" font-weight="600" fill="#0d1117">S3 Archived Snapshot</text>
+      <text x="755.0" y="237.0" text-anchor="middle" font-family="Geist Mono, monospace" font-size="9" fill="#6b7280">IA / Glacier; Object Lock</text>
     </g>
 <text x="655" y="285" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#7c3aed">🔒 Access blocked by IAM Role to anyone other than RSC</text>
 <text x="655" y="320" font-family="Geist Mono, monospace" font-size="9" fill="#6b7280" text-anchor="middle">• Optimised storage (incremental after first full)</text>
@@ -2070,7 +2099,7 @@ li > ul, li > ol{ margin: 4px 0 6px; }
 <path id="ddR1" d="M 430 80 C 430 130, 175 175, 175 200" stroke="#00b388" stroke-width="1.5" fill="none" marker-end="url(#arrow_ddR)"/>
 <path id="ddR2" d="M 240 225 L 270 225" stroke="#a84e10" stroke-width="1.5" fill="none" marker-end="url(#arrow_ddR)"/>
 <path id="ddR3" d="M 420 225 L 510 225" stroke="#e87b35" stroke-width="1.5" fill="none" marker-end="url(#arrow_ddR)"/>
-<path id="ddR4" d="M 650 225 L 680 225" stroke="#7c3aed" stroke-width="1.5" fill="none" marker-end="url(#arrow_ddR)"/>
+<path id="ddR4" d="M 650 225 L 675 225" stroke="#7c3aed" stroke-width="1.5" fill="none" marker-end="url(#arrow_ddR)"/>
 <path id="ddR5" d="M 580 200 C 580 130, 470 105, 470 80" stroke="#7c3aed" stroke-width="1.5" fill="none" marker-end="url(#arrow_ddR)"/>
 <circle r="6" fill="#00b388" filter="url(#shadow_ddR)">
       <animateMotion dur="3s" begin="0s" repeatCount="indefinite">
@@ -2098,10 +2127,10 @@ li > ul, li > ol{ margin: 4px 0 6px; }
       </animateMotion>
     </circle>
 <text x="200" y="150" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">① Assign SLA → enable PITR</text>
-<text x="245" y="222" font-family="Geist Mono, monospace" font-size="9" font-weight="600" fill="#a84e10">②</text>
-<text x="425" y="218" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#e87b35">③ Export to S3</text>
-<text x="650" y="218" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#7c3aed">④ SLA archive</text>
-<text x="465" y="148" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#7c3aed">⑤ Metadata to RSC catalog</text>
+<text x="255" y="192" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#a84e10">②</text>
+<text x="465" y="192" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#e87b35">③ Export to S3</text>
+<text x="640" y="192" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#7c3aed">④ SLA archive</text>
+<text x="610" y="150" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#7c3aed">⑤ Metadata to RSC catalog</text>
 <text x="450" y="445" text-anchor="middle" font-family="Geist Mono, monospace" font-size="10" font-weight="500" fill="#374151">Source: RWP-0671 HiW Figure. Two zones inside customer account — Rubrik-managed S3 is IAM-isolated from customer console.</text>
 </svg>
 
@@ -3284,25 +3313,11 @@ After Exocompute is created in Phase 2, the <code>Polaris-Exocompute-eks-worker-
         <mpath href="#azvmx7" xlink:href="#azvmx7"/>
       </animateMotion>
     </circle>
-<text x="280" y="115" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">① snapshots/write (direct to workload sub)</text>
+<text x="120" y="115" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">① snapshots/write (direct to workload sub)</text>
 <text x="200" y="230" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">② Snapshot in workload sub</text>
 <text x="80" y="312" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">③ disks/beginGetAccess → SAS URI</text>
 <text x="540" y="115" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#00533f">④ ONLY if indexing / FLR / tiering needed</text>
 <text x="450" y="465" text-anchor="middle" font-family="Geist Mono, monospace" font-size="11" font-weight="500" fill="#374151">Snapshot path: RSC → workload subscription. Exocompute is a separate path.</text>
-
-  <!-- Index Upload destination -->
-  <g>
-    <rect x="510" y="395" width="340" height="40" rx="8" fill="#dff5ee" stroke="#00533f" stroke-width="1.5" filter="url(#shadow_azvmx)"/>
-    <text x="680" y="412" text-anchor="middle" font-family="Geist, sans-serif" font-size="12" font-weight="600" fill="#0d1117">Index Upload</text>
-    <text x="680" y="427" text-anchor="middle" font-family="Geist Mono, monospace" font-size="9" fill="#7c3aed">storage.googleapis.com (filesystem index file)</text>
-  </g>
-  <path id="azvmx8" d="M 680 290 L 680 395" stroke="#7c3aed" stroke-width="1.5" fill="none" marker-end="url(#arrow_azvmx)"/>
-  <circle r="6" fill="#7c3aed" filter="url(#shadow_azvmx)">
-    <animateMotion dur="2.5s" begin="5.5s" repeatCount="indefinite">
-      <mpath href="#azvmx8" xlink:href="#azvmx8"/>
-    </animateMotion>
-  </circle>
-  <text x="685" y="345" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#7c3aed">⑧ Index file</text>
 </svg>
 
 </div>
@@ -4456,25 +4471,11 @@ az network firewall network-rule create -g &lt;rg&gt; -f &lt;fw&gt;   --collecti
         <mpath href="#gcex7" xlink:href="#gcex7"/>
       </animateMotion>
     </circle>
-<text x="280" y="115" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">① disks.createSnapshot (direct to source project)</text>
+<text x="120" y="115" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">① disks.createSnapshot (direct to source project)</text>
 <text x="200" y="230" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">② Snapshot in source project</text>
 <text x="80" y="312" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#1f3864">③ disks.create from snapshot</text>
 <text x="540" y="115" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#00533f">④ ONLY if indexing / FLR / tiering needed</text>
 <text x="450" y="465" text-anchor="middle" font-family="Geist Mono, monospace" font-size="11" font-weight="500" fill="#374151">Snapshot path: RSC → source project Compute API. Exocompute is a separate path.</text>
-
-  <!-- Index Upload destination -->
-  <g>
-    <rect x="510" y="395" width="340" height="40" rx="8" fill="#dff5ee" stroke="#00533f" stroke-width="1.5" filter="url(#shadow_gcex)"/>
-    <text x="680" y="412" text-anchor="middle" font-family="Geist, sans-serif" font-size="12" font-weight="600" fill="#0d1117">Index Upload</text>
-    <text x="680" y="427" text-anchor="middle" font-family="Geist Mono, monospace" font-size="9" fill="#7c3aed">storage.googleapis.com (via PGA)</text>
-  </g>
-  <path id="gcex8" d="M 680 290 L 680 395" stroke="#7c3aed" stroke-width="1.5" fill="none" marker-end="url(#arrow_gcex)"/>
-  <circle r="6" fill="#7c3aed" filter="url(#shadow_gcex)">
-    <animateMotion dur="2.5s" begin="5.5s" repeatCount="indefinite">
-      <mpath href="#gcex8" xlink:href="#gcex8"/>
-    </animateMotion>
-  </circle>
-  <text x="685" y="345" font-family="Geist Mono, monospace" font-size="10" font-weight="600" fill="#7c3aed">⑧ Index file</text>
 </svg>
 </div>
 
